@@ -73,4 +73,29 @@
   body {
     @apply tw-bg-background tw-text-foreground;
   }
+  h1 {
+    @apply tw-text-6xl;
+    @apply tw-font-bold;
+  }
+  h2 {
+    @apply tw-text-5xl;
+    @apply tw-font-bold;
+  }
+  h3 {
+    @apply tw-text-4xl;
+    @apply tw-font-semibold;
+  }
+  h4 {
+    @apply tw-text-3xl;
+    @apply tw-font-semibold;
+  }
+  h5 {
+    @apply tw-text-2xl;
+  }
+  h6 {
+    @apply tw-text-xl;
+  }
+  p {
+    @apply tw-text-base;
+  }
 }
