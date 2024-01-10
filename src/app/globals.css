@@ -93,7 +93,7 @@
     @apply tw-text-2xl;
   }
   h6 {
-    @apply tw-text-large;
+    @apply tw-text-xl;
   }
   p {
     @apply tw-text-base;
