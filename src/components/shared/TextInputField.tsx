@@ -1,5 +1,6 @@
 'use client';
 
+import { Control, ControllerRenderProps } from 'react-hook-form';
 import {
   FormControl,
   FormField,
@@ -7,18 +8,23 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { Control } from 'react-hook-form';
-import { Input } from '@/components/ui/input';
+import { cloneElement } from 'react';
 
 const TextInputField = ({
+  children,
   control,
-  name,
   label,
+  name,
 }: {
+  children: React.ReactElement;
   control: Control<any>;
-  name: string;
   label: string;
+  name: string;
 }) => {
+  const renderChildren = (field: ControllerRenderProps) => {
+    return cloneElement(children, { ...field });
+  };
+
   return (
     <FormField
       control={control}
@@ -26,9 +32,7 @@ const TextInputField = ({
       render={({ field }) => (
         <FormItem>
           <FormLabel>{label}</FormLabel>
-          <FormControl>
-            <Input type='text' {...field} />
-          </FormControl>
+          <FormControl>{renderChildren(field)}</FormControl>
           <FormMessage />
         </FormItem>
       )}
