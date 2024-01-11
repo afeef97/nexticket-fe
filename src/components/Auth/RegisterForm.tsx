@@ -11,6 +11,7 @@ import {
 } from 'valibot';
 import { Button } from '../ui/button';
 import { Form } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 import TextInputField from '../shared/TextInputField';
 import { useForm } from 'react-hook-form';
 import { valibotResolver } from '@hookform/resolvers/valibot';
@@ -40,14 +41,22 @@ const RegisterForm = () => {
       <form onSubmit={registerForm.handleSubmit((data) => console.log(data))}>
         <TextInputField
           control={registerForm.control}
-          name='email'
           label='Email'
-        />
+          name='email'
+        >
+          <Input placeholder='Enter your email' autoComplete='email' />
+        </TextInputField>
         <TextInputField
           control={registerForm.control}
-          name='password'
           label='Password'
-        />
+          name='password'
+        >
+          <Input
+            type='password'
+            placeholder='Enter your password'
+            autoComplete='password'
+          />
+        </TextInputField>
 
         <Button type='submit'>Register</Button>
       </form>
