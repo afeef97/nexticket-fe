@@ -28,7 +28,7 @@ export const RegisterFormSchema = object(
       regex(/[A-Z]/, 'Your password must contain an uppercase letter.'),
       regex(/[0-9]/, 'Your password must contain a number.'),
     ]),
-    confirmPassword: string([minLength(1, 'Enter your password again')]),
+    confirmPassword: string([minLength(1, 'Please confirm your password')]),
   },
   [
     forward(
