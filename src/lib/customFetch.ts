@@ -1,4 +1,4 @@
-const nexticketFetch = async (
+const fetchNexticket = async (
   url: string,
   {
     useToken = true,
@@ -43,4 +43,4 @@ const nexticketFetch = async (
   return data;
 };
 
-export default nexticketFetch;
+export default fetchNexticket;
