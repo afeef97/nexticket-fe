@@ -15,6 +15,7 @@ const handleResponseCookies = (setCookie: string[]) => {
         path,
         expires: new Date(expires),
         httpOnly: true,
+        sameSite: 'strict',
       });
     });
   }
