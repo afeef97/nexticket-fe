@@ -1,9 +1,15 @@
 import { render, screen } from '@testing-library/react';
+import { AppRouterContextProviderMock } from '@/components/test/RouterContextProviderMock';
 import VerifyForm from './VerifyForm';
 
 describe('VerifyForm', () => {
   it('should render with correct fields', () => {
-    render(<VerifyForm />);
+    const push = jest.fn();
+    render(
+      <AppRouterContextProviderMock router={{ push }}>
+        <VerifyForm />
+      </AppRouterContextProviderMock>
+    );
 
     const tokenInput = screen.getByPlaceholderText('Please enter your token');
 
@@ -11,7 +17,12 @@ describe('VerifyForm', () => {
   });
 
   it('should render with correct labels', () => {
-    render(<VerifyForm />);
+    const push = jest.fn();
+    render(
+      <AppRouterContextProviderMock router={{ push }}>
+        <VerifyForm />
+      </AppRouterContextProviderMock>
+    );
 
     const tokenLabel = screen.getByText('Token');
 
@@ -19,7 +30,12 @@ describe('VerifyForm', () => {
   });
 
   it('should have a submit button', () => {
-    render(<VerifyForm />);
+    const push = jest.fn();
+    render(
+      <AppRouterContextProviderMock router={{ push }}>
+        <VerifyForm />
+      </AppRouterContextProviderMock>
+    );
 
     const button = screen.getByRole('button');
 

@@ -73,7 +73,7 @@ const RegisterForm = () => {
         return;
       }
 
-      router.push('/verify');
+      router.push('/verify' + '?email=' + data.email);
     });
   };
 
