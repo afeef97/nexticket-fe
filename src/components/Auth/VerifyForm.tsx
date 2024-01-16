@@ -35,7 +35,7 @@ const VerifyForm = () => {
         return;
       }
 
-      setTimeout(() => router.push('/login'), 2000);
+      setTimeout(() => router.push('/dashboard'));
     });
   };
 
