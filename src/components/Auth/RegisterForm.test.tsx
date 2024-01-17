@@ -1,9 +1,15 @@
 import { render, screen } from '@testing-library/react';
+import { AppRouterContextProviderMock } from '../test/RouterContextProviderMock';
 import RegisterForm from '@/components/Auth/RegisterForm';
 
 describe('RegisterForm', () => {
   it('should render with correct fields', () => {
-    render(<RegisterForm />);
+    const push = jest.fn();
+    render(
+      <AppRouterContextProviderMock router={{ push }}>
+        <RegisterForm />
+      </AppRouterContextProviderMock>
+    );
 
     const usernameInput = screen.getByPlaceholderText('Enter your username');
     const emailInput = screen.getByPlaceholderText('Enter your email');
@@ -19,7 +25,12 @@ describe('RegisterForm', () => {
   });
 
   it('should render with correct labels', () => {
-    render(<RegisterForm />);
+    const push = jest.fn();
+    render(
+      <AppRouterContextProviderMock router={{ push }}>
+        <RegisterForm />
+      </AppRouterContextProviderMock>
+    );
 
     const usernameLabel = screen.getByText('Username');
     const emailLabel = screen.getByText('Email');
@@ -33,7 +44,12 @@ describe('RegisterForm', () => {
   });
 
   it('should have a submit button', () => {
-    render(<RegisterForm />);
+    const push = jest.fn();
+    render(
+      <AppRouterContextProviderMock router={{ push }}>
+        <RegisterForm />
+      </AppRouterContextProviderMock>
+    );
 
     const button = screen.getByRole('button');
 
