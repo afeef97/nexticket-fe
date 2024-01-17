@@ -11,11 +11,13 @@ import { Button } from '@/components/ui/button';
 import React from 'react';
 import { refreshToken } from '@/app/(auth)/actions';
 
-export const AccessContext = React.createContext({
-  openAccessExpired: false,
+export interface IAccessContext {
+  openAccessExpired: boolean;
   // eslint-disable-next-line
-  setOpenAccessExpired: (value: React.SetStateAction<boolean>): void => {},
-});
+  setOpenAccessExpired: (value: React.SetStateAction<boolean>) => void;
+}
+
+export const AccessContext = React.createContext({} as IAccessContext);
 
 const AccessExpired = ({
   open,
