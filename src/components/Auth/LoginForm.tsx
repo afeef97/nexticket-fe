@@ -1,14 +1,17 @@
 'use client';
 
 import { email, minLength, object, string, Input as vInput } from 'valibot';
+import { useEffect, useState, useTransition } from 'react';
+import AccessExpired from '../shared/AccessExpired';
 import { Button } from '@/components/ui/button';
+import { FetchReturn } from '@/lib/customFetch';
 import { Form } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import TextInputField from '@/components/shared/TextInputField';
+import { getToken } from '@/app/(auth)/actions';
 import { loginUser } from '@/app/(auth)/login/actions';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
-import { useTransition } from 'react';
 import { valibotResolver } from '@hookform/resolvers/valibot';
 
 const loginFormSchema = object({
@@ -26,6 +29,20 @@ const LoginForm = () => {
   });
   const router = useRouter();
   const [isPendingLogin, startTransitionLogin] = useTransition();
+  const [isTokenExpired, setIsTokenExpired] = useState(false);
+
+  const getTokenOnLoad = async (): Promise<void> => {
+    const token: FetchReturn = await getToken();
+    console.log(token);
+    if (token.ok) {
+      router.push('/dashboard');
+    } else if (/.*expired.*/.test(token.data.message)) {
+      setIsTokenExpired(true);
+    }
+  };
+  useEffect(() => {
+    getTokenOnLoad();
+  });
 
   const onSubmit = (data: vInput<typeof loginFormSchema>) => {
     startTransitionLogin(async () => {
@@ -43,24 +60,30 @@ const LoginForm = () => {
   };
 
   return (
-    <Form {...loginForm}>
-      <form onSubmit={loginForm.handleSubmit(onSubmit)}>
-        <TextInputField control={loginForm.control} label='Email' name='email'>
-          <Input placeholder='Enter your email' />
-        </TextInputField>
-        <TextInputField
-          control={loginForm.control}
-          label='Password'
-          name='password'
-        >
-          <Input type='password' placeholder='Enter your password' />
-        </TextInputField>
+    <AccessExpired open={isTokenExpired}>
+      <Form {...loginForm}>
+        <form onSubmit={loginForm.handleSubmit(onSubmit)}>
+          <TextInputField
+            control={loginForm.control}
+            label='Email'
+            name='email'
+          >
+            <Input placeholder='Enter your email' />
+          </TextInputField>
+          <TextInputField
+            control={loginForm.control}
+            label='Password'
+            name='password'
+          >
+            <Input type='password' placeholder='Enter your password' />
+          </TextInputField>
 
-        <Button type='submit' disabled={isPendingLogin}>
-          Login
-        </Button>
-      </form>
-    </Form>
+          <Button type='submit' disabled={isPendingLogin}>
+            Login
+          </Button>
+        </form>
+      </Form>
+    </AccessExpired>
   );
 };
 
