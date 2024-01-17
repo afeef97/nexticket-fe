@@ -40,7 +40,7 @@ const AccessExpired = ({
 
   return (
     <Dialog open={openAccessExpired}>
-      <DialogContent>
+      <DialogContent disableClose>
         <DialogHeader>
           <DialogTitle>Access Expired</DialogTitle>
           <DialogDescription>
