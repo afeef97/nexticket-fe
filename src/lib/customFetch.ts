@@ -1,5 +1,10 @@
 import { handleResponseCookies } from '@/app/(auth)/actions';
 
+interface FetchReturn {
+  ok: boolean;
+  data: any;
+}
+
 const fetchNexticket = async (
   url: string,
   {
@@ -13,7 +18,7 @@ const fetchNexticket = async (
     body?: unknown;
     options?: RequestInit;
   }
-) => {
+): Promise<FetchReturn> => {
   if (useToken) {
     const { cookies } = require('next/headers');
     const cookieStore = cookies();
@@ -21,9 +26,12 @@ const fetchNexticket = async (
     if (cookieStore.has('access_token_expires')) {
       const accessExpires = cookieStore.get('access_token_expires')?.value;
       if (new Date(Date.now()).valueOf() > new Date(accessExpires).valueOf()) {
-        throw {
-          message: 'Your access token has expired, please login again',
-          statusCode: 401,
+        return {
+          ok: false,
+          data: {
+            message: 'Your access token has expired, please login again',
+            statusCode: 401,
+          },
         };
       }
     }
@@ -59,9 +67,9 @@ const fetchNexticket = async (
   const data = await response.json();
 
   if (!response.ok) {
-    throw data;
+    return { ok: false, data };
   }
-  return data;
+  return { ok: true, data };
 };
 
 export default fetchNexticket;
