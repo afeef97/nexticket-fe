@@ -1,8 +1,8 @@
 'use server';
 
-import fetchNexticket from '@/lib/customFetch';
+import fetchNexticket, { FetchReturn } from '@/lib/customFetch';
 
-export const handleResponseCookies = (setCookie: string[]) => {
+export const handleResponseCookies = (setCookie: string[]): void => {
   if (setCookie.length > 0) {
     const { cookies } = require('next/headers');
     const cookieStore = cookies();
@@ -31,15 +31,54 @@ export const handleResponseCookies = (setCookie: string[]) => {
   }
 };
 
-export const refreshToken = async () => {
+export const getToken = async (): Promise<FetchReturn> => {
+  const { cookies } = require('next/headers');
+  const cookieStore = cookies();
+
+  const access_token = cookieStore.get('access_token')?.value;
+  const refresh_token = cookieStore.get('refresh_token')?.value;
+
+  if (refresh_token) {
+    if (access_token) {
+      return {
+        ok: true,
+        data: {
+          access_token,
+          refresh_token,
+        },
+      };
+    } else {
+      return {
+        ok: false,
+        data: {
+          message: 'Token expired, please refresh your token',
+          statusCode: 401,
+        },
+      };
+    }
+  } else {
+    return {
+      ok: false,
+      data: {
+        message: 'Unauthorized, please login again',
+        statusCode: 401,
+      },
+    };
+  }
+};
+
+export const refreshToken = async (): Promise<FetchReturn> => {
   const { cookies } = require('next/headers');
   const cookieStore = cookies();
 
   if (!cookieStore.has('refresh_token')) {
-    return;
+    return {
+      ok: false,
+      data: { message: 'Unauthorized, please login again', statusCode: 401 },
+    };
   }
 
-  return await fetchNexticket('/auth/refresh', {
+  const response: FetchReturn = await fetchNexticket('/auth/refresh', {
     useToken: false,
     method: 'POST',
     options: {
@@ -48,16 +87,25 @@ export const refreshToken = async () => {
       },
     },
   });
+
+  if (/^Unauthorized.*/.test(response.data.message)) {
+    cookieStore.delete('access_token');
+    cookieStore.delete('refresh_token');
+    return {
+      ok: false,
+      data: { message: 'Unauthorized, please login again', statusCode: 401 },
+    };
+  }
+  return response;
 };
 
-export const logoutUser = async () => {
+export const logoutUser = async (): Promise<FetchReturn> => {
   const { cookies } = require('next/headers');
   const cookieStore = cookies();
 
   const response = await fetchNexticket('/auth/logout', {
     options: { cache: 'no-store' },
   });
-  
 
   if (!response.ok) {
     return response;
