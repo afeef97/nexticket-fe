@@ -8,6 +8,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 import React from 'react';
 import { refreshToken } from '@/app/(auth)/actions';
 
@@ -28,9 +29,13 @@ const AccessExpired = ({
 }) => {
   const [openAccessExpired, setOpenAccessExpired] =
     React.useState<boolean>(false);
+  const [refreshTokenError, setRefreshTokenError] = React.useState<string>('');
   const handleRefreshToken = async () => {
-    await refreshToken();
-    setOpenAccessExpired(false);
+    const response = await refreshToken();
+    setOpenAccessExpired(!response.ok);
+    if (!response.ok) {
+      setRefreshTokenError(response.data.message);
+    }
   };
 
   // Dialog can only appear after the component is mounted to prevent hydration error.
@@ -44,11 +49,24 @@ const AccessExpired = ({
         <DialogHeader>
           <DialogTitle>Access Expired</DialogTitle>
           <DialogDescription>
-            Your access has expired, please refresh your token
+            {refreshTokenError
+              ? 'Failed to refresh token, please try to login again'
+              : 'Your access has expired, please refresh your token'}
           </DialogDescription>
         </DialogHeader>
+        {refreshTokenError && (
+          <p className='tw-text-red-500'>{refreshTokenError}</p>
+        )}
 
-        <Button onClick={handleRefreshToken}>Refresh</Button>
+        {refreshTokenError ? (
+          <Button asChild>
+            <Link replace href={'/login'}>
+              Login
+            </Link>
+          </Button>
+        ) : (
+          <Button onClick={handleRefreshToken}>Refresh</Button>
+        )}
       </DialogContent>
 
       <AccessContext.Provider
