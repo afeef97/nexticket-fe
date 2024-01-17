@@ -1,6 +1,8 @@
+import { IAccessContext } from '@/components/shared/AccessExpired';
 import { handleResponseCookies } from '@/app/(auth)/actions';
+import { tokenHandler } from './utils';
 
-interface FetchReturn {
+export interface FetchReturn {
   ok: boolean;
   data: any;
 }
@@ -17,33 +19,14 @@ const fetchNexticket = async (
     method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
     body?: unknown;
     options?: RequestInit;
-  }
+  },
+  context?: IAccessContext
 ): Promise<FetchReturn> => {
   if (useToken) {
-    const { cookies } = require('next/headers');
-    const cookieStore = cookies();
+    const tokenState: FetchReturn | undefined = tokenHandler(context, options);
 
-    if (cookieStore.has('access_token_expires')) {
-      const accessExpires = cookieStore.get('access_token_expires')?.value;
-      if (new Date(Date.now()).valueOf() > new Date(accessExpires).valueOf()) {
-        return {
-          ok: false,
-          data: {
-            message: 'Your access token has expired, please login again',
-            statusCode: 401,
-          },
-        };
-      }
-    }
-
-    if (cookieStore.has('access_token')) {
-      const token = cookieStore.get('access_token')?.value;
-      if (token) {
-        options.headers = {
-          ...options.headers,
-          Authorization: `Bearer ${token}`,
-        };
-      }
+    if (tokenState && !tokenState.ok) {
+      return tokenState;
     }
   }
 
@@ -54,6 +37,7 @@ const fetchNexticket = async (
     method,
     headers: {
       'Content-Type': 'application/json',
+      ...options.headers,
     },
     body: JSON.stringify(body),
     ...options,
@@ -66,10 +50,7 @@ const fetchNexticket = async (
 
   const data = await response.json();
 
-  if (!response.ok) {
-    return { ok: false, data };
-  }
-  return { ok: true, data };
+  return response.ok ? { ok: true, data } : { ok: false, data };
 };
 
 export default fetchNexticket;
