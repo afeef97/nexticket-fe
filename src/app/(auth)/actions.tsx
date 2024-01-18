@@ -21,7 +21,12 @@ export const handleResponseCookies = (setCookie: string[]) => {
         sameSite: 'strict',
       });
 
-      cookieStore.set(`${tokenLabel}_expires`, expires);
+      cookieStore.set(`${tokenLabel}_expires`, expires, {
+        path,
+        expires: new Date(expires),
+        httpOnly: true,
+        sameSite: 'strict',
+      });
     });
   }
 };
