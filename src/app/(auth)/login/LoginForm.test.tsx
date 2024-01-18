@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { AppRouterContextProviderMock } from '../test/RouterContextProviderMock';
+import { AppRouterContextProviderMock } from '@/components/test/RouterContextProviderMock';
 import LoginForm from './LoginForm';
 
 describe('LoginForm', () => {

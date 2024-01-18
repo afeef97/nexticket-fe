@@ -12,17 +12,15 @@ const AppLayout = async ({ children }: { children: React.ReactElement }) => {
   console.log(getUserAccountResponse);
 
   return (
-    <main>
-      <AccessExpired
-        key={getUserAccountResponse.data.statusCode}
-        open={
-          !getUserAccountResponse.ok &&
-          getUserAccountResponse.data.statusCode === 401
-        }
-      >
-        {children}
-      </AccessExpired>
-    </main>
+    <AccessExpired
+      key={getUserAccountResponse.data.statusCode}
+      open={
+        !getUserAccountResponse.ok &&
+        getUserAccountResponse.data.statusCode === 401
+      }
+    >
+      <main>{children}</main>
+    </AccessExpired>
   );
 };
 

@@ -2,7 +2,7 @@
 
 import { email, minLength, object, string, Input as vInput } from 'valibot';
 import { useEffect, useState, useTransition } from 'react';
-import AccessExpired from '../shared/AccessExpired';
+import AccessExpired from '@/components/shared/AccessExpired';
 import { Button } from '@/components/ui/button';
 import { FetchReturn } from '@/lib/customFetch';
 import { Form } from '@/components/ui/form';
@@ -33,7 +33,6 @@ const LoginForm = () => {
 
   const getTokenOnLoad = async (): Promise<void> => {
     const token: FetchReturn = await getToken();
-    console.log(token);
     if (token.ok) {
       router.push('/dashboard');
     } else if (/.*expired.*/.test(token.data.message)) {

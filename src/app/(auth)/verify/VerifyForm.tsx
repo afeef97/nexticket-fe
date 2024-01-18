@@ -2,7 +2,7 @@
 
 import { minLength, object, string, Input as vInput } from 'valibot';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Button } from '../ui/button';
+import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import TextInputField from '@/components/shared/TextInputField';
