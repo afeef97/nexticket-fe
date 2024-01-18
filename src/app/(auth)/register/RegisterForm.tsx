@@ -11,10 +11,10 @@ import {
   string,
   Input as vInput,
 } from 'valibot';
-import { Button } from '../ui/button';
+import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import TextInputField from '../shared/TextInputField';
+import TextInputField from '@/components/shared/TextInputField';
 import { registerUser } from '@/app/(auth)/register/actions';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
