@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import React from 'react';
 import { refreshToken } from '@/app/(auth)/actions';
+import { usePathname } from 'next/navigation';
 
 export interface IAccessContext {
   openAccessExpired: boolean;
@@ -27,6 +28,8 @@ const AccessExpired = ({
   open: boolean;
   children: React.ReactNode;
 }) => {
+  const pathname = usePathname();
+
   const [openAccessExpired, setOpenAccessExpired] =
     React.useState<boolean>(false);
   const [refreshTokenError, setRefreshTokenError] = React.useState<string>('');
@@ -45,7 +48,7 @@ const AccessExpired = ({
 
   return (
     <Dialog open={openAccessExpired}>
-      <DialogContent disableClose>
+      <DialogContent disableClose className='!tw-z-index-99'>
         <DialogHeader>
           <DialogTitle>Access Expired</DialogTitle>
           <DialogDescription>
@@ -59,7 +62,12 @@ const AccessExpired = ({
         )}
 
         {refreshTokenError ? (
-          <Button asChild>
+          <Button
+            asChild
+            onClick={() =>
+              pathname === '/login' ? setOpenAccessExpired(false) : null
+            }
+          >
             <Link replace href={'/login'}>
               Login
             </Link>
