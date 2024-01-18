@@ -1,5 +1,6 @@
 import AccessExpired from '@/components/shared/AccessExpired';
 import { Metadata } from 'next';
+import Navigation from './(dashboard)/Navigation';
 import React from 'react';
 import { getUserAccount } from './actions';
 
@@ -9,7 +10,6 @@ export const metadata: Metadata = {
 
 const AppLayout = async ({ children }: { children: React.ReactElement }) => {
   const getUserAccountResponse = await getUserAccount();
-  console.log(getUserAccountResponse);
 
   return (
     <AccessExpired
@@ -19,7 +19,12 @@ const AppLayout = async ({ children }: { children: React.ReactElement }) => {
         getUserAccountResponse.data.statusCode === 401
       }
     >
-      <main>{children}</main>
+      <main className='md:tw-grid tw-grid-cols-[auto_1fr]'>
+        <Navigation />
+        <div className='tw-min-h-[calc(100vh-4rem)] tw-py-2 md:tw-py-4 tw-px-3 md:tw-px-6'>
+          {children}
+        </div>
+      </main>
     </AccessExpired>
   );
 };
