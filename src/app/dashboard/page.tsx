@@ -1,8 +1,8 @@
 const Dashboard = async () => {
   return (
-    <div>
-      <h1>Dashboard</h1>
-    </div>
+    <>
+      <p>Dashboard</p>
+    </>
   );
 };
 
