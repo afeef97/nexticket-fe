@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
-import { AppRouterContextProviderMock } from '../test/RouterContextProviderMock';
-import RegisterForm from '@/components/Auth/RegisterForm';
+import { AppRouterContextProviderMock } from '@/components/test/RouterContextProviderMock';
+import RegisterForm from './RegisterForm';
 
 describe('RegisterForm', () => {
   it('should render with correct fields', () => {

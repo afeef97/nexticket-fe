@@ -2,7 +2,7 @@
 
 import { email, minLength, object, string, Input as vInput } from 'valibot';
 import { useEffect, useState, useTransition } from 'react';
-import AccessExpired from '../shared/AccessExpired';
+import AccessExpired from '@/components/shared/AccessExpired';
 import { Button } from '@/components/ui/button';
 import { FetchReturn } from '@/lib/customFetch';
 import { Form } from '@/components/ui/form';

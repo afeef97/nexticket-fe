@@ -1,4 +1,4 @@
-import VerifyForm from '@/components/Auth/VerifyForm';
+import VerifyForm from '@/app/(auth)/verify/VerifyForm';
 
 const Verify = () => {
   return (
