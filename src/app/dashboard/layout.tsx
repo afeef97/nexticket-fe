@@ -1,4 +1,5 @@
 import AccessExpired from '@/components/shared/AccessExpired';
+import CheckOrganization from './(dashboard)/CheckOrganization';
 import { Metadata } from 'next';
 import Navigation from './(dashboard)/Navigation';
 import React from 'react';
@@ -22,7 +23,7 @@ const AppLayout = async ({ children }: { children: React.ReactElement }) => {
       <main className='md:tw-grid tw-grid-cols-[auto_1fr]'>
         <Navigation />
         <div className='tw-min-h-[calc(100vh-4rem)] tw-py-2 md:tw-py-4 tw-px-3 md:tw-px-6'>
-          {children}
+          <CheckOrganization>{children}</CheckOrganization>
         </div>
       </main>
     </AccessExpired>

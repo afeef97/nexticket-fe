@@ -88,7 +88,7 @@ export const refreshToken = async (): Promise<FetchReturn> => {
     },
   });
 
-  if (/^Unauthorized.*/.test(response.data.message)) {
+  if (response.data.statusCode === 401 || response.data.statusCode === 403) {
     cookieStore.delete('access_token');
     cookieStore.delete('refresh_token');
     return {
