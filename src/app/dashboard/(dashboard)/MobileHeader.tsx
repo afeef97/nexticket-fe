@@ -4,7 +4,6 @@ import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import React from 'react';
 import { cn } from '@/lib/utils';
-import useWindowInnerWidth from '@/lib/hooks/useWindowInnerWidth';
 
 const MobileHeader = ({
   showPanel,
@@ -13,14 +12,11 @@ const MobileHeader = ({
   showPanel: boolean;
   setShowPanel: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const windowInnerWidth = useWindowInnerWidth();
-
   return (
     <div
       data-testid='mobile-header'
       className={cn(
-        'tw-sticky tw-top-0 tw-w-full tw-h-16 tw-py-2 tw-px-3 tw-flex tw-justify-between tw-items-center tw-bg-white tw-border-b tw-border-neutral-400',
-        windowInnerWidth > 768 && 'tw-hidden'
+        'tw-sticky tw-top-0 tw-w-full tw-h-16 tw-py-2 tw-px-3 tw-flex tw-justify-between tw-items-center tw-bg-white tw-border-b tw-border-neutral-400 md:tw-hidden'
       )}
     >
       <h3>nexticket</h3>
