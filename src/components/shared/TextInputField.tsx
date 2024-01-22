@@ -30,7 +30,7 @@ const TextInputField = ({
       control={control}
       name={name}
       render={({ field }) => (
-        <FormItem className='tw-h-[6.5rem]'>
+        <FormItem className='tw-min-h-[6.5rem] tw-mb-2'>
           <FormLabel>{label}</FormLabel>
           <FormControl>{renderChildren(field)}</FormControl>
           <FormMessage />

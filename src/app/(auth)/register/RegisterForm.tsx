@@ -17,8 +17,8 @@ import { Input } from '@/components/ui/input';
 import TextInputField from '@/components/shared/TextInputField';
 import { registerUser } from '@/app/(auth)/register/actions';
 import { useForm } from 'react-hook-form';
+import useQueryHandler from '@/lib/hooks/useQueryHandler';
 import { useRouter } from 'next/navigation';
-import { useTransition } from 'react';
 import { valibotResolver } from '@hookform/resolvers/valibot';
 
 export const RegisterFormSchema = object(
@@ -56,25 +56,27 @@ const RegisterForm = () => {
     },
   });
   const router = useRouter();
-  const [isPendingRegister, startTransitionRegister] = useTransition();
 
-  const onSubmit = async (data: vInput<typeof RegisterFormSchema>) => {
-    startTransitionRegister(async () => {
-      const response = await registerUser(
-        data.username,
-        data.email,
-        data.password
-      );
-
-      if (!response.ok) {
-        response.data.fields.map((fields: 'username' | 'email' | 'password') =>
-          registerForm.setError(fields, { message: response.data.message })
-        );
-        return;
-      }
-
-      router.push('/verify' + '?email=' + data.email);
+  const { state: registerUserState, triggerQuery: triggerRegisterUser } =
+    useQueryHandler({
+      query: registerUser,
+      queryOnMount: false,
     });
+  const onSubmit = async (data: vInput<typeof RegisterFormSchema>) => {
+    const response = await triggerRegisterUser(
+      data.username,
+      data.email,
+      data.password
+    );
+
+    if (!response.ok) {
+      response.data.fields.map((fields: 'username' | 'email' | 'password') =>
+        registerForm.setError(fields, { message: response.data.message })
+      );
+      return;
+    }
+
+    router.push('/verify' + '?email=' + data.email);
   };
 
   return (
@@ -113,7 +115,7 @@ const RegisterForm = () => {
           <Input type='password' placeholder='Enter your password again' />
         </TextInputField>
 
-        <Button disabled={isPendingRegister} type='submit'>
+        <Button disabled={registerUserState === 'pending'} type='submit'>
           Register
         </Button>
       </form>

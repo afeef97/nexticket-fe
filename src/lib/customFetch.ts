@@ -30,15 +30,22 @@ const fetchNexticket = async (
     }
   }
 
+  options.headers = {
+    ...options.headers,
+    'Content-Type': 'application/json',
+  };
   if (process.env.NODE_ENV === 'development') {
-    console.log(method, url, method === 'GET' ? '' : body, options);
+    console.log(
+      new Date(Date.now()).toLocaleTimeString(),
+      method,
+      url,
+      method === 'GET' ? '' : body,
+      options
+    );
   }
   const response = await fetch(`${process.env.NEXTICKET_API}${url}`, {
     method,
-    headers: {
-      'Content-Type': 'application/json',
-      ...options.headers,
-    },
+    headers: options.headers,
     body: JSON.stringify(body),
     ...options,
   });
@@ -49,6 +56,9 @@ const fetchNexticket = async (
   }
 
   const data = await response.json();
+  if (process.env.NODE_ENV === 'development') {
+    console.log(new Date(Date.now()).toLocaleTimeString(), method, url, data);
+  }
 
   return response.ok ? { ok: true, data } : { ok: false, data };
 };

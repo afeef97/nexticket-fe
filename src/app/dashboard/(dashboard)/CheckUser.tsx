@@ -1,29 +1,21 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { FetchReturn } from '@/lib/customFetch';
 import { Loader2 } from 'lucide-react';
 import { getUserAccount } from '../actions';
+import { useEffect } from 'react';
+import useQueryHandler from '@/lib/hooks/useQueryHandler';
 import { useRouter } from 'next/navigation';
 
-const CheckOrganization = ({ children }: { children: React.ReactNode }) => {
+const CheckUser = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
 
-  const [fetchUserDataState, setFetchUserDataState] = useState<string>('idle');
-  const [userData, setUserData] = useState<FetchReturn>();
-  const getUserAccountOnMount = async () => {
-    setFetchUserDataState('pending');
-    const response = await getUserAccount();
-    setUserData(response);
-  };
-  useEffect(() => {
-    getUserAccountOnMount();
-  }, []);
+  const { data: userData, state: fetchUserDataState } = useQueryHandler({
+    query: getUserAccount,
+  });
 
   useEffect(() => {
     if (!userData || !userData.ok) return;
     if (!userData.data.data.organization_id) {
-      setFetchUserDataState('resolved');
       router.replace('/dashboard/register-organization');
     }
   }, [router, userData]);
@@ -42,4 +34,4 @@ const CheckOrganization = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export default CheckOrganization;
+export default CheckUser;
