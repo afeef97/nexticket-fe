@@ -80,7 +80,6 @@ export const refreshToken = async (): Promise<FetchReturn> => {
 
   const response: FetchReturn = await fetchNexticket('/auth/refresh', {
     useToken: false,
-    method: 'POST',
     options: {
       headers: {
         Authorization: `Bearer ${cookieStore.get('refresh_token')?.value}`,
