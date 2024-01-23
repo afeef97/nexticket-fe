@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { AccessExpired } from '@/components/shared/AccessExpired';
 import { FetchReturn } from '../customFetch';
 import { IQueryState } from '../types';
@@ -14,6 +14,7 @@ const useQueryHandler = ({
   const accessExpiredCtx = useContext(AccessExpired);
   const [state, setState] = useState<IQueryState>('idle');
   const [data, setData] = useState<FetchReturn>({} as FetchReturn);
+  const mounted = useRef(false);
 
   const triggerQuery = useCallback(
     async (...args: any[]) => {
@@ -34,7 +35,11 @@ const useQueryHandler = ({
 
   useEffect(() => {
     if (!queryOnMount) return;
-    triggerQuery();
+
+    if (!mounted.current) {
+      mounted.current = true;
+      triggerQuery();
+    }
   }, [triggerQuery, queryOnMount]);
 
   return { data, state, triggerQuery };
