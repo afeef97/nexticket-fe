@@ -1,6 +1,9 @@
 import './globals.css';
 import { Inter } from 'next/font/google';
 import type { Metadata } from 'next';
+import ThemeButton from '@/components/shared/ThemeButton';
+import ThemeProviderClient from '@/components/shared/ThemeProviderClient';
+import { cn } from '@/lib/utils';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -15,8 +18,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang='en'>
-      <body className={inter.className}>{children}</body>
+    <html lang='en' suppressHydrationWarning>
+      <body className={cn('relative', inter.className)}>
+        <ThemeProviderClient>
+          <ThemeButton className='tw-absolute tw-top-4 tw-right-6 !tw-px-2' />
+          {children}
+        </ThemeProviderClient>
+      </body>
     </html>
   );
 }
