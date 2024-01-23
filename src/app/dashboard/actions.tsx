@@ -9,6 +9,7 @@ export const getUserAccount = async () => {
       credentials: 'include',
       next: {
         tags: ['user-account'],
+        revalidate: 900,
       },
     },
   });

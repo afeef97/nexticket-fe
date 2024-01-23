@@ -1,5 +1,5 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
-import { AccessContext } from '@/components/shared/AccessExpired';
+import { AccessExpired } from '@/components/shared/AccessExpired';
 import { FetchReturn } from '../customFetch';
 import { IQueryState } from '../types';
 
@@ -11,7 +11,7 @@ const useQueryHandler = ({
   query: (...args: any[]) => Promise<FetchReturn>;
   queryOnMount?: boolean;
 }) => {
-  const accessCtx = useContext(AccessContext);
+  const accessExpiredCtx = useContext(AccessExpired);
   const [state, setState] = useState<IQueryState>('idle');
   const [data, setData] = useState<FetchReturn>({} as FetchReturn);
 
@@ -20,7 +20,7 @@ const useQueryHandler = ({
       setState('pending');
       const response = await query(...args);
       if (!response.ok && response.data.statusCode === 401) {
-        accessCtx.setOpenAccessExpired(true);
+        accessExpiredCtx.setOpenAccessExpired(true);
       } else if (!response.ok) {
         setState('error');
       } else {
@@ -29,7 +29,7 @@ const useQueryHandler = ({
       setData(response);
       return response;
     },
-    [query, accessCtx]
+    [query, accessExpiredCtx]
   );
 
   useEffect(() => {

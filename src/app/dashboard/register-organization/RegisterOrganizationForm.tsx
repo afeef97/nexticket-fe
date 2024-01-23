@@ -1,8 +1,9 @@
 'use client';
 
 import { minLength, object, regex, string, Input as vInput } from 'valibot';
+import { useContext, useEffect } from 'react';
+import { AccessContext } from '@/components/shared/AccessContextProvider';
 import { Button } from '@/components/ui/button';
-import { FetchReturn } from '@/lib/customFetch';
 import { Form } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Loader2 } from 'lucide-react';
@@ -21,23 +22,24 @@ const registerOrganizationSchema = object({
   ]),
 });
 
-const RegisterOrganizationForm = ({
-  userAccountData,
-}: {
-  userAccountData: FetchReturn;
-}) => {
+const RegisterOrganizationForm = () => {
   const registerOrganizationForm = useForm<
     vInput<typeof registerOrganizationSchema>
   >({
     resolver: valibotResolver(registerOrganizationSchema),
     defaultValues: {
       name: '',
+      email_domain: '',
     },
   });
+
   const router = useRouter();
-  if (userAccountData.data.data.organization_id) {
-    router.push('/dashboard');
-  }
+  const { userData } = useContext(AccessContext);
+  useEffect(() => {
+    if (userData.ok && userData.data.data.organization_id) {
+      router.push('/dashboard');
+    }
+  }, [userData, router]);
 
   const {
     state: registerOrganizationState,
@@ -57,8 +59,6 @@ const RegisterOrganizationForm = ({
       });
       return;
     }
-
-    setTimeout(() => router.replace('/dashboard'), 2000);
   };
   return (
     <Form {...registerOrganizationForm}>
