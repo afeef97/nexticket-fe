@@ -1,9 +1,12 @@
+import { Suspense } from 'react';
 import VerifyForm from '@/app/(auth)/verify/VerifyForm';
 
 const Verify = () => {
   return (
     <div>
-      <VerifyForm />
+      <Suspense>
+        <VerifyForm />
+      </Suspense>
     </div>
   );
 };

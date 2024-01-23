@@ -1,11 +1,10 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { FetchReturn } from '@/lib/customFetch';
+import { AccessContext } from '@/components/shared/AccessContextProvider';
 import { ILink } from './Navigation';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
-import { getUserAccount } from '../actions';
+import { useContext } from 'react';
 import { usePathname } from 'next/navigation';
 
 const NavigationPanel = ({
@@ -17,14 +16,7 @@ const NavigationPanel = ({
 }) => {
   const pathname = usePathname();
 
-  const [userData, setUserData] = useState<FetchReturn>();
-  const getUserAccountOnMount = async () => {
-    const response = await getUserAccount();
-    setUserData(response);
-  };
-  useEffect(() => {
-    getUserAccountOnMount();
-  }, []);
+  const { userData } = useContext(AccessContext);
 
   return (
     <>

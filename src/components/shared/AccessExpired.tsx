@@ -7,31 +7,29 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { usePathname, useRouter } from 'next/navigation';
+import React, { createContext } from 'react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import React from 'react';
 import { refreshToken } from '@/app/(auth)/actions';
+import { usePathname } from 'next/navigation';
 
-export interface IAccessContext {
+export interface IAccessExpired {
   openAccessExpired: boolean;
-  // eslint-disable-next-line
-  setOpenAccessExpired: (value: React.SetStateAction<boolean>) => void;
+  setOpenAccessExpired: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const AccessContext = React.createContext({} as IAccessContext);
+export const AccessExpired = createContext<IAccessExpired>(
+  {} as IAccessExpired
+);
 
-const AccessExpired = ({
+const AccessExpiredProvider = ({
   open,
-  message = '',
   children,
 }: {
-  open: boolean;
-  message?: string;
+  open?: boolean | undefined;
   children: React.ReactNode;
 }) => {
   const pathname = usePathname();
-  const router = useRouter();
 
   const [openAccessExpired, setOpenAccessExpired] =
     React.useState<boolean>(false);
@@ -46,12 +44,9 @@ const AccessExpired = ({
 
   // Dialog can only appear after the component is mounted to prevent hydration error.
   React.useEffect(() => {
-    if (/not verified/g.test(message)) {
-      router.replace('/verify?email=' + message.split(' ')[0]);
-      return;
-    }
+    if (open === undefined) return;
     setOpenAccessExpired(open);
-  }, [router, message, open]);
+  }, [open]);
 
   return (
     <Dialog open={openAccessExpired}>
@@ -84,13 +79,13 @@ const AccessExpired = ({
         )}
       </DialogContent>
 
-      <AccessContext.Provider
+      <AccessExpired.Provider
         value={{ openAccessExpired, setOpenAccessExpired }}
       >
         {children}
-      </AccessContext.Provider>
+      </AccessExpired.Provider>
     </Dialog>
   );
 };
 
-export default AccessExpired;
+export default AccessExpiredProvider;

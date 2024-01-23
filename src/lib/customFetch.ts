@@ -1,4 +1,3 @@
-import { IAccessContext } from '@/components/shared/AccessExpired';
 import { handleResponseCookies } from '@/app/(auth)/actions';
 import { tokenHandler } from './utils';
 
@@ -19,11 +18,10 @@ const fetchNexticket = async (
     method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
     body?: unknown;
     options?: RequestInit;
-  },
-  context?: IAccessContext
+  }
 ): Promise<FetchReturn> => {
   if (useToken) {
-    const tokenState: FetchReturn | undefined = tokenHandler(context, options);
+    const tokenState: FetchReturn | undefined = tokenHandler(options);
 
     if (tokenState && !tokenState.ok) {
       return tokenState;
