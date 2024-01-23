@@ -4,6 +4,7 @@ import { Home, Ticket, User } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import MobileHeader from './MobileHeader';
 import NavigationPanel from './NavigationPanel';
+import useWindowInnerWidth from '@/lib/hooks/useWindowInnerWidth';
 
 export interface ILink {
   label: string;
@@ -31,21 +32,15 @@ const links: ILink[] = [
 
 const Navigation = () => {
   const [showPanel, setShowPanel] = useState<boolean>(false);
+  const innerWidth = useWindowInnerWidth();
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      if (window.innerWidth > 768) {
-        setShowPanel(true);
-      }
+    if (innerWidth > 768) {
+      setShowPanel(true);
+    } else {
+      setShowPanel(false);
     }
-    window.addEventListener('resize', () => {
-      if (window.innerWidth > 768) {
-        setShowPanel(true);
-      } else {
-        setShowPanel(false);
-      }
-    });
-  }, []);
+  }, [innerWidth]);
 
   return (
     <>
