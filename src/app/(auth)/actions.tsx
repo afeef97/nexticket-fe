@@ -1,6 +1,7 @@
 'use server';
 
 import fetchNexticket, { FetchReturn } from '@/lib/customFetch';
+import { revalidateTag } from 'next/cache';
 
 export const handleResponseCookies = (setCookie: string[]): void => {
   if (setCookie.length > 0) {
@@ -95,6 +96,7 @@ export const refreshToken = async (): Promise<FetchReturn> => {
       data: { message: 'Unauthorized, please login again', statusCode: 401 },
     };
   }
+  revalidateTag('user-account');
   return response;
 };
 

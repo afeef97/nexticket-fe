@@ -1,16 +1,12 @@
 import { type ClassValue, clsx } from 'clsx';
 import { FetchReturn } from './customFetch';
-import { IAccessContext } from '@/components/shared/AccessExpired';
 import { twMerge } from 'tailwind-merge';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function tokenHandler(
-  context: IAccessContext | undefined,
-  options: RequestInit
-): FetchReturn | undefined {
+export function tokenHandler(options: RequestInit): FetchReturn | undefined {
   const { cookies } = require('next/headers');
   const cookieStore = cookies();
 
@@ -19,9 +15,6 @@ export function tokenHandler(
     accessExpires &&
     new Date(Date.now()).valueOf() > new Date(accessExpires).valueOf()
   ) {
-    if (context && typeof window !== 'undefined') {
-      context.setOpenAccessExpired(true);
-    }
     return {
       ok: false,
       data: {
