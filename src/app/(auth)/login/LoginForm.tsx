@@ -1,27 +1,24 @@
 'use client';
 
-import { email, minLength, object, string, Input as vInput } from 'valibot';
 import { useEffect, useState, useTransition } from 'react';
 import AccessExpired from '@/components/shared/AccessExpired';
 import { Button } from '@/components/ui/button';
 import { FetchReturn } from '@/lib/customFetch';
 import { Form } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import Link from 'next/link';
+import { LoginFormSchema } from '@/lib/schemas/loginForm';
 import TextInputField from '@/components/shared/TextInputField';
 import { getToken } from '@/app/(auth)/actions';
 import { loginUser } from '@/app/(auth)/login/actions';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
+import { Input as vInput } from 'valibot';
 import { valibotResolver } from '@hookform/resolvers/valibot';
 
-const loginFormSchema = object({
-  email: string([email()]),
-  password: string([minLength(8, 'Password must be at least 8 characters')]),
-});
-
 const LoginForm = () => {
-  const loginForm = useForm<vInput<typeof loginFormSchema>>({
-    resolver: valibotResolver(loginFormSchema),
+  const loginForm = useForm<vInput<typeof LoginFormSchema>>({
+    resolver: valibotResolver(LoginFormSchema),
     defaultValues: {
       email: '',
       password: '',
@@ -43,7 +40,7 @@ const LoginForm = () => {
     getTokenOnLoad();
   });
 
-  const onSubmit = (data: vInput<typeof loginFormSchema>) => {
+  const onSubmit = (data: vInput<typeof LoginFormSchema>) => {
     startTransitionLogin(async () => {
       const response = await loginUser(data.email, data.password);
 
@@ -77,9 +74,23 @@ const LoginForm = () => {
             <Input type='password' placeholder='Enter your password' />
           </TextInputField>
 
-          <Button type='submit' disabled={isPendingLogin}>
+          <Button
+            type='submit'
+            disabled={isPendingLogin}
+            className='tw-w-full tw-mb-2'
+          >
             Login
           </Button>
+
+          <p className='tw-text-center'>
+            Don&apos;t have an account?{' '}
+            <Link
+              href='/register'
+              className='tw-text-link hover:tw-text-link/90 tw-transition-colors'
+            >
+              Register
+            </Link>
+          </p>
         </form>
       </Form>
     </AccessExpired>
