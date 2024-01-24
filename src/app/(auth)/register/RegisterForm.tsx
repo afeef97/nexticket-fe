@@ -1,49 +1,17 @@
 'use client';
 
-import {
-  custom,
-  email,
-  forward,
-  maxLength,
-  minLength,
-  object,
-  regex,
-  string,
-  Input as vInput,
-} from 'valibot';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import Link from 'next/link';
+import { RegisterFormSchema } from '@/lib/schemas/formSchemas';
 import TextInputField from '@/components/shared/TextInputField';
 import { registerUser } from '@/app/(auth)/register/actions';
 import { useForm } from 'react-hook-form';
 import useQueryHandler from '@/lib/hooks/useQueryHandler';
 import { useRouter } from 'next/navigation';
+import { Input as vInput } from 'valibot';
 import { valibotResolver } from '@hookform/resolvers/valibot';
-
-export const RegisterFormSchema = object(
-  {
-    username: string([minLength(3, 'Username must be at least 3 characters')]),
-    email: string([email()]),
-    password: string([
-      minLength(8, 'Password must be at least 8 characters'),
-      maxLength(30, 'Your password is too long.'),
-      regex(/[a-z]/, 'Your password must contain a lowercase letter.'),
-      regex(/[A-Z]/, 'Your password must contain an uppercase letter.'),
-      regex(/[0-9]/, 'Your password must contain a number.'),
-    ]),
-    confirmPassword: string([minLength(1, 'Please confirm your password')]),
-  },
-  [
-    forward(
-      custom(
-        (input) => input.password === input.confirmPassword,
-        'The passwords do not match'
-      ),
-      ['confirmPassword']
-    ),
-  ]
-);
 
 const RegisterForm = () => {
   const registerForm = useForm<vInput<typeof RegisterFormSchema>>({
@@ -115,9 +83,23 @@ const RegisterForm = () => {
           <Input type='password' placeholder='Enter your password again' />
         </TextInputField>
 
-        <Button disabled={registerUserState === 'pending'} type='submit'>
+        <Button
+          disabled={registerUserState === 'pending'}
+          type='submit'
+          className='tw-w-full tw-mb-2'
+        >
           Register
         </Button>
+
+        <p className='tw-text-center'>
+          Already have an account?{' '}
+          <Link
+            href='/login'
+            className='tw-text-link hover:tw-text-link/90 tw-transition-colors'
+          >
+            Log in
+          </Link>
+        </p>
       </form>
     </Form>
   );
