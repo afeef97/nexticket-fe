@@ -1,13 +1,14 @@
 import { render, screen } from '@testing-library/react';
+import AccessContextProvider from '@/components/shared/AccessContextProvider';
 import { AppRouterContextProviderMock } from '@/components/test/RouterContextProviderMock';
-import { FetchReturn } from '@/lib/customFetch';
 import RegisterOrganizationForm from './RegisterOrganizationForm';
 
 describe('RegisterOrganizationForm component', () => {
-  const userAccountData = {
+  const userAccountResponse = {
+    ok: true,
     data: {
       data: {
-        organization_id: 'test',
+        organization_id: null,
       },
     },
   };
@@ -16,9 +17,9 @@ describe('RegisterOrganizationForm component', () => {
     const push = jest.fn();
     render(
       <AppRouterContextProviderMock router={{ push }}>
-        <RegisterOrganizationForm
-          userAccountData={userAccountData as FetchReturn}
-        />
+        <AccessContextProvider userAccountRes={userAccountResponse}>
+          <RegisterOrganizationForm />
+        </AccessContextProvider>
       </AppRouterContextProviderMock>
     );
 
@@ -37,9 +38,9 @@ describe('RegisterOrganizationForm component', () => {
     const push = jest.fn();
     render(
       <AppRouterContextProviderMock router={{ push }}>
-        <RegisterOrganizationForm
-          userAccountData={userAccountData as FetchReturn}
-        />
+        <AccessContextProvider userAccountRes={userAccountResponse}>
+          <RegisterOrganizationForm />
+        </AccessContextProvider>
       </AppRouterContextProviderMock>
     );
 
@@ -54,9 +55,9 @@ describe('RegisterOrganizationForm component', () => {
     const push = jest.fn();
     render(
       <AppRouterContextProviderMock router={{ push }}>
-        <RegisterOrganizationForm
-          userAccountData={userAccountData as FetchReturn}
-        />
+        <AccessContextProvider userAccountRes={userAccountResponse}>
+          <RegisterOrganizationForm />
+        </AccessContextProvider>
       </AppRouterContextProviderMock>
     );
 
