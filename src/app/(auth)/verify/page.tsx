@@ -3,7 +3,7 @@ import VerifyForm from '@/app/(auth)/verify/VerifyForm';
 
 const Verify = () => {
   return (
-    <div>
+    <>
       <h3 className='tw-mb-2'>Verify your account</h3>
       <p className='tw-mb-4 tw-text-justify md:tw-text-left'>
         A token has been sent to your email. Please enter the token below to
@@ -12,7 +12,7 @@ const Verify = () => {
       <Suspense>
         <VerifyForm />
       </Suspense>
-    </div>
+    </>
   );
 };
 

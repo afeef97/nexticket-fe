@@ -1,6 +1,15 @@
 import { render, screen } from '@testing-library/react';
 import { AppRouterContextProviderMock } from '@/components/test/RouterContextProviderMock';
 import VerifyForm from './VerifyForm';
+import { useSearchParams } from 'next/navigation';
+
+jest.mock('next/navigation', () => {
+  return {
+    ...jest.requireActual('next/navigation'),
+    useSearchParams: jest.fn(),
+  };
+});
+(useSearchParams as jest.Mock).mockReturnValue({ has: jest.fn() });
 
 describe('VerifyForm', () => {
   it('should render with correct fields', () => {
