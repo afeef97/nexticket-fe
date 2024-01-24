@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import Link from 'next/link';
-import { RegisterFormSchema } from '@/lib/schemas/formSchemas';
+import { RegisterFormSchema } from '@/lib/schemas/registerForm';
 import TextInputField from '@/components/shared/TextInputField';
 import { registerUser } from '@/app/(auth)/register/actions';
 import { useForm } from 'react-hook-form';
