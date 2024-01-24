@@ -8,7 +8,7 @@ const Hero = () => {
   const router = useRouter();
 
   return (
-    <section>
+    <section className='tw-min-h-screen'>
       <HeroTitle
         title='nexticket'
         subtitle='A simple help desk ticketing system'

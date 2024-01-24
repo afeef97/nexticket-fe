@@ -23,7 +23,7 @@ export default function RootLayout({
         <ThemeProviderClient>
           <ThemeButton
             variant='outline'
-            className='tw-absolute tw-top-4 tw-right-6 !tw-px-2'
+            className='tw-absolute tw-top-4 tw-right-6 !tw-px-2 tw-hidden md:tw-block'
           />
           {children}
         </ThemeProviderClient>
