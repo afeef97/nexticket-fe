@@ -11,12 +11,14 @@ export const metadata: Metadata = {
 const AppLayout = async ({ children }: { children: React.ReactElement }) => {
   return (
     <Providers>
-      <main className='md:tw-grid tw-grid-cols-[auto_1fr]'>
+      <div className='md:tw-grid tw-grid-cols-[auto_1fr]'>
         <Navigation />
-        <div className='tw-min-h-[calc(100vh-4rem)] tw-py-2 md:tw-py-4 tw-px-3 md:tw-px-6'>
-          <CheckUser>{children}</CheckUser>
-        </div>
-      </main>
+        <main>
+          <div className='tw-min-h-[calc(100vh-4rem)] tw-py-2 md:tw-py-4 tw-px-3 md:tw-px-6'>
+            <CheckUser>{children}</CheckUser>
+          </div>
+        </main>
+      </div>
     </Providers>
   );
 };

@@ -17,7 +17,7 @@ const MobileHeader = ({
     <div
       data-testid='mobile-header'
       className={cn(
-        'tw-sticky tw-top-0 tw-w-full tw-h-16 tw-py-2 tw-px-3 tw-flex tw-justify-between tw-items-center tw-bg-background tw-border-b tw-border-border md:tw-hidden'
+        'tw-sticky tw-top-0 tw-w-full tw-h-16 tw-py-2 tw-px-3 tw-flex tw-justify-between tw-items-center tw-bg-secondary/5 tw-border-b tw-border-border md:tw-hidden'
       )}
     >
       <h3>nexticket</h3>
