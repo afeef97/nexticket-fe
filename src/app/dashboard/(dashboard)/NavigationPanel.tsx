@@ -16,7 +16,7 @@ const NavigationPanel = ({
 }) => {
   const pathname = usePathname();
 
-  const { userData } = useContext(AccessContext);
+  const { userData, accessOk } = useContext(AccessContext);
 
   return (
     <aside
@@ -32,7 +32,7 @@ const NavigationPanel = ({
         </h3>
         <div className='tw-bg-muted tw-h-1 tw-w-32 tw-mb-1 tw-rounded-xl md:tw-hidden' />
         <p className='tw-text-center'>
-          {userData.ok && userData.data.data.organization.name}
+          {accessOk && userData.organization.name}
         </p>
       </div>
       <nav className='tw-w-full md:tw-mt-4'>
@@ -42,7 +42,8 @@ const NavigationPanel = ({
             href={link.href}
             className={cn(
               'tw-py-2 md:tw-py-3 tw-w-full tw-flex tw-flex-row-reverse md:tw-flex-row tw-items-center tw-justify-start tw-gap-3 hover:tw-text-link tw-transition-colors',
-              !userData?.data?.data?.organization_id &&
+              accessOk &&
+                !userData.organization_id &&
                 'tw-text-gray-500 tw-pointer-events-none',
               pathname === link.href &&
                 'tw-font-bold tw-text-link tw-pointer-events-none'

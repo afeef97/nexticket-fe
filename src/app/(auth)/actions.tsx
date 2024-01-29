@@ -107,6 +107,7 @@ export const logoutUser = async (): Promise<FetchReturn> => {
   const response = await fetchNexticket('/auth/logout', {
     options: { cache: 'no-store' },
   });
+  revalidateTag('user-account');
 
   if (!response.ok) {
     return response;

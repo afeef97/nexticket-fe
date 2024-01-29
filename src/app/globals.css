@@ -19,7 +19,7 @@
     --accent: 163 85% 43%;
     --accent-foreground: 167 29% 6%;
     --destructive: 0 85% 39%;
-    --destructive-foreground: 167 29% 6%;
+    --destructive-foreground: 167 29% 94%;
     --link: 163 92% 21%;
     --border: 240 8% 20%;
     --input: 240 8% 20%;
@@ -42,7 +42,7 @@
     --muted-foreground: 167 29% 94%;
     --accent: 163 85% 57%;
     --accent-foreground: 240 7% 14%;
-    --destructive: 0 62% 60%;
+    --destructive: 0 62% 62%;
     --destructive-foreground: 168 29% 10%;
     --link: 163 85% 57%;
     --border: 240 7% 30%;

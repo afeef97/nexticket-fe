@@ -1,7 +1,7 @@
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { AccessExpired } from '@/components/shared/AccessExpired';
 import { FetchReturn } from '../customFetch';
-import { IQueryState } from '../types';
+import { QueryState } from '../types';
 
 const useQueryHandler = ({
   query,
@@ -12,7 +12,7 @@ const useQueryHandler = ({
   queryOnMount?: boolean;
 }) => {
   const accessExpiredCtx = useContext(AccessExpired);
-  const [state, setState] = useState<IQueryState>('idle');
+  const [state, setState] = useState<QueryState>('idle');
   const [data, setData] = useState<FetchReturn>({} as FetchReturn);
   const mounted = useRef(false);
 

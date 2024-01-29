@@ -2,10 +2,13 @@
 
 import React, { createContext, useEffect, useMemo } from 'react';
 import { FetchReturn } from '@/lib/customFetch';
+import { UserData } from '@/lib/types';
 import { useRouter } from 'next/navigation';
 
 export interface IAccessContext {
-  userData: FetchReturn;
+  userData: UserData;
+  accessOk: boolean;
+  accessMessage: string;
 }
 
 export const AccessContext = createContext({} as IAccessContext);
@@ -19,19 +22,28 @@ const AccessContextProvider = ({
 }) => {
   const router = useRouter();
 
-  const userData = useMemo(() => userAccountRes, [userAccountRes]);
+  const accessMessage: string = useMemo(
+    () => userAccountRes.data?.message,
+    [userAccountRes]
+  );
+  const userData: UserData = useMemo(
+    () => userAccountRes.data.data,
+    [userAccountRes]
+  );
+  const accessOk: boolean = useMemo(() => userAccountRes.ok, [userAccountRes]);
 
   useEffect(() => {
     if (
+      userData &&
       Object.keys(userData).length > 0 &&
-      /not verified/g.test(userData.data.message)
+      /not verified/g.test(accessMessage)
     ) {
-      router.replace('/verify?email=' + userData.data.message.split(' ')[0]);
+      router.replace('/verify?email=' + accessMessage.split(' ')[0]);
       return;
     }
-  }, [router, userData]);
+  }, [router, userData, accessMessage]);
   return (
-    <AccessContext.Provider value={{ userData }}>
+    <AccessContext.Provider value={{ userData, accessOk, accessMessage }}>
       {children}
     </AccessContext.Provider>
   );
