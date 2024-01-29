@@ -1,7 +1,8 @@
 import { render, screen } from '@testing-library/react';
+import AccessContextProvider from '@/components/shared/AccessContextProvider';
+import { AppRouterContextProviderMock } from '@/components/test/RouterContextProviderMock';
 import { ILink } from './Navigation';
 import NavigationPanel from './NavigationPanel';
-import { getUserAccount as getUserAccountMock } from '../actions';
 import { useState as useStateMock } from 'react';
 
 jest.mock('../actions', () => ({
@@ -14,9 +15,28 @@ jest.mock('react', () => ({
 (useStateMock as jest.Mock).mockImplementation((init) => [init, jest.fn()]);
 
 describe('NavigationPanel component', () => {
+  const userAccountResponse = {
+    ok: true,
+    data: {
+      data: {
+        organization: {
+          id: 1,
+          name: 'Test Organization',
+        },
+      },
+    },
+  };
+
   it('renders', () => {
-    const [showPanel] = useStateMock(true);
-    render(<NavigationPanel showPanel={showPanel} links={[]} />);
+    const [showPanel] = useStateMock(false);
+    const push = jest.fn();
+    render(
+      <AppRouterContextProviderMock router={{ push }}>
+        <AccessContextProvider userAccountRes={userAccountResponse}>
+          <NavigationPanel showPanel={showPanel} links={[]} />
+        </AccessContextProvider>
+      </AppRouterContextProviderMock>
+    );
 
     const navigationPanel = screen.getByTestId('navigation-panel');
 
@@ -25,8 +45,21 @@ describe('NavigationPanel component', () => {
 });
 
 describe('NavigationPanel navigation links', () => {
+  const userAccountResponse = {
+    ok: true,
+    data: {
+      data: {
+        organization: {
+          id: 1,
+          name: 'Test Organization',
+        },
+      },
+    },
+  };
+
   it('renders navigation links when links prop is provided', () => {
     const [showPanel] = useStateMock(true);
+    const push = jest.fn();
     const links: ILink[] = [
       {
         label: 'Test link 1',
@@ -37,7 +70,13 @@ describe('NavigationPanel navigation links', () => {
         href: '/dashboard',
       },
     ];
-    render(<NavigationPanel showPanel={showPanel} links={links} />);
+    render(
+      <AppRouterContextProviderMock router={{ push }}>
+        <AccessContextProvider userAccountRes={userAccountResponse}>
+          <NavigationPanel showPanel={showPanel} links={links} />
+        </AccessContextProvider>
+      </AppRouterContextProviderMock>
+    );
 
     const navigationLinks = screen.getAllByRole('link');
 
@@ -56,7 +95,14 @@ describe('NavigationPanel navigation links', () => {
         href: '/test',
       },
     ];
-    render(<NavigationPanel showPanel={showPanel} links={links} />);
+    const push = jest.fn();
+    render(
+      <AppRouterContextProviderMock router={{ push }}>
+        <AccessContextProvider userAccountRes={userAccountResponse}>
+          <NavigationPanel showPanel={showPanel} links={links} />
+        </AccessContextProvider>
+      </AppRouterContextProviderMock>
+    );
 
     const navigationLinks = screen.getAllByRole('link');
 
@@ -66,7 +112,14 @@ describe('NavigationPanel navigation links', () => {
 
   it('does not render navigation links when links prop is not provided', () => {
     const [showPanel] = useStateMock(true);
-    render(<NavigationPanel showPanel={showPanel} links={[]} />);
+    const push = jest.fn();
+    render(
+      <AppRouterContextProviderMock router={{ push }}>
+        <AccessContextProvider userAccountRes={userAccountResponse}>
+          <NavigationPanel showPanel={showPanel} links={[]} />
+        </AccessContextProvider>
+      </AppRouterContextProviderMock>
+    );
 
     const navigationLinks = screen.queryAllByRole('link');
 
@@ -75,6 +128,17 @@ describe('NavigationPanel navigation links', () => {
 
   it('should disable links when user has no organization', () => {
     const [showPanel] = useStateMock(true);
+    const userAccountResponse = {
+      ok: true,
+      data: {
+        data: {
+          organization: {
+            id: null,
+          },
+        },
+      },
+    };
+
     const links: ILink[] = [
       {
         label: 'Test link 1',
@@ -85,14 +149,14 @@ describe('NavigationPanel navigation links', () => {
         href: '/dashboard',
       },
     ];
-    (getUserAccountMock as jest.Mock).mockReturnValue({
-      data: {
-        data: {
-          organization_id: null,
-        },
-      },
-    });
-    render(<NavigationPanel showPanel={showPanel} links={links} />);
+    const push = jest.fn();
+    render(
+      <AppRouterContextProviderMock router={{ push }}>
+        <AccessContextProvider userAccountRes={userAccountResponse}>
+          <NavigationPanel showPanel={showPanel} links={links} />
+        </AccessContextProvider>
+      </AppRouterContextProviderMock>
+    );
 
     const navigationLinks = screen.getAllByRole('link');
 
