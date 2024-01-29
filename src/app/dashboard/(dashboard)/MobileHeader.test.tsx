@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import { AppRouterContextProviderMock } from '@/components/test/RouterContextProviderMock';
 import MobileHeader from './MobileHeader';
 import { useState as useStateMock } from 'react';
 import userEvent from '@testing-library/user-event';
@@ -11,8 +12,13 @@ jest.mock('react', () => ({
 
 describe('MobileHeader component', () => {
   const [showPanel, setShowPanel] = useStateMock(false);
+  const push = jest.fn();
   it('should render', () => {
-    render(<MobileHeader showPanel={showPanel} setShowPanel={setShowPanel} />);
+    render(
+      <AppRouterContextProviderMock router={{ push }}>
+        <MobileHeader showPanel={showPanel} setShowPanel={setShowPanel} />
+      </AppRouterContextProviderMock>
+    );
 
     const header = screen.getByTestId('mobile-header');
 
@@ -22,9 +28,14 @@ describe('MobileHeader component', () => {
 
 describe('MobileHeader show panel button', () => {
   const [showPanel, setShowPanel] = useStateMock(false);
+  const push = jest.fn();
   it('should render', async () => {
     const user = userEvent.setup();
-    render(<MobileHeader showPanel={showPanel} setShowPanel={setShowPanel} />);
+    render(
+      <AppRouterContextProviderMock router={{ push }}>
+        <MobileHeader showPanel={showPanel} setShowPanel={setShowPanel} />
+      </AppRouterContextProviderMock>
+    );
 
     const button = screen.getByRole('button');
     await user.click(button);

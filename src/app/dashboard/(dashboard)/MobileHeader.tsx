@@ -1,9 +1,9 @@
 'use client';
 
 import { Menu, X } from 'lucide-react';
+import AvatarMenu from '@/components/shared/AvatarMenu';
 import { Button } from '@/components/ui/button';
 import React from 'react';
-import ThemeButton from '@/components/shared/ThemeButton';
 import { cn } from '@/lib/utils';
 
 const MobileHeader = ({
@@ -21,11 +21,8 @@ const MobileHeader = ({
       )}
     >
       <h3>nexticket</h3>
-      <div>
-        <ThemeButton
-          variant='ghost'
-          className='!tw-px-2 hover:tw-bg-background md:hover:tw-bg-primary hover:tw-text-foreground md:hover:tw-text-primary-foreground'
-        />
+      <div className='tw-flex tw-gap-1'>
+        <AvatarMenu />
         <Button
           variant='ghost'
           onClick={() => setShowPanel(!showPanel)}
