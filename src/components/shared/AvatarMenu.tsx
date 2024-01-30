@@ -1,6 +1,9 @@
 'use client';
 
-import { AccessContext, IAccessContext } from './AccessContextProvider';
+import {
+  AccessContext,
+  IAccessContext,
+} from '../providers/AccessContextProvider';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import { useContext, useState } from 'react';

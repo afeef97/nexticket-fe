@@ -14,3 +14,15 @@ export const getUserAccount = async () => {
     },
   });
 };
+
+export const getOrganization = async () => {
+  return await fetchNexticket('/organization', {
+    options: {
+      credentials: 'include',
+      next: {
+        tags: ['organization'],
+        revalidate: 300,
+      },
+    },
+  });
+};

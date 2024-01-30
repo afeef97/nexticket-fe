@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import AccessContextProvider from '@/components/shared/AccessContextProvider';
+import AccessContextProvider from '@/components/providers/AccessContextProvider';
 import { AppRouterContextProviderMock } from '@/components/test/RouterContextProviderMock';
 import { ILink } from './Navigation';
 import NavigationPanel from './NavigationPanel';
