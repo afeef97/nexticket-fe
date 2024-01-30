@@ -1,6 +1,6 @@
 'use client';
 
-import { AccessContext } from '@/components/shared/AccessContextProvider';
+import { AccessContext } from '@/components/providers/AccessContextProvider';
 import { ILink } from './Navigation';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';

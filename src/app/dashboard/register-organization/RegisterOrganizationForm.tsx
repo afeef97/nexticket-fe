@@ -2,7 +2,7 @@
 
 import { minLength, object, regex, string, Input as vInput } from 'valibot';
 import { useContext, useEffect } from 'react';
-import { AccessContext } from '@/components/shared/AccessContextProvider';
+import { AccessContext } from '@/components/providers/AccessContextProvider';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
