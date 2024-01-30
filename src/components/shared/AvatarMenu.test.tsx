@@ -1,5 +1,5 @@
 import { act, render, screen } from '@testing-library/react';
-import AccessContextProvider from './AccessContextProvider';
+import AccessContextProvider from '../providers/AccessContextProvider';
 import { AppRouterContextProviderMock } from '../test/RouterContextProviderMock';
 import AvatarMenu from './AvatarMenu';
 import userEvent from '@testing-library/user-event';

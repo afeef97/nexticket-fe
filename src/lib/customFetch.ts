@@ -33,7 +33,8 @@ const fetchNexticket = async (
     'Content-Type': 'application/json',
   };
   if (process.env.NODE_ENV === 'development') {
-    console.log(
+    console.trace(
+      '\n********************************** START\n',
       new Date(Date.now()).toLocaleTimeString(),
       method,
       url,
@@ -55,7 +56,13 @@ const fetchNexticket = async (
 
   const data = await response.json();
   if (process.env.NODE_ENV === 'development') {
-    console.log(new Date(Date.now()).toLocaleTimeString(), method, url, data);
+    console.log(
+      new Date(Date.now()).toLocaleTimeString(),
+      method,
+      url,
+      data,
+      '\n********************************** END\n'
+    );
   }
 
   return response.ok ? { ok: true, data } : { ok: false, data };
