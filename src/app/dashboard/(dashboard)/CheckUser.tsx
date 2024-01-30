@@ -19,7 +19,7 @@ const CheckUser = ({ children }: { children: React.ReactNode }) => {
     }
   }, [router, userData]);
 
-  return <div>{children}</div>;
+  return <>{children}</>;
 };
 
 export default CheckUser;
