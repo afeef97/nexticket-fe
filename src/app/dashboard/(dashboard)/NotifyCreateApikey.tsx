@@ -20,7 +20,7 @@ const NotifyCreateApikey = () => {
 
   return (
     showNotify && (
-      <section className='tw-max-w-3xl tw-relative tw-flex tw-flex-col tw-gap-2 tw-rounded-2xl tw-border tw-border-border tw-p-4 tw-bg-secondary/15 '>
+      <section className='tw-max-w-3xl tw-mb-8 tw-mx-auto tw-relative tw-flex tw-flex-col tw-gap-2 tw-rounded-2xl tw-border tw-border-border tw-p-4 tw-bg-secondary/15'>
         <Button
           variant={'ghost'}
           onClick={() => setShowNotify(false)}
