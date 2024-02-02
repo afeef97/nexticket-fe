@@ -33,14 +33,24 @@ const fetchNexticket = async (
     'Content-Type': 'application/json',
   };
   if (process.env.NODE_ENV === 'development') {
-    console.trace(
-      '\n********************************** START\n',
-      new Date(Date.now()).toLocaleTimeString(),
-      method,
-      url,
-      method === 'GET' ? '' : body,
-      options
-    );
+    process.env.DEBUG === 'verbose'
+      ? console.trace(
+          '\n********************************** START\n',
+          new Date(Date.now()).toLocaleTimeString(),
+          method,
+          url,
+          method === 'GET' ? '' : body,
+          options
+        )
+      : process.env.DEBUG === 'log'
+      ? console.log(
+          '\n********************************** START\n',
+          new Date(Date.now()).toLocaleTimeString(),
+          method,
+          url,
+          method === 'GET' ? '' : body
+        )
+      : null;
   }
   const response = await fetch(`${process.env.NEXTICKET_API}${url}`, {
     method,

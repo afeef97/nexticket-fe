@@ -22,7 +22,7 @@ const NavigationPanel = ({
     <aside
       data-testid='navigation-panel'
       className={cn(
-        'tw-flex tw-flex-col tw-items-center tw-fixed md:tw-static tw-bottom-0 tw-z-50 tw-rounded-[0.75rem_0.75rem_0_0] md:tw-rounded-none tw-py-4 tw-px-6 tw-w-full md:tw-w-52 tw-min-h-40 md:tw-min-h-screen tw-transition-transform md:tw-transition-none tw-duration-300 tw-shadow-lg tw-shadow-foreground md:tw-shadow-none md:tw-border-r md:tw-border-border tw-bg-secondary/5',
+        'tw-flex tw-flex-col tw-items-center tw-fixed md:tw-static tw-bottom-0 tw-z-50 tw-rounded-[0.75rem_0.75rem_0_0] md:tw-rounded-none tw-py-4 tw-px-6 tw-w-full md:tw-w-52 tw-min-h-40 md:tw-min-h-screen tw-transition-transform md:tw-transition-none tw-duration-300 tw-shadow-lg tw-shadow-foreground md:tw-shadow-none md:tw-border-r md:tw-border-border tw-bg-card',
         showPanel ? 'max-md:tw-translate-y-0' : 'max-md:tw-translate-y-full'
       )}
     >
