@@ -14,10 +14,10 @@ const MobileHeader = ({
   setShowPanel: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   return (
-    <div
+    <header
       data-testid='mobile-header'
       className={cn(
-        'tw-sticky tw-top-0 tw-w-full tw-h-16 tw-py-2 tw-px-3 tw-flex tw-justify-between tw-items-center tw-bg-secondary/5 tw-border-b tw-border-border md:tw-hidden'
+        'tw-sticky tw-top-0 tw-w-full tw-h-16 tw-py-2 tw-px-3 tw-flex tw-justify-between tw-items-center tw-bg-card tw-border-b tw-border-border md:tw-hidden'
       )}
     >
       <h3>nexticket</h3>
@@ -35,7 +35,7 @@ const MobileHeader = ({
           )}
         </Button>
       </div>
-    </div>
+    </header>
   );
 };
 
