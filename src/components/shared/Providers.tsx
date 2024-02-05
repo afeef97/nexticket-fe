@@ -10,7 +10,12 @@ const Providers = async ({ children }: { children: React.ReactNode }) => {
 
   return (
     <AccessContextProvider userAccountRes={getUserAccountResponse}>
-      <AccessExpiredProvider>
+      <AccessExpiredProvider
+        open={
+          !getUserAccountResponse.ok &&
+          getUserAccountResponse.data.statusCode === 401
+        }
+      >
         <OrganizationProvider organizationRes={getOrganizationResponse}>
           {children}
         </OrganizationProvider>
