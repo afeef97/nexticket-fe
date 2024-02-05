@@ -1,7 +1,11 @@
+import InviteMembers from './InviteMembers';
+
 const Users = () => {
   return (
     <>
-      <p>Users</p>
+      <h1 className='tw-mb-8'>Users</h1>
+
+      <InviteMembers />
     </>
   );
 };
