@@ -10,7 +10,7 @@ const TicketPriority = ({
   const priorities: Map<string, number> = getTicketsResponse.data.priorities;
 
   return (
-    <Card className='tw-grow'>
+    <Card className='tw-grow md:tw-max-w-64'>
       <CardHeader>
         <CardTitle typeof='h5'>Ticket priority</CardTitle>
       </CardHeader>
@@ -18,15 +18,15 @@ const TicketPriority = ({
       <CardContent className='tw-max-h-36 tw-overflow-scroll'>
         {getTicketsResponse.ok && priorities.size > 0 ? (
           <ul className='tw-space-y-1'>
-            {Array.from(priorities.entries()).map(([key, value]) => (
-              <li
-                key={key}
-                className='tw-pt-1 tw-text-2xl tw-flex tw-justify-between tw-border-t tw-border-t-border'
-              >
-                {key[0].toUpperCase() + key.toLowerCase().slice(1)}{' '}
-                <span>{value}</span>
-              </li>
-            ))}
+            <li className='tw-pt-1 tw-flex tw-justify-between'>
+              Important <span>{priorities.get('IMPORTANT')}</span>
+            </li>
+            <li className='tw-pt-1 tw-flex tw-justify-between'>
+              Medium <span>{priorities.get('MEDIUM')}</span>
+            </li>
+            <li className='tw-pt-1 tw-flex tw-justify-between'>
+              Low <span>{priorities.get('LOW')}</span>
+            </li>
           </ul>
         ) : (
           'No tickets assigned'

@@ -1,3 +1,5 @@
+import { ColumnDef } from '@tanstack/react-table';
+
 export type QueryState = 'idle' | 'pending' | 'resolved' | 'error';
 
 export type UserData = {
@@ -22,3 +24,14 @@ export type OrganizationData = {
   created_at: string;
   updated_at: string;
 };
+
+export type OrganizationMember = {
+  email: string;
+  username: string;
+};
+
+export interface DataTableProps<TData, TValue> {
+  columns: ColumnDef<TData, TValue>[];
+  data: TData[];
+  paginated?: boolean;
+}

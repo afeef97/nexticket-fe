@@ -10,7 +10,7 @@ const TicketTypes = ({
   const categoriesMap: Map<string, number> = getTicketsResponse.data.categories;
 
   return (
-    <Card className='tw-grow'>
+    <Card className='tw-grow md:tw-max-w-lg'>
       <CardHeader>
         <CardTitle typeof='h5'>Ticket types</CardTitle>
       </CardHeader>
@@ -19,10 +19,7 @@ const TicketTypes = ({
         {getTicketsResponse.ok && categoriesMap.size > 0 ? (
           <ul className='tw-space-y-1'>
             {Array.from(categoriesMap.entries()).map(([key, value]) => (
-              <li
-                key={key}
-                className='tw-pt-1 tw-text-2xl tw-flex tw-justify-between tw-border-t tw-border-t-border'
-              >
+              <li key={key} className='tw-pt-1 tw-flex tw-justify-between'>
                 {key} <span>{value}</span>
               </li>
             ))}
