@@ -1,4 +1,11 @@
+import {
+  UpdateEmailSchema,
+  UpdatePasswordSchema,
+  UpdateUsernameSchema,
+} from './schemas/updateAccountForm';
 import { ColumnDef } from '@tanstack/react-table';
+import { ObjectSchema } from 'valibot';
+import { UseFormReturn } from 'react-hook-form';
 
 export type QueryState = 'idle' | 'pending' | 'resolved' | 'error';
 
@@ -35,3 +42,17 @@ export interface DataTableProps<TData, TValue> {
   data: TData[];
   paginated?: boolean;
 }
+
+export type UpdateSchema =
+  | typeof UpdateEmailSchema
+  | typeof UpdatePasswordSchema
+  | typeof UpdateUsernameSchema;
+
+export type UpdateFields = {
+  name: string;
+  label: string;
+  schema: ObjectSchema<any, any>;
+  form: UseFormReturn<any>;
+  isEdit: boolean;
+  setIsEdit: React.Dispatch<React.SetStateAction<boolean>>;
+};

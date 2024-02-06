@@ -43,7 +43,7 @@ const NavigationPanel = ({
             className={cn(
               'tw-py-2 md:tw-py-3 tw-w-full tw-flex tw-flex-row-reverse md:tw-flex-row tw-items-center tw-justify-start tw-gap-3 hover:tw-text-link tw-transition-colors',
               accessOk &&
-                !userData.organization_id &&
+                (!userData.organization_id || !userData.username) &&
                 'tw-text-gray-500 tw-pointer-events-none',
               pathname === link.href &&
                 'tw-font-bold tw-text-link tw-pointer-events-none'
