@@ -100,6 +100,31 @@ export const refreshToken = async (): Promise<FetchReturn> => {
   return response;
 };
 
+export const updateUser = async ({
+  email,
+  username,
+  password,
+}: {
+  email?: string;
+  username?: string;
+  password?: string;
+}): Promise<FetchReturn> => {
+  const response = await fetchNexticket('/auth/update', {
+    method: 'PUT',
+    body: {
+      email,
+      username,
+      password,
+    },
+    options: { cache: 'no-store' },
+  });
+
+  if (response.ok) {
+    revalidateTag('user-account');
+  }
+  return response;
+};
+
 export const logoutUser = async (): Promise<FetchReturn> => {
   const { cookies } = require('next/headers');
   const cookieStore = cookies();

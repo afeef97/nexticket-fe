@@ -1,23 +1,26 @@
 'use client';
 
-import { getUserAccount } from '../actions';
-import { useEffect } from 'react';
-import useQueryHandler from '@/lib/hooks/useQueryHandler';
-import { useRouter } from 'next/navigation';
+import {
+  AccessContext,
+  IAccessContext,
+} from '@/components/providers/AccessContextProvider';
+import { useContext, useEffect } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
 
 const CheckUser = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
+  const path = usePathname();
 
-  const { data: userData } = useQueryHandler({
-    query: getUserAccount,
-  });
+  const { userData, accessOk } = useContext<IAccessContext>(AccessContext);
 
   useEffect(() => {
-    if (!userData || !userData.ok) return;
-    if (!userData.data.data.organization_id) {
+    if (!userData || !accessOk) return;
+    if (!userData.organization_id) {
       router.replace('/dashboard/register-organization');
+    } else if (!userData.username) {
+      router.replace('/dashboard/account/update');
     }
-  }, [router, userData]);
+  }, [router, userData, accessOk, path]);
 
   return <>{children}</>;
 };
