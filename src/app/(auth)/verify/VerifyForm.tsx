@@ -44,6 +44,8 @@ const VerifyForm = () => {
       verifyForm.setError('token', { message: response.data.message });
       return;
     }
+
+    router.push('/dashboard');
   };
 
   return (

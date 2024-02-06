@@ -29,13 +29,14 @@ const AvatarMenu = ({ className }: { className?: string }) => {
           <Avatar>
             <AvatarImage src='' /> {/* TODO: add user avatar */}
             <AvatarFallback className='tw-bg-secondary'>
-              {accessOk && userData.username.slice(0, 1).toUpperCase()}
+              {(accessOk && userData.username?.slice(0, 1).toUpperCase()) ||
+                '?'}
             </AvatarFallback>
           </Avatar>
         </PopoverTrigger>
         <PopoverContent className='relative'>
           <span className='tw-text-sm'>
-            {(accessOk && userData.username) || 'Not found'}{' '}
+            {(accessOk && userData?.username) || 'Not found'}{' '}
             {accessOk && `(${userData.email})`}
           </span>
 
@@ -50,7 +51,7 @@ const AvatarMenu = ({ className }: { className?: string }) => {
               <Link href='/dashboard/settings'>Settings</Link>
             </Button>
             <Button variant={'ghost'} asChild>
-              <Link href='/account'>Account</Link>
+              <Link href='/dashboard/account'>Account</Link>
             </Button>
             <Button
               variant={'destructive'}
