@@ -4,7 +4,7 @@ import {
   AccessContext,
   IAccessContext,
 } from '@/components/providers/AccessContextProvider';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useMemo } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 
 const CheckUser = ({ children }: { children: React.ReactNode }) => {
@@ -12,15 +12,26 @@ const CheckUser = ({ children }: { children: React.ReactNode }) => {
   const path = usePathname();
 
   const { userData, accessOk } = useContext<IAccessContext>(AccessContext);
+  const accessExpires = useMemo(() => {
+    if (!accessOk || typeof document === 'undefined') return;
+    const cookies = document.cookie.split('; ');
+    const access_expires = decodeURIComponent(cookies[1].split('=')[1]);
+
+    return new Date(access_expires);
+  }, [accessOk]);
 
   useEffect(() => {
-    if (!userData || !accessOk) return;
-    if (!userData.organization_id) {
-      router.replace('/dashboard/register-organization');
-    } else if (!userData.username) {
-      router.replace('/dashboard/account/update');
+    if (accessExpires && accessExpires < new Date()) {
+      router.refresh();
     }
-  }, [router, userData, accessOk, path]);
+    if (userData && accessOk) {
+      if (!userData.organization_id) {
+        router.replace('/dashboard/register-organization');
+      } else if (!userData.username) {
+        router.replace('/dashboard/account/update');
+      }
+    }
+  }, [router, userData, accessOk, path, accessExpires]);
 
   return <>{children}</>;
 };

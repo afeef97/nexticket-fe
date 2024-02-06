@@ -25,7 +25,6 @@ export const handleResponseCookies = (setCookie: string[]): void => {
       cookieStore.set(`${tokenLabel}_expires`, expires, {
         path,
         expires: new Date(expires),
-        httpOnly: true,
         sameSite: 'strict',
       });
     });
