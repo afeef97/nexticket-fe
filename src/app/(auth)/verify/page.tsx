@@ -1,3 +1,4 @@
+import { Skeleton } from '@/components/ui/skeleton';
 import { Suspense } from 'react';
 import VerifyForm from '@/app/(auth)/verify/VerifyForm';
 
@@ -9,7 +10,7 @@ const Verify = () => {
         A token has been sent to your email. Please enter the token below to
         verify your account
       </p>
-      <Suspense>
+      <Suspense fallback={<Skeleton className='tw-w-full tw-h-[6.5rem]' />}>
         <VerifyForm />
       </Suspense>
     </>

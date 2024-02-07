@@ -2,6 +2,12 @@ import { getPendingMembers, getVerifiedMembers } from './actions';
 import { FetchReturn } from '@/lib/customFetch';
 import InviteMembers from './InviteMembers';
 import MembersTabs from './MembersTabs';
+import { Metadata } from 'next';
+import PageTitle from '@/components/shared/PageTitle';
+
+export const metadata: Metadata = {
+  title: 'nexticket | Users',
+};
 
 const Users = async () => {
   const pendingMembersResponse: FetchReturn = await getPendingMembers();
@@ -9,7 +15,7 @@ const Users = async () => {
 
   return (
     <>
-      <h1 className='tw-mb-8'>Users</h1>
+      <PageTitle title='Users' />
 
       <InviteMembers />
 
