@@ -28,3 +28,16 @@ export const getPendingMembers = async () => {
     }
   );
 };
+
+export const getVerifiedMembers = async () => {
+  return await fetchNexticket(
+    '/organization/members?is-verified=true&fields=email&order-time=asc',
+    {
+      options: {
+        next: {
+          tags: ['verified-members'],
+        },
+      },
+    }
+  );
+};
