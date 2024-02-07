@@ -3,8 +3,9 @@
 import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { FetchReturn } from '@/lib/customFetch';
-import PendingMembersTable from './PendingMembersTable';
-import VerifiedMembersTable from './VerifiedMembersTable';
+import MembersTable from './MembersTable';
+import { PendingMembersColumn } from './PendingMembersColumn';
+import { VerifiedMembersColumn } from './VerifiedMembersColumn';
 
 const MembersTabs = ({
   pendingMembersResponse,
@@ -30,12 +31,16 @@ const MembersTabs = ({
       </TabsList>
 
       <TabsContent value='verified'>
-        <VerifiedMembersTable
-          verifiedMembersResponse={verifiedMembersResponse}
+        <MembersTable
+          fetchMembersResponse={verifiedMembersResponse}
+          MembersColumn={VerifiedMembersColumn}
         />
       </TabsContent>
       <TabsContent value='pending'>
-        <PendingMembersTable pendingMembersResponse={pendingMembersResponse} />
+        <MembersTable
+          fetchMembersResponse={pendingMembersResponse}
+          MembersColumn={PendingMembersColumn}
+        />
       </TabsContent>
     </Tabs>
   );

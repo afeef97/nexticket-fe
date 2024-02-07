@@ -1,17 +1,20 @@
 'use client';
 
+import { ColumnDef } from '@tanstack/react-table';
 import DataTable from '@/components/shared/DataTable';
 import { FetchReturn } from '@/lib/customFetch';
-import { PendingMembersColumn } from './PendingMembersColumn';
+import { OrganizationMember } from '@/lib/types';
 import React from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 
-const PendingMembersTable = ({
-  pendingMembersResponse,
+const MembersTable = ({
+  fetchMembersResponse,
+  MembersColumn,
 }: {
-  pendingMembersResponse: FetchReturn;
+  fetchMembersResponse: FetchReturn;
+  MembersColumn: ColumnDef<OrganizationMember>[];
 }) => {
-  if (!pendingMembersResponse.ok) {
+  if (!fetchMembersResponse.ok) {
     return (
       <div className='tw-flex tw-flex-col tw-gap-2'>
         <Skeleton className='tw-w-full tw-h-12' />
@@ -21,11 +24,8 @@ const PendingMembersTable = ({
     );
   }
   return (
-    <DataTable
-      columns={PendingMembersColumn}
-      data={pendingMembersResponse.data.data}
-    />
+    <DataTable columns={MembersColumn} data={fetchMembersResponse.data.data} />
   );
 };
 
-export default PendingMembersTable;
+export default MembersTable;
