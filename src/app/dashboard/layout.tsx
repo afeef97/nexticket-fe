@@ -1,12 +1,7 @@
 import AvatarMenu from '@/components/shared/AvatarMenu';
 import CheckUser from './(dashboard)/CheckUser';
-import { Metadata } from 'next';
 import Navigation from './(dashboard)/Navigation';
 import Providers from '@/components/shared/Providers';
-
-export const metadata: Metadata = {
-  title: 'nexticket | Dashboard',
-};
 
 const DashboardLayout = async ({
   children,

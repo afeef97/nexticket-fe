@@ -1,5 +1,6 @@
 import GenerateApikey from './GenerateApikey';
 import { Metadata } from 'next';
+import PageTitle from '@/components/shared/PageTitle';
 import React from 'react';
 
 export const metadata: Metadata = {
@@ -9,12 +10,10 @@ export const metadata: Metadata = {
 const Settings = () => {
   return (
     <div>
-      <h1 className='tw-mb-8'>Settings</h1>
+      <PageTitle title='Settings' />
 
       <div className='tw-space-y-3'>
-        <hr />
         <GenerateApikey />
-        <hr />
       </div>
     </div>
   );
