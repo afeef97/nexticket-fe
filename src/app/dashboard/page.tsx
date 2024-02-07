@@ -1,4 +1,6 @@
 import { FetchReturn } from '@/lib/customFetch';
+import { Metadata } from 'next';
+import PageTitle from '@/components/shared/PageTitle';
 import TicketPriority from './(dashboard)/TicketPriority';
 import TicketTotal from './(dashboard)/TicketTotal';
 import TicketTypes from './(dashboard)/TicketTypes';
@@ -12,12 +14,16 @@ const NotifyCreateApikey = dynamic(
   }
 );
 
+export const metadata: Metadata = {
+  title: 'nexticket | Dashboard',
+};
+
 const Dashboard = async () => {
   const getTicketsResponse: FetchReturn = await getTickets();
 
   return (
     <>
-      <h1 className='tw-mb-8'>Dashboard</h1>
+      <PageTitle title='Dashboard' />
 
       <NotifyCreateApikey />
       <div className='tw-flex tw-flex-col tw-gap-2 tw-flex-wrap'>

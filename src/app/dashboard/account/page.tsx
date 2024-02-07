@@ -1,10 +1,16 @@
 import Link from 'next/link';
+import { Metadata } from 'next';
+import PageTitle from '@/components/shared/PageTitle';
 import React from 'react';
+
+export const metadata: Metadata = {
+  title: 'nexticket | Account',
+};
 
 const UserAccount = () => {
   return (
     <div>
-      <h3 className='tw-mb-8'>My account</h3>
+      <PageTitle title='My account' />
 
       <Link href={'/dashboard/account/update'}>Update account</Link>
     </div>

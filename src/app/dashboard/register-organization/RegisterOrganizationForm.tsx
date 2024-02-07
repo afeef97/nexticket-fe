@@ -34,12 +34,12 @@ const RegisterOrganizationForm = () => {
   });
 
   const router = useRouter();
-  const { userData } = useContext(AccessContext);
+  const { userData, accessOk } = useContext(AccessContext);
   useEffect(() => {
-    if (userData.ok && userData.data.data.organization_id) {
+    if (accessOk && userData.organization_id) {
       router.push('/dashboard');
     }
-  }, [userData, router]);
+  }, [userData, accessOk, router]);
 
   const {
     state: registerOrganizationState,
@@ -87,7 +87,8 @@ const RegisterOrganizationForm = () => {
           className='tw-w-full md:tw-w-auto'
           disabled={
             registerOrganizationState === 'pending' ||
-            registerOrganizationState === 'resolved'
+            registerOrganizationState === 'resolved' ||
+            userData.organization_id === undefined
           }
         >
           {registerOrganizationState === 'pending' ? (

@@ -32,7 +32,7 @@ const NavigationPanel = ({
         </h3>
         <div className='tw-bg-muted tw-h-1 tw-w-32 tw-mb-1 tw-rounded-xl md:tw-hidden' />
         <p className='tw-text-center'>
-          {accessOk && userData.organization.name}
+          {accessOk && userData.organization?.name}
         </p>
       </div>
       <nav className='tw-w-full md:tw-mt-4'>

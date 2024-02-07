@@ -35,7 +35,7 @@ const AvatarMenu = ({ className }: { className?: string }) => {
           </Avatar>
         </PopoverTrigger>
         <PopoverContent className='relative'>
-          <span className='tw-text-sm'>
+          <span className='tw-inline-block tw-text-sm tw-max-w-52'>
             {(accessOk && userData?.username) || 'Not found'}{' '}
             {accessOk && `(${userData.email})`}
           </span>
