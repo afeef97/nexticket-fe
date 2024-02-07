@@ -1,10 +1,11 @@
+import { getPendingMembers, getVerifiedMembers } from './actions';
 import { FetchReturn } from '@/lib/customFetch';
 import InviteMembers from './InviteMembers';
-import PendingMemberTable from './PendingMemberTable';
-import { getPendingMembers } from './actions';
+import MembersTabs from './MembersTabs';
 
 const Users = async () => {
   const pendingMembersResponse: FetchReturn = await getPendingMembers();
+  const verifiedMembersResponse: FetchReturn = await getVerifiedMembers();
 
   return (
     <>
@@ -13,8 +14,10 @@ const Users = async () => {
       <InviteMembers />
 
       <div className='tw-mt-4'>
-        <h4 className='tw-mb-2'>Pending invitations</h4>
-        <PendingMemberTable pendingMembersResponse={pendingMembersResponse} />
+        <MembersTabs
+          pendingMembersResponse={pendingMembersResponse}
+          verifiedMembersResponse={verifiedMembersResponse}
+        />
       </div>
     </>
   );
