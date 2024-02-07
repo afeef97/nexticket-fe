@@ -6,7 +6,7 @@ import { PendingMembersColumn } from './PendingMembersColumn';
 import React from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 
-const PendingMemberTable = ({
+const PendingMembersTable = ({
   pendingMembersResponse,
 }: {
   pendingMembersResponse: FetchReturn;
@@ -28,4 +28,4 @@ const PendingMemberTable = ({
   );
 };
 
-export default PendingMemberTable;
+export default PendingMembersTable;
