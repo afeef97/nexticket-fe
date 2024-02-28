@@ -50,7 +50,7 @@ const AccessExpiredProvider = ({
 
   return (
     <Dialog open={openAccessExpired}>
-      <DialogContent disableClose className='!tw-z-index-99'>
+      <DialogContent disableClose className='!z-index-99'>
         <DialogHeader>
           <DialogTitle>Access Expired</DialogTitle>
           <DialogDescription>
@@ -60,7 +60,7 @@ const AccessExpiredProvider = ({
           </DialogDescription>
         </DialogHeader>
         {refreshTokenError && (
-          <p className='tw-text-red-500'>{refreshTokenError}</p>
+          <p className='text-red-500'>{refreshTokenError}</p>
         )}
 
         {refreshTokenError ? (

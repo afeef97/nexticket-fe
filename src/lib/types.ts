@@ -15,7 +15,7 @@ export type UserData = {
   token: string;
   is_verified: boolean;
   username: string;
-  role: 'SUPER_ADMIN' | 'ADMIN' | 'USER';
+  role: 'PARLIAMENT_ADMIN' | 'SUPER_ADMIN' | 'ADMIN' | 'USER';
   organization_id: number;
   created_at: string;
   updated_at: string;

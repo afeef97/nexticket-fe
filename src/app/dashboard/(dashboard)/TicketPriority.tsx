@@ -10,21 +10,21 @@ const TicketPriority = ({
   const priorities: Map<string, number> = getTicketsResponse.data.priorities;
 
   return (
-    <Card className='tw-grow md:tw-max-w-64'>
+    <Card className='grow md:max-w-64'>
       <CardHeader>
         <CardTitle typeof='h5'>Ticket priority</CardTitle>
       </CardHeader>
 
-      <CardContent className='tw-max-h-36 tw-overflow-scroll'>
+      <CardContent className='max-h-36 overflow-scroll'>
         {getTicketsResponse.ok && priorities.size > 0 ? (
-          <ul className='tw-space-y-1'>
-            <li className='tw-pt-1 tw-flex tw-justify-between'>
+          <ul className='space-y-1'>
+            <li className='pt-1 flex justify-between'>
               Important <span>{priorities.get('IMPORTANT')}</span>
             </li>
-            <li className='tw-pt-1 tw-flex tw-justify-between'>
+            <li className='pt-1 flex justify-between'>
               Medium <span>{priorities.get('MEDIUM')}</span>
             </li>
-            <li className='tw-pt-1 tw-flex tw-justify-between'>
+            <li className='pt-1 flex justify-between'>
               Low <span>{priorities.get('LOW')}</span>
             </li>
           </ul>

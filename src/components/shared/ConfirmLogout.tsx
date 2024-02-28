@@ -36,10 +36,10 @@ const ConfirmLogout = ({
   return (
     <Dialog open={open} onOpenChange={() => setOpen((value) => !value)}>
       <DialogContent>
-        <DialogHeader className='tw-text-2xl'>Confirm Logout</DialogHeader>
+        <DialogHeader className='text-2xl'>Confirm Logout</DialogHeader>
         <DialogDescription>Are you sure you want to logout?</DialogDescription>
 
-        <DialogFooter className='tw-flex tw-gap-1'>
+        <DialogFooter className='flex gap-1'>
           <Button variant={'destructive'} onClick={handleLogout}>
             Logout
           </Button>

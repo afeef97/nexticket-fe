@@ -86,16 +86,16 @@ const RegisterForm = () => {
         <Button
           disabled={registerUserState === 'pending'}
           type='submit'
-          className='tw-w-full tw-mb-2'
+          className='w-full mb-2'
         >
           Register
         </Button>
 
-        <p className='tw-text-center'>
+        <p className='text-center'>
           Already have an account?{' '}
           <Link
             href='/login'
-            className='tw-text-link hover:tw-text-link/90 tw-transition-colors'
+            className='text-link hover:text-link/90 transition-colors'
           >
             Log in
           </Link>

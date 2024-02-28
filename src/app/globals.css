@@ -53,34 +53,34 @@
 
 @layer base {
   * {
-    @apply tw-border-border;
+    @apply border-border;
   }
   body {
-    @apply tw-bg-background tw-text-foreground;
+    @apply bg-background text-foreground;
   }
   h1 {
-    @apply tw-text-4xl lg:tw-text-5xl;
-    @apply tw-font-bold;
+    @apply text-4xl lg:text-5xl;
+    @apply font-bold;
   }
   h2 {
-    @apply tw-text-3xl lg:tw-text-4xl;
-    @apply tw-font-bold;
+    @apply text-3xl lg:text-4xl;
+    @apply font-bold;
   }
   h3 {
-    @apply tw-text-2xl lg:tw-text-3xl;
-    @apply tw-font-semibold;
+    @apply text-2xl lg:text-3xl;
+    @apply font-semibold;
   }
   h4 {
-    @apply tw-text-xl lg:tw-text-2xl;
-    @apply tw-font-semibold;
+    @apply text-xl lg:text-2xl;
+    @apply font-semibold;
   }
   h5 {
-    @apply tw-text-lg lg:tw-text-xl;
+    @apply text-lg lg:text-xl;
   }
   h6 {
-    @apply tw-text-base lg:tw-text-lg;
+    @apply text-base lg:text-lg;
   }
   p {
-    @apply tw-text-base;
+    @apply text-base;
   }
 }

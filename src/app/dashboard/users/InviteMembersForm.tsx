@@ -81,23 +81,23 @@ const InviteMembersForm = ({
       <form onSubmit={inviteMembersForm.handleSubmit(onSubmit)}>
         {inviteMembersFieldArray.fields.map((field, index) => (
           <div key={field.id}>
-            <div className='tw-flex tw-items-center tw-gap-2'>
+            <div className='flex items-center gap-2'>
               <TextInputField
                 control={inviteMembersForm.control}
                 name={`memberList.${index}.email`}
                 label='Email'
-                className='tw-grow'
+                className='grow'
               >
                 <Input
                   placeholder='user@example.com'
-                  className='tw-w-full tw-grow'
+                  className='w-full grow'
                 />
               </TextInputField>
               <FormField
                 control={inviteMembersForm.control}
                 name={`memberList.${index}.role`}
                 render={({ field }) => (
-                  <FormItem className='tw-min-h-[6.5rem] tw-mb-2 tw-flex tw-items-center tw-w-24'>
+                  <FormItem className='min-h-[6.5rem] mb-2 flex items-center w-24'>
                     <Select
                       onValueChange={field.onChange}
                       defaultValue={field.value}
@@ -121,7 +121,7 @@ const InviteMembersForm = ({
                   inviteMembersFieldArray.append({ email: '', role: 'USER' });
                 }}
                 variant='ghost'
-                className='tw-mb-2 !tw-p-2'
+                className='mb-2 !p-2'
               >
                 <PlusCircle />
               </Button>
@@ -132,7 +132,7 @@ const InviteMembersForm = ({
                     inviteMembersFieldArray.remove(index);
                   }}
                   variant='ghost'
-                  className='tw-mb-2 !tw-p-2'
+                  className='mb-2 !p-2'
                 >
                   <Trash2 />
                 </Button>

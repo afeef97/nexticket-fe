@@ -8,13 +8,13 @@ const TicketTotal = ({
   getTicketsResponse: FetchReturn;
 }) => {
   return (
-    <Card className='tw-shrink md:tw-max-w-lg tw-flex tw-justify-between tw-items-center'>
+    <Card className='shrink md:max-w-lg flex justify-between items-center'>
       <CardHeader>
         <CardTitle typeof='h5'>Total tickets</CardTitle>
       </CardHeader>
 
-      <CardContent className='tw-py-0'>
-        <p className='tw-text-2xl'>
+      <CardContent className='py-0'>
+        <p className='text-2xl'>
           {getTicketsResponse.ok && getTicketsResponse.data.totalTickets}
         </p>
       </CardContent>

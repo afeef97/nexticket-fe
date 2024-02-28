@@ -77,16 +77,16 @@ const LoginForm = () => {
           <Button
             type='submit'
             disabled={isPendingLogin}
-            className='tw-w-full tw-mb-2'
+            className='w-full mb-2'
           >
             Login
           </Button>
 
-          <p className='tw-text-center'>
+          <p className='text-center'>
             Don&apos;t have an account?{' '}
             <Link
               href='/register'
-              className='tw-text-link hover:tw-text-link/90 tw-transition-colors'
+              className='text-link hover:text-link/90 transition-colors'
             >
               Register
             </Link>

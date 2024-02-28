@@ -27,7 +27,7 @@ export const VerifiedMembersColumn: ColumnDef<OrganizationMember>[] = [
       console.log(cellValue);
 
       return userData?.username === cellValue ? (
-        <span className='tw-font-bold'>{cellValue} (You)</span>
+        <span className='font-bold'>{cellValue} (You)</span>
       ) : (
         cellValue
       );

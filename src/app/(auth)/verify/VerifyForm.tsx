@@ -60,7 +60,7 @@ const VerifyForm = () => {
             verifyUserState === 'pending' || verifyUserState === 'resolved'
           }
           type='submit'
-          className='tw-w-full'
+          className='w-full'
         >
           Submit
         </Button>

@@ -26,9 +26,9 @@ const Dashboard = async () => {
       <PageTitle title='Dashboard' />
 
       <NotifyCreateApikey />
-      <div className='tw-flex tw-flex-col tw-gap-2 tw-flex-wrap'>
+      <div className='flex flex-col gap-2 flex-wrap'>
         <TicketTotal getTicketsResponse={getTicketsResponse} />
-        <div className='tw-flex tw-flex-col md:tw-flex-row tw-gap-2'>
+        <div className='flex flex-col md:flex-row gap-2'>
           <TicketTypes getTicketsResponse={getTicketsResponse} />
           <TicketPriority getTicketsResponse={getTicketsResponse} />
         </div>

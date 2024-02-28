@@ -63,7 +63,7 @@ const RegisterOrganizationForm = () => {
   return (
     <Form {...registerOrganizationForm}>
       <form
-        className='tw-mt-4'
+        className='mt-4'
         onSubmit={registerOrganizationForm.handleSubmit(onSubmit)}
       >
         <TextInputField
@@ -84,7 +84,7 @@ const RegisterOrganizationForm = () => {
 
         <Button
           type='submit'
-          className='tw-w-full md:tw-w-auto'
+          className='w-full md:w-auto'
           disabled={
             registerOrganizationState === 'pending' ||
             registerOrganizationState === 'resolved' ||
@@ -93,8 +93,8 @@ const RegisterOrganizationForm = () => {
         >
           {registerOrganizationState === 'pending' ? (
             <>
-              <Loader2 className='tw-animate-spin' size={16} />
-              <span className='tw-ml-2'>Registering...</span>
+              <Loader2 className='animate-spin' size={16} />
+              <span className='ml-2'>Registering...</span>
             </>
           ) : (
             'Register organization'

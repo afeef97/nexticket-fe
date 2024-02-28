@@ -10,16 +10,16 @@ const TicketTypes = ({
   const categoriesMap: Map<string, number> = getTicketsResponse.data.categories;
 
   return (
-    <Card className='tw-grow md:tw-max-w-lg'>
+    <Card className='grow md:max-w-lg'>
       <CardHeader>
         <CardTitle typeof='h5'>Ticket types</CardTitle>
       </CardHeader>
 
-      <CardContent className='tw-max-h-32 tw-overflow-scroll'>
+      <CardContent className='max-h-32 overflow-scroll'>
         {getTicketsResponse.ok && categoriesMap.size > 0 ? (
-          <ul className='tw-space-y-1'>
+          <ul className='space-y-1'>
             {Array.from(categoriesMap.entries()).map(([key, value]) => (
-              <li key={key} className='tw-pt-1 tw-flex tw-justify-between'>
+              <li key={key} className='pt-1 flex justify-between'>
                 {key} <span>{value}</span>
               </li>
             ))}
