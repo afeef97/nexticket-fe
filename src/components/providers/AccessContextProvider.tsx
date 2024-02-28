@@ -33,6 +33,12 @@ const AccessContextProvider = ({
   const accessOk: boolean = useMemo(() => userAccountRes.ok, [userAccountRes]);
 
   useEffect(() => {
+    if (userData && userData.role === 'PARLIAMENT_ADMIN') {
+      router.replace('/parliament/dashboard');
+    }
+  }, [router, userData]);
+
+  useEffect(() => {
     if (
       userData &&
       Object.keys(userData).length > 0 &&
