@@ -22,7 +22,7 @@ const MembersTabs = ({
       value={tabsValue}
       onValueChange={setTabsValue}
     >
-      <h4 className='tw-mb-2'>
+      <h4 className='mb-2'>
         {tabsValue[0].toUpperCase() + tabsValue.slice(1)} members
       </h4>
       <TabsList>

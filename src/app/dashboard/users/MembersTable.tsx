@@ -16,10 +16,10 @@ const MembersTable = ({
 }) => {
   if (!fetchMembersResponse.ok) {
     return (
-      <div className='tw-flex tw-flex-col tw-gap-2'>
-        <Skeleton className='tw-w-full tw-h-12' />
-        <Skeleton className='tw-w-full tw-h-12' />
-        <Skeleton className='tw-w-full tw-h-12' />
+      <div className='flex flex-col gap-2'>
+        <Skeleton className='w-full h-12' />
+        <Skeleton className='w-full h-12' />
+        <Skeleton className='w-full h-12' />
       </div>
     );
   }

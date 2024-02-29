@@ -22,31 +22,29 @@ const NavigationPanel = ({
     <aside
       data-testid='navigation-panel'
       className={cn(
-        'tw-flex tw-flex-col tw-items-center tw-fixed md:tw-static tw-bottom-0 tw-z-50 tw-rounded-[0.75rem_0.75rem_0_0] md:tw-rounded-none tw-py-4 tw-px-6 tw-w-full md:tw-w-52 tw-min-h-40 md:tw-min-h-screen tw-transition-transform md:tw-transition-none tw-duration-300 tw-shadow-lg tw-shadow-foreground md:tw-shadow-none md:tw-border-r md:tw-border-border tw-bg-card',
-        showPanel ? 'max-md:tw-translate-y-0' : 'max-md:tw-translate-y-full'
+        'flex flex-col items-center fixed md:static bottom-0 z-50 rounded-[0.75rem_0.75rem_0_0] md:rounded-none py-4 px-6 w-full md:w-52 min-h-40 md:min-h-screen transition-transform md:transition-none duration-300 shadow-lg shadow-foreground md:shadow-none md:border-r md:border-border bg-card',
+        showPanel ? 'max-md:translate-y-0' : 'max-md:translate-y-full'
       )}
     >
       <div>
-        <h3 className='tw-self-center tw-hidden md:tw-block tw-font-light'>
-          nex<span className='tw-font-normal'>ticket</span>
+        <h3 className='self-center hidden md:block font-light'>
+          nex<span className='font-normal'>ticket</span>
         </h3>
-        <div className='tw-bg-muted tw-h-1 tw-w-32 tw-mb-1 tw-rounded-xl md:tw-hidden' />
-        <p className='tw-text-center'>
-          {accessOk && userData.organization?.name}
-        </p>
+        <div className='bg-muted h-1 w-32 mb-1 rounded-xl md:hidden' />
+        <p className='text-center'>{accessOk && userData.organization?.name}</p>
       </div>
-      <nav className='tw-w-full md:tw-mt-4'>
+      <nav className='w-full md:mt-4'>
         {links.map((link) => (
           <Link
             key={link.label}
             href={link.href}
             className={cn(
-              'tw-py-2 md:tw-py-3 tw-w-full tw-flex tw-flex-row-reverse md:tw-flex-row tw-items-center tw-justify-start tw-gap-3 hover:tw-text-link tw-transition-colors',
+              'py-2 md:py-3 w-full flex flex-row-reverse md:flex-row items-center justify-start gap-3 hover:text-link transition-colors',
               accessOk &&
                 (!userData.organization_id || !userData.username) &&
-                'tw-text-gray-500 tw-pointer-events-none',
+                'text-gray-500 pointer-events-none',
               pathname === link.href &&
-                'tw-font-bold tw-text-link tw-pointer-events-none'
+                'font-bold text-link pointer-events-none'
             )}
           >
             {link.icon}

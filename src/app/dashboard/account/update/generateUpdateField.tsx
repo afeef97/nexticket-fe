@@ -21,9 +21,9 @@ export default function generateUpdateField(
       <form
         onSubmit={field.form.handleSubmit(onSubmit)}
         className={cn(
-          'tw-w-full tw-flex tw-items-center tw-gap-2',
+          'w-full flex items-center gap-2',
           field.name === 'password' && field.isEdit
-            ? 'tw-flex-col !tw-items-start'
+            ? 'flex-col !items-start'
             : ''
         )}
       >
@@ -32,8 +32,8 @@ export default function generateUpdateField(
           name={field.name}
           label={field.label}
           className={cn(
-            'tw-full tw-grow tw-self-stretch',
-            field.name === 'password' && field.isEdit && 'tw-pr-12'
+            'full grow self-stretch',
+            field.name === 'password' && field.isEdit && 'pr-12'
           )}
         >
           <Input
@@ -43,8 +43,8 @@ export default function generateUpdateField(
         </TextInputField>
         <div
           className={cn(
-            'tw-flex tw-items-center',
-            field.name === 'password' && field.isEdit && 'tw-grow tw-w-full'
+            'flex items-center',
+            field.name === 'password' && field.isEdit && 'grow w-full'
           )}
         >
           {field.isEdit && field.name === 'password' && (
@@ -52,18 +52,14 @@ export default function generateUpdateField(
               control={field.form.control}
               name='confirmPassword'
               label='Confirm password'
-              className='tw-full tw-grow'
+              className='full grow'
             >
               <Input type='password' />
             </TextInputField>
           )}
           {field.isEdit ? (
             <>
-              <Button
-                type='submit'
-                variant={'ghost'}
-                className='tw-mb-2 !tw-px-2'
-              >
+              <Button type='submit' variant={'ghost'} className='mb-2 !px-2'>
                 <Check aria-label={`Submit updated ${field.name}`} />
               </Button>
               <Button
@@ -72,7 +68,7 @@ export default function generateUpdateField(
                   field.setIsEdit(false);
                   field.form.reset();
                 }}
-                className='tw-mb-2 !tw-px-2'
+                className='mb-2 !px-2'
               >
                 <X aria-label={`Cancel editing ${field.name}`} />
               </Button>
@@ -81,7 +77,7 @@ export default function generateUpdateField(
             <Button
               variant={'ghost'}
               onClick={() => field.setIsEdit(true)}
-              className='tw-mb-2 !tw-px-2'
+              className='mb-2 !px-2'
               disabled={
                 field.form.formState.isSubmitting ||
                 (field.name === 'email' && userRole !== 'SUPER_ADMIN')

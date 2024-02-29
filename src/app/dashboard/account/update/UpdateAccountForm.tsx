@@ -136,7 +136,7 @@ const UpdateAccountForm = () => {
   return (
     <div>
       {!userData?.username && (
-        <div className='tw-mb-4 tw-bg-secondary tw-p-2 tw-border tw-rounded-md'>
+        <div className='mb-4 bg-secondary p-2 border rounded-md'>
           <p>Please set your username and password first.</p>
         </div>
       )}
@@ -146,13 +146,13 @@ const UpdateAccountForm = () => {
         <Form {...registerMemberForm}>
           <form
             onSubmit={registerMemberForm.handleSubmit(onSubmit)}
-            className='tw-w-full'
+            className='w-full'
           >
             <TextInputField
               control={registerMemberForm.control}
               name='username'
               label='Username'
-              className='tw-full tw-grow'
+              className='full grow'
             >
               <Input />
             </TextInputField>
@@ -160,7 +160,7 @@ const UpdateAccountForm = () => {
               control={registerMemberForm.control}
               name='email'
               label='Email'
-              className='tw-full tw-grow'
+              className='full grow'
             >
               <Input disabled />
             </TextInputField>
@@ -168,7 +168,7 @@ const UpdateAccountForm = () => {
               control={registerMemberForm.control}
               name='password'
               label='Password'
-              className='tw-full tw-grow'
+              className='full grow'
             >
               <Input type='password' />
             </TextInputField>
@@ -176,7 +176,7 @@ const UpdateAccountForm = () => {
               control={registerMemberForm.control}
               name='confirmPassword'
               label='Confirm password'
-              className='tw-full tw-grow'
+              className='full grow'
             >
               <Input type='password' />
             </TextInputField>

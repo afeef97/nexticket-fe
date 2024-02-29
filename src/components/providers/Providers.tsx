@@ -1,12 +1,15 @@
 import { getOrganization, getUserAccount } from '@/app/dashboard/actions';
-import AccessContextProvider from '../providers/AccessContextProvider';
-import AccessExpiredProvider from './AccessExpired';
-import OrganizationProvider from '../providers/OrganizationProvider';
+import AccessContextProvider from './AccessContextProvider';
+import AccessExpiredProvider from './AccessExpiredProvider';
+import OrganizationContextProvider from './OrganizationContextProvider';
 import React from 'react';
 
 const Providers = async ({ children }: { children: React.ReactNode }) => {
   const getUserAccountResponse = await getUserAccount();
-  const getOrganizationResponse = await getOrganization();
+  const getOrganizationResponse = getUserAccountResponse.data.data
+    ?.organization_id
+    ? await getOrganization()
+    : { ok: false, data: null };
 
   return (
     <AccessContextProvider userAccountRes={getUserAccountResponse}>
@@ -16,9 +19,9 @@ const Providers = async ({ children }: { children: React.ReactNode }) => {
           getUserAccountResponse.data.statusCode === 401
         }
       >
-        <OrganizationProvider organizationRes={getOrganizationResponse}>
+        <OrganizationContextProvider organizationRes={getOrganizationResponse}>
           {children}
-        </OrganizationProvider>
+        </OrganizationContextProvider>
       </AccessExpiredProvider>
     </AccessContextProvider>
   );

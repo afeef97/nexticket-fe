@@ -26,7 +26,7 @@ const GenerateApikey = () => {
     <>
       <Dialog open={showApiKey}>
         <DialogContent disableClose>
-          <DialogHeader className='tw-text-xl'>
+          <DialogHeader className='text-xl'>
             Key generated successfully
           </DialogHeader>
           <p>
@@ -34,17 +34,17 @@ const GenerateApikey = () => {
             your inbox.
           </p>
 
-          <section className='tw-border tw-border-border tw-p-2 tw-rounded'>
+          <section className='border border-border p-2 rounded'>
             <h5>Important</h5>
 
-            <p className='tw-text-justify'>
+            <p className='text-justify'>
               Your API key is needed to access the nexticket&apos;s API. Do not
               share your API key with anyone. Be sure to keep it somewhere safe
               as you will need to generate a new key if this key is lost.
             </p>
           </section>
 
-          <Button onClick={() => setShowApiKey(false)} className='tw-mt-2'>
+          <Button onClick={() => setShowApiKey(false)} className='mt-2'>
             I understand
           </Button>
         </DialogContent>
@@ -59,7 +59,7 @@ const GenerateApikey = () => {
         <Button
           onClick={handleGenerateApiKey}
           disabled={generateApiKeyState === 'pending'}
-          className='tw-mt-2'
+          className='mt-2'
         >
           Generate key
         </Button>
