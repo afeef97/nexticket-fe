@@ -1,11 +1,11 @@
 import AvatarMenu from '@/components/shared/AvatarMenu';
 import CheckUser from '../dashboard/(dashboard)/CheckUser';
-import ParliamentProviders from '@/components/providers/ParliamentProviders';
 import ParliamentSideBar from './(root)/ParliamentSideBar';
+import Providers from '@/components/providers/Providers';
 
 const ParliamentLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <ParliamentProviders>
+    <Providers>
       <div className='flex bg-white'>
         <ParliamentSideBar />
         <CheckUser>
@@ -15,7 +15,7 @@ const ParliamentLayout = ({ children }: { children: React.ReactNode }) => {
         </CheckUser>
         <AvatarMenu className='!absolute top-4 right-6' />
       </div>
-    </ParliamentProviders>
+    </Providers>
   );
 };
 

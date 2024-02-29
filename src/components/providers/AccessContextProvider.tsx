@@ -1,10 +1,10 @@
 'use client';
 
 import React, { createContext, useEffect, useMemo } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
 import { FetchReturn } from '@/lib/customFetch';
 import { Loader2Icon } from 'lucide-react';
 import { UserData } from '@/lib/types';
-import { useRouter } from 'next/navigation';
 import { useTheme } from 'next-themes';
 
 export interface IAccessContext {
@@ -22,6 +22,7 @@ const AccessContextProvider = ({
   children: React.ReactNode;
   userAccountRes: FetchReturn;
 }) => {
+  const pathname = usePathname();
   const router = useRouter();
   const { setTheme } = useTheme();
 
@@ -33,29 +34,45 @@ const AccessContextProvider = ({
     () => userAccountRes.data.data,
     [userAccountRes]
   );
-  const accessOk: boolean = useMemo(() => userAccountRes.ok, [userAccountRes]);
   const hasUserData: boolean = useMemo(
     () => userData && Object.keys(userData).length > 0,
     [userData]
   );
+  const isInvalidRoute: boolean = useMemo(
+    () =>
+      (pathname.includes('parliament') &&
+        userData.role !== 'PARLIAMENT_ADMIN') ||
+      (!pathname.includes('parliament') &&
+        userData.role === 'PARLIAMENT_ADMIN'),
+    [userData, pathname]
+  );
+  const accessOk: boolean = useMemo(() => userAccountRes.ok, [userAccountRes]);
 
   useEffect(() => {
-    if (!hasUserData) {
-      return;
-    }
+    if (hasUserData) {
+      if (/not verified/g.test(accessMessage)) {
+        router.replace('/verify?email=' + accessMessage.split(' ')[0]);
+        return;
+      }
 
-    if (/not verified/g.test(accessMessage)) {
-      router.replace('/verify?email=' + accessMessage.split(' ')[0]);
-      return;
-    } else if (userData.role === 'PARLIAMENT_ADMIN') {
-      setTheme('light');
-      router.replace('/parliament/dashboard');
+      if (
+        userData.role === 'PARLIAMENT_ADMIN' &&
+        !pathname.includes('/parliament')
+      ) {
+        setTheme('light');
+        router.replace('/parliament/dashboard');
+      } else if (
+        userData.role !== 'PARLIAMENT_ADMIN' &&
+        pathname.includes('/parliament')
+      ) {
+        router.replace('/dashboard');
+      }
     }
-  }, [router, userData, hasUserData, accessMessage, setTheme]);
+  }, [router, userData, hasUserData, accessMessage, pathname, setTheme]);
 
   return (
     <AccessContext.Provider value={{ userData, accessOk, accessMessage }}>
-      {hasUserData && userData.role === 'PARLIAMENT_ADMIN' ? (
+      {hasUserData && isInvalidRoute ? (
         <div className='h-screen w-screen bg-white flex flex-col justify-center items-center gap-4'>
           <Loader2Icon className='animate-spin' size={48} />
           <p>Loading...</p>

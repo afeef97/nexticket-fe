@@ -1,8 +1,12 @@
 'use client';
 
+import {
+  AccessContext,
+  IAccessContext,
+} from '@/components/providers/AccessContextProvider';
+import React, { useContext } from 'react';
 import { ILink } from '@/app/dashboard/(dashboard)/Navigation';
 import Link from 'next/link';
-import React from 'react';
 import { cn } from '@/lib/utils';
 import { usePathname } from 'next/navigation';
 
@@ -26,6 +30,7 @@ const navLinks: ILink[] = [
 ];
 
 const ParliamentSidebarLinks = () => {
+  const { userData } = useContext<IAccessContext>(AccessContext);
   const pathname: string = usePathname();
   return (
     <nav className='flex flex-col gap-3'>
@@ -37,6 +42,9 @@ const ParliamentSidebarLinks = () => {
             'text-body1 hover:bg-card hover:text-link px-4 py-3 transition-colors rounded',
             {
               'bg-card/40 text-link': pathname === link.href,
+            },
+            {
+              'text-muted pointer-events-none': !userData?.organization_id,
             }
           )}
         >

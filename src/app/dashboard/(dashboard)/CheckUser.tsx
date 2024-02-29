@@ -25,9 +25,16 @@ const CheckUser = ({ children }: { children: React.ReactNode }) => {
       router.refresh();
     }
     if (userData && accessOk) {
-      if (!userData.organization_id) {
+      if (!userData.organization_id && userData.role !== 'PARLIAMENT_ADMIN') {
         router.replace('/dashboard/register-organization');
-      } else if (!userData.username) {
+      } else if (
+        !userData.organization_id &&
+        userData.role === 'PARLIAMENT_ADMIN'
+      ) {
+        router.replace('/parliament/register-parliament');
+      }
+
+      if (!userData.username) {
         router.replace('/dashboard/account/update');
       }
     }
