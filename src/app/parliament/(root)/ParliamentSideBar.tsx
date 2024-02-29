@@ -10,7 +10,9 @@ const ParliamentSideBar = () => {
           src='/logo_black.png'
           alt='logo'
           fill
+          sizes='10vw'
           className='object-contain'
+          priority={true}
         />
       </div>
       <ParliamentSidebarLinks />

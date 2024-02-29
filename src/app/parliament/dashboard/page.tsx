@@ -23,7 +23,7 @@ const ParliamentDashboard = ({ data }: { data: any }) => {
   };
 
   return (
-    <main className='w-[calc(100vw-200px)] px-[24px] py-[16px] overflow-y-auto'>
+    <>
       <h4 className='text-foreground font-semibold'>Home</h4>
       <div className='flex flex-col items-center justify-between py-16'>
         <div className='w-full'>
@@ -169,7 +169,7 @@ const ParliamentDashboard = ({ data }: { data: any }) => {
           </div>
         </div>
       </div>
-    </main>
+    </>
   );
 };
 
