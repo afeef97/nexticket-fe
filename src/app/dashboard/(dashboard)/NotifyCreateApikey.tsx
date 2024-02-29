@@ -20,11 +20,11 @@ const NotifyCreateApikey = () => {
 
   return (
     showNotify && (
-      <section className='tw-max-w-3xl tw-mb-8 tw-mx-auto tw-relative tw-flex tw-flex-col tw-gap-2 tw-rounded-2xl tw-border tw-border-border tw-p-4 tw-bg-secondary/15'>
+      <section className='max-w-3xl mb-8 mx-auto relative flex flex-col gap-2 rounded-2xl border border-border p-4 bg-secondary/15'>
         <Button
           variant={'ghost'}
           onClick={() => setShowNotify(false)}
-          className='tw-absolute tw-top-3 tw-right-3 !tw-p-1 tw-h-auto hover:tw-bg-inherit'
+          className='absolute top-3 right-3 !p-1 h-auto hover:bg-inherit'
         >
           <X aria-label='Close reminder to create API key' />
         </Button>
@@ -36,7 +36,7 @@ const NotifyCreateApikey = () => {
         <p>
           You can find the settings under the &quot;Settings&quot; tab after
           clicking on your profile image in the top right corner or you can{' '}
-          <Link href='/dashboard/settings' className='tw-text-link'>
+          <Link href='/dashboard/settings' className='text-link'>
             click here
           </Link>
           .
@@ -44,7 +44,7 @@ const NotifyCreateApikey = () => {
 
         <Button
           onClick={handleDontShowAgain}
-          className='tw-mt-4 tw-whitespace-pre-line tw-shrink tw-self-end'
+          className='mt-4 whitespace-pre-line shrink self-end'
         >
           I understand, don&apos;t show again
         </Button>

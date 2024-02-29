@@ -12,7 +12,7 @@ const Settings = () => {
     <div>
       <PageTitle title='Settings' />
 
-      <div className='tw-space-y-3'>
+      <div className='space-y-3'>
         <GenerateApikey />
       </div>
     </div>

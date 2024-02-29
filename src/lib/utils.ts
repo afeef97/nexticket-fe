@@ -7,6 +7,18 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+export function formatDateToString(date: Date): string {
+  return date.toISOString().split('T')[0];
+}
+
+export function subtractMonths(date: Date, months: number): Date {
+  return new Date(date.setMonth(date.getMonth() - months));
+}
+
+export function subtractWeeks(date: Date, weeks: number): Date {
+  return new Date(date.setDate(date.getDate() - weeks * 7));
+}
+
 //eslint-disable-next-line
 type Query = (f: MatcherFunction) => Partial<HTMLElement>;
 export const withMarkup =

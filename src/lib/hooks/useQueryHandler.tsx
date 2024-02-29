@@ -1,5 +1,5 @@
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
-import { AccessExpired } from '@/components/shared/AccessExpired';
+import { AccessExpired } from '@/components/providers/AccessExpiredProvider';
 import { FetchReturn } from '../customFetch';
 import { QueryState } from '../types';
 

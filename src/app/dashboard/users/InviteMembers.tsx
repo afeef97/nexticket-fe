@@ -35,7 +35,7 @@ const InviteMembers = () => {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button>
-          <UserPlus size={20} aria-label='Invite members' className='tw-mr-2' />
+          <UserPlus size={20} aria-label='Invite members' className='mr-2' />
           Invite members
         </Button>
       </DialogTrigger>

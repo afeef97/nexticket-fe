@@ -17,16 +17,16 @@ const MobileHeader = ({
     <header
       data-testid='mobile-header'
       className={cn(
-        'tw-sticky tw-top-0 tw-w-full tw-h-16 tw-py-2 tw-px-3 tw-flex tw-justify-between tw-items-center tw-bg-card tw-border-b tw-border-border md:tw-hidden'
+        'sticky top-0 w-full h-16 py-2 px-3 flex justify-between items-center bg-card border-b border-border md:hidden'
       )}
     >
       <h3>nexticket</h3>
-      <div className='tw-flex tw-gap-1'>
+      <div className='flex gap-1'>
         <AvatarMenu />
         <Button
           variant='ghost'
           onClick={() => setShowPanel(!showPanel)}
-          className='hover:tw-bg-background hover:tw-text-foreground'
+          className='hover:bg-background hover:text-foreground'
         >
           {showPanel ? (
             <X aria-label='Close navigation panel' />

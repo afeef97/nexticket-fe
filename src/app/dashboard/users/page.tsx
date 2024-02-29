@@ -19,7 +19,7 @@ const Users = async () => {
 
       <InviteMembers />
 
-      <div className='tw-mt-4'>
+      <div className='mt-4'>
         <MembersTabs
           pendingMembersResponse={pendingMembersResponse}
           verifiedMembersResponse={verifiedMembersResponse}

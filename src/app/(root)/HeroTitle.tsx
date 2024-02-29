@@ -19,9 +19,7 @@ const HeroTitle = ({
     <div className={className}>
       <h1 className={titleStyle}>{title}</h1>
       {subtitle && (
-        <p className={cn('tw-text-lg tw-font-bold', subtitleStyle)}>
-          {subtitle}
-        </p>
+        <p className={cn('text-lg font-bold', subtitleStyle)}>{subtitle}</p>
       )}
     </div>
   );

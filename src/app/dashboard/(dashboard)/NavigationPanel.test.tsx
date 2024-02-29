@@ -160,11 +160,7 @@ describe('NavigationPanel navigation links', () => {
 
     const navigationLinks = screen.getAllByRole('link');
 
-    expect(navigationLinks[0]).toHaveClass(
-      'tw-text-gray-500 tw-pointer-events-none'
-    );
-    expect(navigationLinks[1]).toHaveClass(
-      'tw-text-gray-500 tw-pointer-events-none'
-    );
+    expect(navigationLinks[0]).toHaveClass('text-gray-500 pointer-events-none');
+    expect(navigationLinks[1]).toHaveClass('text-gray-500 pointer-events-none');
   });
 });

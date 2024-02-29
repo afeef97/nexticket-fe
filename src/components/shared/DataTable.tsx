@@ -43,7 +43,7 @@ const DataTable = <TData, TValue>({
 
   return (
     <>
-      <div className='tw-rounded-md tw-border'>
+      <div className='rounded-md border'>
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -100,7 +100,7 @@ const DataTable = <TData, TValue>({
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className='tw-h-24 tw-text-center'
+                  className='h-24 text-center'
                 >
                   No results.
                 </TableCell>
