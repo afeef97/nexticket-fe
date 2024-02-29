@@ -34,27 +34,28 @@ const AccessContextProvider = ({
     [userAccountRes]
   );
   const accessOk: boolean = useMemo(() => userAccountRes.ok, [userAccountRes]);
+  const hasUserData: boolean = useMemo(
+    () => userData && Object.keys(userData).length > 0,
+    [userData]
+  );
 
   useEffect(() => {
-    if (userData && userData.role === 'PARLIAMENT_ADMIN') {
+    if (!hasUserData) {
+      return;
+    }
+
+    if (/not verified/g.test(accessMessage)) {
+      router.replace('/verify?email=' + accessMessage.split(' ')[0]);
+      return;
+    } else if (userData.role === 'PARLIAMENT_ADMIN') {
       setTheme('light');
       router.replace('/parliament/dashboard');
     }
-  }, [router, userData, setTheme]);
+  }, [router, userData, hasUserData, accessMessage, setTheme]);
 
-  useEffect(() => {
-    if (
-      userData &&
-      Object.keys(userData).length > 0 &&
-      /not verified/g.test(accessMessage)
-    ) {
-      router.replace('/verify?email=' + accessMessage.split(' ')[0]);
-      return;
-    }
-  }, [router, userData, accessMessage]);
   return (
     <AccessContext.Provider value={{ userData, accessOk, accessMessage }}>
-      {userData.role === 'PARLIAMENT_ADMIN' ? (
+      {hasUserData && userData.role === 'PARLIAMENT_ADMIN' ? (
         <div className='h-screen w-screen bg-white flex flex-col justify-center items-center gap-4'>
           <Loader2Icon className='animate-spin' size={48} />
           <p>Loading...</p>

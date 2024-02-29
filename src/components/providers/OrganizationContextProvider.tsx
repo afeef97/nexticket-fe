@@ -13,7 +13,7 @@ export interface IOrganizationContext extends Partial<OrganizationData> {
 
 export const OrganizationContext = createContext({} as IOrganizationContext);
 
-const OrganizationProvider = ({
+const OrganizationContextProvider = ({
   children,
   organizationRes,
 }: {
@@ -42,4 +42,4 @@ const OrganizationProvider = ({
   );
 };
 
-export default OrganizationProvider;
+export default OrganizationContextProvider;

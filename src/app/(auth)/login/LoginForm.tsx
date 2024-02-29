@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState, useTransition } from 'react';
-import AccessExpired from '@/components/shared/AccessExpired';
+import AccessExpired from '@/components/providers/AccessExpiredProvider';
 import { Button } from '@/components/ui/button';
 import { FetchReturn } from '@/lib/customFetch';
 import { Form } from '@/components/ui/form';

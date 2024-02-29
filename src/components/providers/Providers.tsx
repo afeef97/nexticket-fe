@@ -1,7 +1,7 @@
 import { getOrganization, getUserAccount } from '@/app/dashboard/actions';
-import AccessContextProvider from '../providers/AccessContextProvider';
-import AccessExpiredProvider from './AccessExpired';
-import OrganizationProvider from '../providers/OrganizationProvider';
+import AccessContextProvider from './AccessContextProvider';
+import AccessExpiredProvider from './AccessExpiredProvider';
+import OrganizationContextProvider from './OrganizationContextProvider';
 import React from 'react';
 
 const Providers = async ({ children }: { children: React.ReactNode }) => {
@@ -16,9 +16,9 @@ const Providers = async ({ children }: { children: React.ReactNode }) => {
           getUserAccountResponse.data.statusCode === 401
         }
       >
-        <OrganizationProvider organizationRes={getOrganizationResponse}>
+        <OrganizationContextProvider organizationRes={getOrganizationResponse}>
           {children}
-        </OrganizationProvider>
+        </OrganizationContextProvider>
       </AccessExpiredProvider>
     </AccessContextProvider>
   );
