@@ -1,9 +1,4 @@
-import {
-  GetOrganizationMembers,
-  getPendingMembers,
-  getVerifiedMembers,
-} from './actions';
-import { FetchReturn } from '@/lib/types';
+import { getPendingMembers, getVerifiedMembers } from './actions';
 import InviteMembers from './InviteMembers';
 import MembersTabs from './MembersTabs';
 import { Metadata } from 'next';
@@ -14,10 +9,8 @@ export const metadata: Metadata = {
 };
 
 const Users = async () => {
-  const pendingMembersResponse: FetchReturn<GetOrganizationMembers> =
-    await getPendingMembers();
-  const verifiedMembersResponse: FetchReturn<GetOrganizationMembers> =
-    await getVerifiedMembers();
+  const pendingMembersResponse = await getPendingMembers();
+  const verifiedMembersResponse = await getVerifiedMembers();
 
   return (
     <>

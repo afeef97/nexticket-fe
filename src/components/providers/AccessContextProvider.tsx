@@ -1,9 +1,8 @@
 'use client';
 
-import { FetchReturn, UserData } from '@/lib/types';
+import { FetchReturn, GetQuery, UserData } from '@/lib/types';
 import React, { createContext, useEffect, useMemo } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
-import { GetUserAccount } from '@/app/dashboard/actions';
 import { Loader2Icon } from 'lucide-react';
 import { useTheme } from 'next-themes';
 
@@ -21,7 +20,7 @@ const AccessContextProvider = ({
   userAccountRes,
 }: {
   children: React.ReactNode;
-  userAccountRes: FetchReturn<GetUserAccount>;
+  userAccountRes: FetchReturn<GetQuery<UserData>>;
 }) => {
   const pathname = usePathname();
   const router = useRouter();

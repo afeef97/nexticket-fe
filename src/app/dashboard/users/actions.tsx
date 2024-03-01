@@ -1,5 +1,11 @@
 'use server';
-import { EmptyResponse, FetchReturn, OrganizationMember } from '@/lib/types';
+
+import {
+  EmptyResponse,
+  FetchReturn,
+  GetQuery,
+  OrganizationMember,
+} from '@/lib/types';
 import fetchNexticket from '@/lib/customFetch';
 import { revalidateTag } from 'next/cache';
 
@@ -17,13 +23,8 @@ export const inviteMembers = async (memberList: {
   });
 };
 
-export type GetOrganizationMembers = {
-  data: OrganizationMember[];
-  message?: string;
-};
-
 export const getPendingMembers = async (): Promise<
-  FetchReturn<GetOrganizationMembers>
+  FetchReturn<GetQuery<OrganizationMember[]>>
 > => {
   return await fetchNexticket(
     '/organization/members?is-verified=false&fields=email&order-email=asc',
@@ -38,7 +39,7 @@ export const getPendingMembers = async (): Promise<
 };
 
 export const getVerifiedMembers = async (): Promise<
-  FetchReturn<GetOrganizationMembers>
+  FetchReturn<GetQuery<OrganizationMember[]>>
 > => {
   return await fetchNexticket(
     '/organization/members?is-verified=true&fields=email&order-time=asc',

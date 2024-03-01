@@ -10,7 +10,7 @@ import {
   DialogHeader,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { UserPlus } from 'lucide-react';
 import dynamic from 'next/dynamic';
@@ -21,7 +21,7 @@ const InviteMembersForm = dynamic(() => import('./InviteMembersForm'), {
 
 const InviteMembers = () => {
   const { userData } = useContext<IAccessContext>(AccessContext);
-  const [open, setOpen] = React.useState<boolean>();
+  const [open, setOpen] = useState<boolean>();
 
   useEffect(() => {
     setOpen(false);

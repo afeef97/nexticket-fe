@@ -27,6 +27,11 @@ export type EmptyResponse = {
   data: [];
 };
 
+export type GetQuery<T> = {
+  data: T;
+  message: string;
+};
+
 export type QueryState = 'idle' | 'pending' | 'resolved' | 'error';
 
 export type UserData = {
