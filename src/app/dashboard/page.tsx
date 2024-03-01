@@ -1,11 +1,10 @@
-import { FetchReturn } from '@/lib/types';
 import { Metadata } from 'next';
 import PageTitle from '@/components/shared/PageTitle';
 import TicketPriority from './(dashboard)/TicketPriority';
 import TicketTotal from './(dashboard)/TicketTotal';
 import TicketTypes from './(dashboard)/TicketTypes';
 import dynamic from 'next/dynamic';
-import { getTickets } from './actions';
+import { getTicketSummary } from './actions';
 
 const NotifyCreateApikey = dynamic(
   () => import('./(dashboard)/NotifyCreateApikey'),
@@ -19,7 +18,7 @@ export const metadata: Metadata = {
 };
 
 const Dashboard = async () => {
-  const getTicketsResponse: FetchReturn = await getTickets();
+  const getTicketsResponse = await getTicketSummary();
 
   return (
     <>

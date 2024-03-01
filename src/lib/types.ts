@@ -83,3 +83,15 @@ export type UpdateFields = {
   isEdit: boolean;
   setIsEdit: React.Dispatch<React.SetStateAction<boolean>>;
 };
+
+export type TicketSummary = {
+  platform: string;
+  category: string;
+  status_pending_count: number;
+  status_processed_count: number;
+  status_resolved_count: number;
+  priority_low_count: number;
+  priority_medium_count: number;
+  priority_important_count: number;
+  total: number;
+};
