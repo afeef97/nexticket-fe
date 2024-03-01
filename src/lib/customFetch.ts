@@ -1,10 +1,6 @@
+import { FetchReturn } from './types';
 import { handleResponseCookies } from '@/app/(auth)/actions';
 import { tokenHandler } from './utils';
-
-export interface FetchReturn {
-  ok: boolean;
-  data: any;
-}
 
 const fetchNexticket = async (
   url: string,

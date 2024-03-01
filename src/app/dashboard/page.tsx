@@ -1,4 +1,4 @@
-import { FetchReturn } from '@/lib/customFetch';
+import { FetchReturn } from '@/lib/types';
 import { Metadata } from 'next';
 import PageTitle from '@/components/shared/PageTitle';
 import TicketPriority from './(dashboard)/TicketPriority';

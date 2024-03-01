@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { FetchReturn } from '@/lib/customFetch';
+import { FetchReturn } from '@/lib/types';
 import MembersTable from './MembersTable';
 import { PendingMembersColumn } from './PendingMembersColumn';
 import { VerifiedMembersColumn } from './VerifiedMembersColumn';

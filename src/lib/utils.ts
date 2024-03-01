@@ -1,5 +1,5 @@
 import { type ClassValue, clsx } from 'clsx';
-import { FetchReturn } from './customFetch';
+import { FetchReturn } from './types';
 import { MatcherFunction } from '@testing-library/react';
 import { twMerge } from 'tailwind-merge';
 

@@ -1,6 +1,7 @@
 'use server';
 
-import fetchNexticket, { FetchReturn } from '@/lib/customFetch';
+import { FetchReturn } from '@/lib/types';
+import fetchNexticket from '@/lib/customFetch';
 import { revalidateTag } from 'next/cache';
 
 export const handleResponseCookies = (setCookie: string[]): void => {

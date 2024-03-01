@@ -3,7 +3,7 @@
 import { useEffect, useState, useTransition } from 'react';
 import AccessExpired from '@/components/providers/AccessExpiredProvider';
 import { Button } from '@/components/ui/button';
-import { FetchReturn } from '@/lib/customFetch';
+import { FetchReturn } from '@/lib/types';
 import { Form } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import Link from 'next/link';

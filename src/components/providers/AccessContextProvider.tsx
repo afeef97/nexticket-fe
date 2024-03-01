@@ -1,10 +1,9 @@
 'use client';
 
+import { FetchReturn, UserData } from '@/lib/types';
 import React, { createContext, useEffect, useMemo } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
-import { FetchReturn } from '@/lib/customFetch';
 import { Loader2Icon } from 'lucide-react';
-import { UserData } from '@/lib/types';
 import { useTheme } from 'next-themes';
 
 export interface IAccessContext {

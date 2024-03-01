@@ -1,7 +1,6 @@
+import { FetchReturn, QueryState } from '../types';
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { AccessExpired } from '@/components/providers/AccessExpiredProvider';
-import { FetchReturn } from '../customFetch';
-import { QueryState } from '../types';
 
 const useQueryHandler = ({
   query,

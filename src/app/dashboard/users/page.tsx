@@ -1,5 +1,5 @@
 import { getPendingMembers, getVerifiedMembers } from './actions';
-import { FetchReturn } from '@/lib/customFetch';
+import { FetchReturn } from '@/lib/types';
 import InviteMembers from './InviteMembers';
 import MembersTabs from './MembersTabs';
 import { Metadata } from 'next';

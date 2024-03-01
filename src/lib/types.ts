@@ -7,6 +7,11 @@ import { ColumnDef } from '@tanstack/react-table';
 import { ObjectSchema } from 'valibot';
 import { UseFormReturn } from 'react-hook-form';
 
+export interface FetchReturn {
+  ok: boolean;
+  data: any;
+}
+
 export type QueryState = 'idle' | 'pending' | 'resolved' | 'error';
 
 export type UserData = {
