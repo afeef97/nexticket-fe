@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { FetchReturn } from '@/lib/types';
+import { GetOrganizationMembers } from './actions';
 import MembersTable from './MembersTable';
 import { PendingMembersColumn } from './PendingMembersColumn';
 import { VerifiedMembersColumn } from './VerifiedMembersColumn';
@@ -11,8 +12,8 @@ const MembersTabs = ({
   pendingMembersResponse,
   verifiedMembersResponse,
 }: {
-  pendingMembersResponse: FetchReturn;
-  verifiedMembersResponse: FetchReturn;
+  pendingMembersResponse: FetchReturn<GetOrganizationMembers>;
+  verifiedMembersResponse: FetchReturn<GetOrganizationMembers>;
 }) => {
   const [tabsValue, setTabsValue] = useState<string>('verified');
 

@@ -1,8 +1,15 @@
 'use server';
 
+import { FetchReturn, OrganizationData, UserData } from '@/lib/types';
 import fetchNexticket from '@/lib/customFetch';
 
-export const getUserAccount = async () => {
+export type GetUserAccount = {
+  data: UserData;
+  message: string;
+};
+export const getUserAccount = async (): Promise<
+  FetchReturn<GetUserAccount>
+> => {
   return await fetchNexticket('/users/my-account', {
     useToken: true,
     options: {
@@ -15,7 +22,13 @@ export const getUserAccount = async () => {
   });
 };
 
-export const getOrganization = async () => {
+export type GetOrganization = {
+  data: OrganizationData;
+  message: string;
+};
+export const getOrganization = async (): Promise<
+  FetchReturn<GetOrganization>
+> => {
   return await fetchNexticket('/organization', {
     options: {
       credentials: 'include',

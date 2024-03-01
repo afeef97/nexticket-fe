@@ -2,17 +2,17 @@ import { FetchReturn, QueryState } from '../types';
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { AccessExpired } from '@/components/providers/AccessExpiredProvider';
 
-const useQueryHandler = ({
+const useQueryHandler = <T extends unknown>({
   query,
   queryOnMount = true,
 }: {
   //eslint-disable-next-line
-  query: (...args: any[]) => Promise<FetchReturn>;
+  query: (...args: any[]) => Promise<FetchReturn<T>>;
   queryOnMount?: boolean;
 }) => {
   const accessExpiredCtx = useContext(AccessExpired);
   const [state, setState] = useState<QueryState>('idle');
-  const [data, setData] = useState<FetchReturn>({} as FetchReturn);
+  const [data, setData] = useState<FetchReturn<T>>({} as FetchReturn<T>);
   const mounted = useRef(false);
 
   const triggerQuery = useCallback(

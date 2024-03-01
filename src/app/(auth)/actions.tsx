@@ -1,6 +1,6 @@
 'use server';
 
-import { FetchReturn } from '@/lib/types';
+import { EmptyResponse, FetchReturn } from '@/lib/types';
 import fetchNexticket from '@/lib/customFetch';
 import { revalidateTag } from 'next/cache';
 
@@ -32,7 +32,11 @@ export const handleResponseCookies = (setCookie: string[]): void => {
   }
 };
 
-export const getToken = async (): Promise<FetchReturn> => {
+export type TokenCookie = {
+  access_token: string;
+  refresh_token: string;
+};
+export const getToken = async (): Promise<FetchReturn<TokenCookie>> => {
   const { cookies } = require('next/headers');
   const cookieStore = cookies();
 
@@ -68,7 +72,7 @@ export const getToken = async (): Promise<FetchReturn> => {
   }
 };
 
-export const refreshToken = async (): Promise<FetchReturn> => {
+export const refreshToken = async (): Promise<FetchReturn<EmptyResponse>> => {
   const { cookies } = require('next/headers');
   const cookieStore = cookies();
 
@@ -79,16 +83,22 @@ export const refreshToken = async (): Promise<FetchReturn> => {
     };
   }
 
-  const response: FetchReturn = await fetchNexticket('/auth/refresh', {
-    useToken: false,
-    options: {
-      headers: {
-        Authorization: `Bearer ${cookieStore.get('refresh_token')?.value}`,
+  const response: FetchReturn<EmptyResponse> = await fetchNexticket(
+    '/auth/refresh',
+    {
+      useToken: false,
+      options: {
+        headers: {
+          Authorization: `Bearer ${cookieStore.get('refresh_token')?.value}`,
+        },
       },
-    },
-  });
+    }
+  );
 
-  if (response.data.statusCode === 401 || response.data.statusCode === 403) {
+  if (
+    !response.ok &&
+    (response.data.statusCode === 401 || response.data.statusCode === 403)
+  ) {
     cookieStore.delete('access_token');
     cookieStore.delete('refresh_token');
     return {
@@ -108,7 +118,7 @@ export const updateUser = async ({
   email?: string;
   username?: string;
   password?: string;
-}): Promise<FetchReturn> => {
+}): Promise<FetchReturn<EmptyResponse>> => {
   const response = await fetchNexticket('/auth/update', {
     method: 'PUT',
     body: {
@@ -125,7 +135,7 @@ export const updateUser = async ({
   return response;
 };
 
-export const logoutUser = async (): Promise<FetchReturn> => {
+export const logoutUser = async (): Promise<FetchReturn<EmptyResponse>> => {
   const { cookies } = require('next/headers');
   const cookieStore = cookies();
 

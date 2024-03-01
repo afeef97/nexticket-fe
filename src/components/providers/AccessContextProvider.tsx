@@ -3,11 +3,13 @@
 import { FetchReturn, UserData } from '@/lib/types';
 import React, { createContext, useEffect, useMemo } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
+import { GetUserAccount } from '@/app/dashboard/actions';
 import { Loader2Icon } from 'lucide-react';
 import { useTheme } from 'next-themes';
 
 export interface IAccessContext {
-  userData: UserData;
+  userData: UserData | undefined;
+  hasUserData: boolean | undefined;
   accessOk: boolean;
   accessMessage: string;
 }
@@ -19,49 +21,49 @@ const AccessContextProvider = ({
   userAccountRes,
 }: {
   children: React.ReactNode;
-  userAccountRes: FetchReturn;
+  userAccountRes: FetchReturn<GetUserAccount>;
 }) => {
   const pathname = usePathname();
   const router = useRouter();
   const { setTheme } = useTheme();
 
+  const accessOk: boolean = useMemo(() => userAccountRes.ok, [userAccountRes]);
   const accessMessage: string = useMemo(
-    () => userAccountRes.data?.message,
+    () => userAccountRes.data.message,
     [userAccountRes]
   );
-  const userData: UserData = useMemo(
-    () => userAccountRes.data.data,
+  const userData: UserData | undefined = useMemo(
+    () => (userAccountRes.ok ? userAccountRes.data.data : undefined),
     [userAccountRes]
   );
-  const hasUserData: boolean = useMemo(
+  const hasUserData: boolean | undefined = useMemo(
     () => userData && Object.keys(userData).length > 0,
     [userData]
   );
   const isInvalidRoute: boolean = useMemo(
     () =>
       (pathname.includes('parliament') &&
-        userData.role !== 'PARLIAMENT_ADMIN') ||
+        userData?.role !== 'PARLIAMENT_ADMIN') ||
       (!pathname.includes('parliament') &&
-        userData.role === 'PARLIAMENT_ADMIN'),
+        userData?.role === 'PARLIAMENT_ADMIN'),
     [userData, pathname]
   );
-  const accessOk: boolean = useMemo(() => userAccountRes.ok, [userAccountRes]);
 
   useEffect(() => {
     if (hasUserData) {
-      if (/not verified/g.test(accessMessage)) {
+      if (accessMessage && /not verified/g.test(accessMessage)) {
         router.replace('/verify?email=' + accessMessage.split(' ')[0]);
         return;
       }
 
       if (
-        userData.role === 'PARLIAMENT_ADMIN' &&
+        userData?.role === 'PARLIAMENT_ADMIN' &&
         !pathname.includes('/parliament')
       ) {
         setTheme('light');
         router.replace('/parliament/dashboard');
       } else if (
-        userData.role !== 'PARLIAMENT_ADMIN' &&
+        userData?.role !== 'PARLIAMENT_ADMIN' &&
         pathname.includes('/parliament')
       ) {
         router.replace('/dashboard');
@@ -70,7 +72,9 @@ const AccessContextProvider = ({
   }, [router, userData, hasUserData, accessMessage, pathname, setTheme]);
 
   return (
-    <AccessContext.Provider value={{ userData, accessOk, accessMessage }}>
+    <AccessContext.Provider
+      value={{ userData, hasUserData, accessOk, accessMessage }}
+    >
       {hasUserData && isInvalidRoute ? (
         <div className='h-screen w-screen bg-white flex flex-col justify-center items-center gap-4'>
           <Loader2Icon className='animate-spin' size={48} />

@@ -27,7 +27,7 @@ const InviteMembers = () => {
     setOpen(false);
   }, []);
 
-  if (userData.role === 'USER') {
+  if (userData?.role === 'USER') {
     return null;
   }
 

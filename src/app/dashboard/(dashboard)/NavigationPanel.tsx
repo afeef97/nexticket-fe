@@ -16,7 +16,7 @@ const NavigationPanel = ({
 }) => {
   const pathname = usePathname();
 
-  const { userData, accessOk } = useContext(AccessContext);
+  const { userData } = useContext(AccessContext);
 
   return (
     <aside
@@ -31,7 +31,7 @@ const NavigationPanel = ({
           nex<span className='font-normal'>ticket</span>
         </h3>
         <div className='bg-muted h-1 w-32 mb-1 rounded-xl md:hidden' />
-        <p className='text-center'>{accessOk && userData.organization?.name}</p>
+        <p className='text-center'>{userData?.organization?.name}</p>
       </div>
       <nav className='w-full md:mt-4'>
         {links.map((link) => (
@@ -40,8 +40,7 @@ const NavigationPanel = ({
             href={link.href}
             className={cn(
               'py-2 md:py-3 w-full flex flex-row-reverse md:flex-row items-center justify-start gap-3 hover:text-link transition-colors',
-              accessOk &&
-                (!userData.organization_id || !userData.username) &&
+              (!userData?.organization_id || !userData?.username) &&
                 'text-gray-500 pointer-events-none',
               pathname === link.href &&
                 'font-bold text-link pointer-events-none'
