@@ -52,24 +52,22 @@ const InviteMembersForm = ({
     name: 'memberList',
   });
 
-  const {
-    data: inviteMembersData,
-    state: inviteMembersState,
-    triggerQuery: triggerInviteMembers,
-  } = useQueryHandler({
-    query: inviteMembers,
-    queryOnMount: false,
-  });
+  const { state: inviteMembersState, triggerQuery: triggerInviteMembers } =
+    useQueryHandler({
+      query: inviteMembers,
+      queryOnMount: false,
+    });
   const onSubmit = async (data: vInput<typeof InviteMembersFormSchema>) => {
     const res = await triggerInviteMembers(data.memberList);
-    console.log(res);
 
-    if (!inviteMembersData.ok && res.data.existingEmails) {
-      res.data.existingEmails.forEach((email: string, index: number) => {
-        inviteMembersForm.setError(`memberList.${index}.email`, {
-          message: email + ' already exists',
-        });
-      });
+    if (!res.ok && res.data.existingEmails) {
+      (res.data.existingEmails as string[]).forEach(
+        (email: string, index: number) => {
+          inviteMembersForm.setError(`memberList.${index}.email`, {
+            message: email + ' already exists',
+          });
+        }
+      );
       return;
     }
 

@@ -38,8 +38,11 @@ const RegisterForm = () => {
     );
 
     if (!response.ok) {
-      response.data.fields.map((fields: 'username' | 'email' | 'password') =>
-        registerForm.setError(fields, { message: response.data.message })
+      (response.data.fields as string[]).map((fields: string) =>
+        registerForm.setError(
+          fields as keyof vInput<typeof RegisterFormSchema>,
+          { message: response.data.message }
+        )
       );
       return;
     }

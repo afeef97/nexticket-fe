@@ -3,7 +3,6 @@
 import { useEffect, useState, useTransition } from 'react';
 import AccessExpired from '@/components/providers/AccessExpiredProvider';
 import { Button } from '@/components/ui/button';
-import { FetchReturn } from '@/lib/customFetch';
 import { Form } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import Link from 'next/link';
@@ -29,7 +28,7 @@ const LoginForm = () => {
   const [isTokenExpired, setIsTokenExpired] = useState(false);
 
   const getTokenOnLoad = async (): Promise<void> => {
-    const token: FetchReturn = await getToken();
+    const token = await getToken();
     if (token.ok) {
       router.push('/dashboard');
     } else if (/.*expired.*/.test(token.data.message)) {
@@ -45,8 +44,10 @@ const LoginForm = () => {
       const response = await loginUser(data.email, data.password);
 
       if (!response.ok) {
-        response.data.fields.map((field: 'email' | 'password') =>
-          loginForm.setError(field, { message: response.data.message })
+        (response.data.fields as string[]).map((field: string) =>
+          loginForm.setError(field as keyof vInput<typeof LoginFormSchema>, {
+            message: response.data.message,
+          })
         );
         return;
       }

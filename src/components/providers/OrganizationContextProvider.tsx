@@ -1,8 +1,7 @@
 'use client';
 
+import { FetchReturn, GetQuery, OrganizationData } from '@/lib/types';
 import React, { createContext, useMemo } from 'react';
-import { FetchReturn } from '@/lib/customFetch';
-import { OrganizationData } from '@/lib/types';
 
 export interface IOrganizationContext extends Partial<OrganizationData> {
   _count?: { users: number; tickets: number };
@@ -18,10 +17,10 @@ const OrganizationContextProvider = ({
   organizationRes,
 }: {
   children: React.ReactNode;
-  organizationRes: FetchReturn;
+  organizationRes: FetchReturn<GetQuery<OrganizationData>>;
 }) => {
-  const organizationData: Partial<OrganizationData> = useMemo(
-    () => organizationRes.data?.data,
+  const organizationData: Partial<OrganizationData> | undefined = useMemo(
+    () => (organizationRes.ok ? organizationRes.data?.data : undefined),
     [organizationRes]
   );
   const organizationOk: boolean = useMemo(
@@ -29,8 +28,8 @@ const OrganizationContextProvider = ({
     [organizationRes]
   );
   const hasApiKey: boolean = useMemo(
-    () => organizationOk && Boolean(organizationData.api_key),
-    [organizationOk, organizationData]
+    () => Boolean(organizationData?.api_key),
+    [organizationData]
   );
 
   return (
