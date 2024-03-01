@@ -1,9 +1,17 @@
 'use server';
 
-import { FetchReturn, GetQuery, OrganizationData, UserData } from '@/lib/types';
+import {
+  FetchReturn,
+  GetQuery,
+  OrganizationData,
+  TicketSummary,
+  UserData,
+} from '@/lib/types';
 import fetchNexticket from '@/lib/customFetch';
 
-export const getUserAccount = async (): Promise<FetchReturn<GetQuery<UserData>>> => {
+export const getUserAccount = async (): Promise<
+  FetchReturn<GetQuery<UserData>>
+> => {
   return await fetchNexticket('/users/my-account', {
     useToken: true,
     options: {
@@ -30,45 +38,10 @@ export const getOrganization = async (): Promise<
   });
 };
 
-export const getTickets = async () => {
-  const response = await fetchNexticket('/ticket', {
+export const getTicketSummary = async (): Promise<
+  FetchReturn<GetQuery<TicketSummary[]>>
+> => {
+  return await fetchNexticket('/ticket/summary', {
     options: {},
   });
-
-  let totalTickets: number = 0;
-  const categoriesMap: Map<string, number> = new Map();
-  const priorityMap: Map<string, number> = new Map();
-
-  if (response.ok) {
-    totalTickets = response.data.data.length;
-    response.data.data.map((ticket: any) => {
-      if (!priorityMap.has(ticket.priority) && ticket.priority) {
-        priorityMap.set(ticket.priority, 1);
-      } else if (priorityMap.has(ticket.priority)) {
-        priorityMap.set(
-          ticket.priority,
-          (priorityMap.get(ticket.priority) as number) + 1
-        );
-      }
-
-      if (!categoriesMap.has(ticket.category)) {
-        categoriesMap.set(ticket.category, 1);
-      } else if (categoriesMap.has(ticket.category)) {
-        categoriesMap.set(
-          ticket.category,
-          (categoriesMap.get(ticket.category) as number) + 1
-        );
-      }
-    });
-  }
-
-  return {
-    ok: response.ok,
-    data: {
-      ...response.data,
-      totalTickets,
-      categories: categoriesMap,
-      priorities: priorityMap,
-    },
-  };
 };
