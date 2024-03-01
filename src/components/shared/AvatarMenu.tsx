@@ -14,7 +14,7 @@ import ThemeButton from './ThemeButton';
 import { cn } from '@/lib/utils';
 
 const AvatarMenu = ({ className }: { className?: string }) => {
-  const { userData, accessOk } = useContext<IAccessContext>(AccessContext);
+  const { userData } = useContext<IAccessContext>(AccessContext);
   const [confirmingLogout, setConfirmingLogout] = useState(false);
 
   return (
@@ -29,15 +29,14 @@ const AvatarMenu = ({ className }: { className?: string }) => {
           <Avatar>
             <AvatarImage src='' /> {/* TODO: add user avatar */}
             <AvatarFallback className='bg-secondary'>
-              {(accessOk && userData.username?.slice(0, 1).toUpperCase()) ||
-                '?'}
+              {userData?.username?.slice(0, 1).toUpperCase() || '?'}
             </AvatarFallback>
           </Avatar>
         </PopoverTrigger>
         <PopoverContent className='relative'>
           <span className='inline-block text-sm max-w-52'>
-            {(accessOk && userData?.username) || 'Not found'}{' '}
-            {accessOk && `(${userData.email})`}
+            {userData?.username || 'Not found'}{' '}
+            {userData?.email && `(${userData.email})`}
           </span>
 
           <ThemeButton

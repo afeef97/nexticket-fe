@@ -1,10 +1,6 @@
+import { EmptyResponse, FetchReturn } from './types';
 import { handleResponseCookies } from '@/app/(auth)/actions';
 import { tokenHandler } from './utils';
-
-export interface FetchReturn {
-  ok: boolean;
-  data: any;
-}
 
 const fetchNexticket = async (
   url: string,
@@ -19,9 +15,10 @@ const fetchNexticket = async (
     body?: unknown;
     options?: RequestInit;
   }
-): Promise<FetchReturn> => {
+): Promise<FetchReturn<any>> => {
   if (useToken) {
-    const tokenState: FetchReturn | undefined = tokenHandler(options);
+    const tokenState: FetchReturn<EmptyResponse> | undefined =
+      tokenHandler(options);
 
     if (tokenState && !tokenState.ok) {
       return tokenState;

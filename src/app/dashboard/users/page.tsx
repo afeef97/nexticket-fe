@@ -1,5 +1,4 @@
 import { getPendingMembers, getVerifiedMembers } from './actions';
-import { FetchReturn } from '@/lib/customFetch';
 import InviteMembers from './InviteMembers';
 import MembersTabs from './MembersTabs';
 import { Metadata } from 'next';
@@ -10,8 +9,8 @@ export const metadata: Metadata = {
 };
 
 const Users = async () => {
-  const pendingMembersResponse: FetchReturn = await getPendingMembers();
-  const verifiedMembersResponse: FetchReturn = await getVerifiedMembers();
+  const pendingMembersResponse = await getPendingMembers();
+  const verifiedMembersResponse = await getVerifiedMembers();
 
   return (
     <>

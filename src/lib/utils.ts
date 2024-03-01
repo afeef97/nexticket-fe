@@ -1,5 +1,5 @@
 import { type ClassValue, clsx } from 'clsx';
-import { FetchReturn } from './customFetch';
+import { EmptyResponse, FetchReturn } from './types';
 import { MatcherFunction } from '@testing-library/react';
 import { twMerge } from 'tailwind-merge';
 
@@ -33,8 +33,9 @@ export const withMarkup =
       return hasText(node) && childrenDontHaveText;
     });
 
-
-export function tokenHandler(options: RequestInit): FetchReturn | undefined {
+export function tokenHandler(
+  options: RequestInit
+): FetchReturn<EmptyResponse> | undefined {
   try {
     const { cookies } = require('next/headers');
     const cookieStore = cookies();
@@ -64,7 +65,7 @@ export function tokenHandler(options: RequestInit): FetchReturn | undefined {
     return {
       ok: false,
       data: {
-        message: error,
+        message: error as string,
         statusCode: 400,
       },
     };

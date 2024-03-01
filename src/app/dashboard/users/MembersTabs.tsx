@@ -1,8 +1,8 @@
 'use client';
 
+import { FetchReturn, GetQuery, OrganizationMember } from '@/lib/types';
 import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { FetchReturn } from '@/lib/customFetch';
 import MembersTable from './MembersTable';
 import { PendingMembersColumn } from './PendingMembersColumn';
 import { VerifiedMembersColumn } from './VerifiedMembersColumn';
@@ -11,8 +11,8 @@ const MembersTabs = ({
   pendingMembersResponse,
   verifiedMembersResponse,
 }: {
-  pendingMembersResponse: FetchReturn;
-  verifiedMembersResponse: FetchReturn;
+  pendingMembersResponse: FetchReturn<GetQuery<OrganizationMember[]>>;
+  verifiedMembersResponse: FetchReturn<GetQuery<OrganizationMember[]>>;
 }) => {
   const [tabsValue, setTabsValue] = useState<string>('verified');
 

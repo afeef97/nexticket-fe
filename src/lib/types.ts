@@ -7,6 +7,31 @@ import { ColumnDef } from '@tanstack/react-table';
 import { ObjectSchema } from 'valibot';
 import { UseFormReturn } from 'react-hook-form';
 
+export type FetchReturn<T> = FetchReturnSuccess<T> | FetchReturnError;
+
+export interface FetchReturnSuccess<T> {
+  ok: true;
+  data: T;
+}
+
+export interface FetchReturnError {
+  ok: false;
+  data: {
+    statusCode: number;
+    message: string;
+    [key: string]: unknown;
+  };
+}
+
+export type EmptyResponse = {
+  data: [];
+};
+
+export type GetQuery<T> = {
+  data: T;
+  message: string;
+};
+
 export type QueryState = 'idle' | 'pending' | 'resolved' | 'error';
 
 export type UserData = {
@@ -21,6 +46,7 @@ export type UserData = {
   updated_at: string;
   organization: OrganizationData;
   user_has_ticket: number[];
+  message?: string;
 };
 
 export type OrganizationData = {

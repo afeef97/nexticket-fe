@@ -1,9 +1,8 @@
 'use client';
 
+import { FetchReturn, GetQuery, OrganizationMember } from '@/lib/types';
 import { ColumnDef } from '@tanstack/react-table';
 import DataTable from '@/components/shared/DataTable';
-import { FetchReturn } from '@/lib/customFetch';
-import { OrganizationMember } from '@/lib/types';
 import React from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 
@@ -11,7 +10,7 @@ const MembersTable = ({
   fetchMembersResponse,
   MembersColumn,
 }: {
-  fetchMembersResponse: FetchReturn;
+  fetchMembersResponse: FetchReturn<GetQuery<OrganizationMember[]>>;
   MembersColumn: ColumnDef<OrganizationMember>[];
 }) => {
   if (!fetchMembersResponse.ok) {

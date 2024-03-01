@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { FetchReturn } from '@/lib/customFetch';
+import { FetchReturn } from '@/lib/types';
 import React from 'react';
 
 const TicketTypes = ({
