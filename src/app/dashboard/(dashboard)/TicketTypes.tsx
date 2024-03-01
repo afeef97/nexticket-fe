@@ -1,14 +1,12 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { FetchReturn } from '@/lib/types';
+import { FetchReturn, GetQuery, TicketSummary } from '@/lib/types';
 import React from 'react';
 
 const TicketTypes = ({
   getTicketsResponse,
 }: {
-  getTicketsResponse: FetchReturn;
+  getTicketsResponse: FetchReturn<GetQuery<TicketSummary[]>>;
 }) => {
-  const categoriesMap: Map<string, number> = getTicketsResponse.data.categories;
-
   return (
     <Card className='grow md:max-w-lg'>
       <CardHeader>
@@ -16,11 +14,11 @@ const TicketTypes = ({
       </CardHeader>
 
       <CardContent className='max-h-32 overflow-scroll'>
-        {getTicketsResponse.ok && categoriesMap.size > 0 ? (
+        {getTicketsResponse.ok && getTicketsResponse.data.data.length > 0 ? (
           <ul className='space-y-1'>
-            {Array.from(categoriesMap.entries()).map(([key, value]) => (
-              <li key={key} className='pt-1 flex justify-between'>
-                {key} <span>{value}</span>
+            {getTicketsResponse.data.data.map((ticket: TicketSummary) => (
+              <li key={ticket.category} className='pt-1 flex justify-between'>
+                {ticket.category} <span>{ticket.total}</span>
               </li>
             ))}
           </ul>
