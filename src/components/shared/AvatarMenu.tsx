@@ -36,21 +36,34 @@ const AvatarMenu = ({ className }: { className?: string }) => {
         <PopoverContent className='relative'>
           <span className='inline-block text-sm max-w-52'>
             {userData?.username || 'Not found'}{' '}
-            {userData?.email && `(${userData.email})`}
           </span>
 
-          <ThemeButton
-            variant='ghost'
-            className='absolute top-4 right-4 !p-0.5 h-auto'
-          />
+          {userData?.role !== 'PARLIAMENT_ADMIN' && (
+            <ThemeButton
+              variant='ghost'
+              className='absolute top-4 right-4 !p-0.5 h-auto'
+            />
+          )}
 
           <hr className='my-2' />
           <nav className='flex flex-col gap-1'>
             <Button variant={'ghost'} asChild>
-              <Link href='/dashboard/settings'>Settings</Link>
+              <Link
+                href={`${
+                  userData?.role === 'PARLIAMENT_ADMIN' ? '/parliament' : ''
+                }/dashboard/settings`}
+              >
+                Settings
+              </Link>
             </Button>
             <Button variant={'ghost'} asChild>
-              <Link href='/dashboard/account'>Account</Link>
+              <Link
+                href={`${
+                  userData?.role === 'PARLIAMENT_ADMIN' ? '/parliament' : ''
+                }/dashboard/account`}
+              >
+                Account
+              </Link>
             </Button>
             <Button
               variant={'destructive'}
