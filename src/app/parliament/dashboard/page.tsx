@@ -38,7 +38,7 @@ const ParliamentDashboard = ({ data }: { data: any }) => {
                     {isLoading ? (
                       <Skeleton />
                     ) : (
-                      data?.data.aid.pending_ticket_count
+                      data?.data.aid.pending_ticket_count | 0
                     )}
                   </div>
                 </div>
@@ -47,7 +47,7 @@ const ParliamentDashboard = ({ data }: { data: any }) => {
                 </div> */}
               </div>
               <div className='w-full flex items-center justify-center border-t border-lineSecondary py-4'>
-                <Link href='/aid?status=1'>
+                <Link href='/parliament/aid?status=1'>
                   <div className='text-primary underline cursor-pointer text-sub1 hover:text-primaryHover'>
                     View all
                   </div>
@@ -64,7 +64,7 @@ const ParliamentDashboard = ({ data }: { data: any }) => {
                     {isLoading ? (
                       <Skeleton />
                     ) : (
-                      data?.data.complaint.pending_ticket_count
+                      data?.data.complaint.pending_ticket_count | 0
                     )}
                   </div>
                 </div>
@@ -73,7 +73,7 @@ const ParliamentDashboard = ({ data }: { data: any }) => {
                 </div> */}
               </div>
               <div className='w-full flex items-center justify-center border-t border-lineSecondary py-4'>
-                <Link href='/complaint?status=1'>
+                <Link href='/parliament/complaint?status=1'>
                   <div className='text-primary underline cursor-pointer text-sub1 hover:text-primaryHover'>
                     View all
                   </div>
@@ -101,14 +101,18 @@ const ParliamentDashboard = ({ data }: { data: any }) => {
                 <div className='flex flex-col gap-2'>
                   <div className='text-body1'>Total ticket received</div>
                   <div className='text-h5'>
-                    {isLoading ? <Skeleton /> : data?.data.all.ticket_count}
+                    {isLoading ? <Skeleton /> : data?.data.all.ticket_count | 0}
                   </div>
                 </div>
                 <div className='flex flex-col gap-4 mt-10'>
                   <div className='w-full flex items-center justify-between'>
                     <div className='text-body1'>Aid ticket</div>
                     <div className='text-sub1'>
-                      {isLoading ? <Skeleton /> : data?.data.aid.ticket_count}
+                      {isLoading ? (
+                        <Skeleton />
+                      ) : (
+                        data?.data.aid.ticket_count | 0
+                      )}
                     </div>
                   </div>
                   <div className='w-full flex items-center justify-between'>
@@ -117,7 +121,7 @@ const ParliamentDashboard = ({ data }: { data: any }) => {
                       {isLoading ? (
                         <Skeleton />
                       ) : (
-                        data?.data.complaint.ticket_count
+                        data?.data.complaint.ticket_count | 0
                       )}
                     </div>
                   </div>
@@ -133,7 +137,7 @@ const ParliamentDashboard = ({ data }: { data: any }) => {
                       {isLoading ? (
                         <Skeleton />
                       ) : (
-                        data?.data.aid.completed_ticket_count
+                        data?.data.aid.completed_ticket_count | 0
                       )}
                     </div>
                   </div>
@@ -145,7 +149,7 @@ const ParliamentDashboard = ({ data }: { data: any }) => {
                       {isLoading ? (
                         <Skeleton />
                       ) : (
-                        data?.data.aid.rejected_ticket_count
+                        data?.data.aid.rejected_ticket_count | 0
                       )}
                     </div>
                   </div>
@@ -160,7 +164,7 @@ const ParliamentDashboard = ({ data }: { data: any }) => {
                     {isLoading ? (
                       <Skeleton />
                     ) : (
-                      data?.data.complaint.completed_ticket_count
+                      data?.data.complaint.completed_ticket_count | 0
                     )}
                   </div>
                 </div>
