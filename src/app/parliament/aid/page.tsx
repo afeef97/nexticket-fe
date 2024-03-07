@@ -30,6 +30,10 @@ export default function Aid() {
   const [search, setSearch] = useState('');
   const filter = `${filterStatus}${filterTime}`;
 
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [filterStatus, filterTime, search]);
+
   // Define a state variable to avoid spamming enter key
   const [searchCooldown, setSearchCooldown] = useState(false);
 
@@ -68,7 +72,7 @@ export default function Aid() {
   //navigate to id page
   const router = useRouter();
   const handleRowClick = (itemId: string) => {
-    router.push(`/aid/${itemId}`);
+    router.push(`/parliament/aid/${itemId}`);
   };
 
   //set time filter
@@ -217,7 +221,11 @@ export default function Aid() {
                               {item.id}
                             </td>
                             <td className='whitespace-nowrap py-4 px-3 text-body1 text-textPrimary'>
-                              {item.created_at}
+                              {
+                                new Date(item.created_at)
+                                  .toString()
+                                  .split('GMT')[0]
+                              }
                             </td>
                             {/* <Link href="/"> */}
                             <td className='whitespace-nowrap py-4 px-3 text-body1 text-textPrimary'>
