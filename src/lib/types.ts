@@ -95,3 +95,30 @@ export type TicketSummary = {
   priority_important_count: number;
   total: number;
 };
+
+export type ParliamentTickets = {
+  id: number;
+  full_name: string;
+  email: string;
+  phone_number: number;
+  address: string;
+  occupation: string;
+  title: string;
+  content: string;
+  ticket_type: 'AID' | 'COMPLAINT';
+  ticket_status: 'PENDING' | 'COMPLETED' | 'REJECTED' | 'AWAITING_REPLY';
+  organization_id: number;
+  created_at: string;
+};
+
+export type PaginatedParliamentTickets = {
+  data: ParliamentTickets[];
+  meta: {
+    total: number;
+    lastPage: number;
+    currentPage: number;
+    perPage: number;
+    prev: number;
+    next: number;
+  };
+};
