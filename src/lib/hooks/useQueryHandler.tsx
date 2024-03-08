@@ -5,10 +5,12 @@ import { AccessExpired } from '@/components/providers/AccessExpiredProvider';
 const useQueryHandler = <T extends unknown>({
   query,
   queryOnMount = true,
+  deps = [],
 }: {
   //eslint-disable-next-line
   query: (...args: any[]) => Promise<FetchReturn<T>>;
   queryOnMount?: boolean;
+  deps?: any[];
 }) => {
   const accessExpiredCtx = useContext(AccessExpired);
   const [state, setState] = useState<QueryState>('idle');
@@ -40,6 +42,13 @@ const useQueryHandler = <T extends unknown>({
       triggerQuery();
     }
   }, [triggerQuery, queryOnMount]);
+
+  useEffect(() => {
+    if (deps.length === 0 || !mounted.current) return;
+    triggerQuery();
+
+    //eslint-disable-next-line
+  }, [...deps]);
 
   return { data, state, triggerQuery };
 };
