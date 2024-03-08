@@ -61,7 +61,7 @@ export type OrganizationData = {
 export type OrganizationMember = {
   email: string;
   username: string;
-  role: 'SUPER_ADMIN' | 'ADMIN' | 'USER';
+  role: 'PARLIAMENT_ADMIN' | 'SUPER_ADMIN' | 'ADMIN' | 'USER';
 };
 
 export interface DataTableProps<TData, TValue> {

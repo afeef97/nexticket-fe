@@ -1,14 +1,14 @@
 'use client';
+import { BsPlusLg, BsSearch } from 'react-icons/bs';
 import { useEffect, useState } from 'react';
-import { Skeleton } from '@/components/ui/skeleton';
+import { GoKebabHorizontal } from 'react-icons/go';
+import { OrganizationMember } from '@/lib/types';
+import ParliamentEmptyState from '../(components)/ParliamentEmptyState';
+import ParliamentSkeletonCard from '../(components)/ParliamentSkeletonCard';
+import { getParliamentMembers } from './actions';
+import useQueryHandler from '@/lib/hooks/useQueryHandler';
 
 export default function Admin() {
-  // temporary state
-  const data: any = undefined;
-  const isError = false;
-  const isFetching = false;
-  const isLoading = false;
-
   //pagination state
   //   const [currentPage, setCurrentPage] = useState(1);
   //   const [rowsPerCurrentPage, setRowsPerCurrentPage] = useState(10);
@@ -64,6 +64,10 @@ export default function Admin() {
   //to open add admin dialog
   const [, setIsOpenDialog] = useState(false);
 
+  const { data: membersData, state: getMembersState } = useQueryHandler({
+    query: getParliamentMembers,
+  });
+
   return (
     <div>
       <h4>Admin</h4>
@@ -72,7 +76,7 @@ export default function Admin() {
         <div className='w-full'>
           <div className='flex items-center justify-between'>
             <div className='flex w-[420px] items-center bg-white rounded border border-linePrimary px-3 py-2'>
-              {/* <BsSearch className='text-textPrimary' /> */}
+              <BsSearch className='text-textPrimary' />
               <input
                 type='text'
                 placeholder='Search name or email'
@@ -85,7 +89,7 @@ export default function Admin() {
               className=' px-4  w-[150px] h-[48px] bg-primary hover:bg-primaryHover text-whiteBg text-sub1 rounded-[4.8px] flex items-center justify-center'
             >
               <span>
-                {/* <BsPlusLg size={20} className='text-whiteBg' /> */}
+                <BsPlusLg size={20} className='text-whiteBg' />
               </span>
               Add admin
             </button>
@@ -117,53 +121,57 @@ export default function Admin() {
                   </thead>
                   <tbody className='divide-y divide-lineSecondary'>
                     {/* loading state */}
-                    {(isFetching || isLoading) && (
+                    {getMembersState === 'pending' && (
                       <tr>
                         <td className='whitespace-nowrap py-4 pl-4 pr-3 text-body1 text-textPrimary sm:pl-6 md:pl-3'>
-                          <Skeleton />
+                          <ParliamentSkeletonCard />
                         </td>
                         <td className='whitespace-nowrap py-4 px-3 text-body1 text-textPrimary'>
-                          <Skeleton />
+                          <ParliamentSkeletonCard />
                         </td>
                         <td className='whitespace-nowrap py-4 px-3 text-body1 text-textPrimary'>
-                          <Skeleton />
+                          <ParliamentSkeletonCard />
                         </td>
                       </tr>
                     )}
 
                     {/* normal state */}
-                    {!isFetching &&
-                      !isLoading &&
-                      !isError &&
-                      data?.data.data.map((item: any, index: number) => (
-                        <tr key={index} className='cursor-pointer'>
-                          <td className='whitespace-nowrap py-4 pl-4 pr-3 text-body1  text-textPrimary sm:pl-6 md:pl-3'>
-                            {/* <Link href={`/aid?title=${item.title}&time=${item.time}`} as={`/aid/${item.id}`}> */}
-                            {item.name}
-                            {/* </Link> */}
-                          </td>
-                          <td className='whitespace-nowrap py-4 px-3 text-body1  text-textPrimary'>
-                            {item.email}
-                          </td>
-                          <td className='whitespace-nowrap py-4 px-3 text-body1  text-textPrimary flex justify-end'>
-                            {/* <GoKebabHorizontal size={24} /> */}
-                            {/* <SeeMoreButton
+                    {getMembersState === 'resolved' &&
+                      membersData.ok &&
+                      membersData.data.data.map(
+                        (item: OrganizationMember, index: number) => (
+                          <tr key={index} className='cursor-pointer'>
+                            <td className='whitespace-nowrap py-4 pl-4 pr-3 text-body1  text-textPrimary sm:pl-6 md:pl-3'>
+                              {/* <Link href={`/aid?title=${item.title}&time=${item.time}`} as={`/aid/${item.id}`}> */}
+                              {item.username}
+                              {/* </Link> */}
+                            </td>
+                            <td className='whitespace-nowrap py-4 px-3 text-body1  text-textPrimary'>
+                              {item.email}
+                            </td>
+                            <td className='whitespace-nowrap py-4 px-3 text-body1  text-textPrimary flex justify-end'>
+                              <GoKebabHorizontal size={24} />
+                              {/* <SeeMoreButton
                               name={item.name}
                               id={item.id}
                               email={item.email}
                               refetch={refetch}
                             /> */}
-                          </td>
-                        </tr>
-                      ))}
-                    {/* error state */}
-                    {!isFetching &&
-                      !isLoading &&
-                      data?.data.data.length === 0 && (
-                        <tr>
-                          <td colSpan={3}>{/* <EmptyState /> */}</td>
-                        </tr>
+                            </td>
+                          </tr>
+                        )
                       )}
+                    {/* error state */}
+                    {getMembersState === 'error' ||
+                      (getMembersState === 'resolved' &&
+                        membersData.ok &&
+                        membersData?.data.data.length === 0 && (
+                          <tr>
+                            <td colSpan={3}>
+                              <ParliamentEmptyState />
+                            </td>
+                          </tr>
+                        ))}
                   </tbody>
                 </table>
               </div>
