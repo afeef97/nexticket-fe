@@ -1,26 +1,35 @@
 'use client';
 import React, { useState } from 'react';
 import { formatDateToString, subtractMonths, subtractWeeks } from '@/lib/utils';
+import { FaRegFlag } from 'react-icons/fa';
+import { GiCartwheel } from 'react-icons/gi';
 import Link from 'next/link';
-import { Skeleton } from '@/components/ui/skeleton';
+import ParliamentSkeletonCard from '../(components)/ParliamentSkeletonCard';
+import { getTicketsSummary } from './actions';
+import useQueryHandler from '@/lib/hooks/useQueryHandler';
 
-const ParliamentDashboard = ({ data }: { data: any }) => {
-  const isLoading = false;
-  const [, setFilterTime] = useState<string>('');
+const ParliamentDashboard = () => {
+  const [filterTime, setFilterTime] = useState<string>('');
   const getCurrentDate = () => {
     const currentDate = new Date();
-    return `&&period_end=${formatDateToString(currentDate)}`;
+    return `?period_end=${formatDateToString(currentDate)}`;
   };
 
   const getPastWeekDate = () => {
     const pastWeek = subtractWeeks(new Date(), 1);
-    return `&&period_end=${formatDateToString(pastWeek)}`;
+    return `?period_end=${formatDateToString(pastWeek)}`;
   };
 
   const getPastMonthDate = () => {
     const pastMonth = subtractMonths(new Date(), 1);
-    return `&&period_end=${formatDateToString(pastMonth)}`;
+    return `?period_end=${formatDateToString(pastMonth)}`;
   };
+
+  const { data: ticketSummaryData, state: getTicketSummaryState } =
+    useQueryHandler({
+      query: () => getTicketsSummary(filterTime),
+      deps: [filterTime],
+    });
 
   return (
     <>
@@ -35,19 +44,20 @@ const ParliamentDashboard = ({ data }: { data: any }) => {
                     Pending aid request
                   </div>
                   <div className='text-h5 text-textPrimary'>
-                    {isLoading ? (
-                      <Skeleton />
+                    {getTicketSummaryState === 'pending' ? (
+                      <ParliamentSkeletonCard />
                     ) : (
-                      data?.data.aid.pending_ticket_count | 0
+                      ticketSummaryData.ok &&
+                      ticketSummaryData.data.data.aid.total_pending_count
                     )}
                   </div>
                 </div>
-                {/* <div className=' w-[64px] h-[64px] rounded-full flex items-center justify-center bg-baseBg'>
+                <div className=' w-[64px] h-[64px] rounded-full flex items-center justify-center bg-baseBg'>
                   <GiCartwheel size={24} className='text-warning' />
-                </div> */}
+                </div>
               </div>
               <div className='w-full flex items-center justify-center border-t border-lineSecondary py-4'>
-                <Link href='/parliament/aid?status=1'>
+                <Link href='/parliament/aid?status=PENDING'>
                   <div className='text-primary underline cursor-pointer text-sub1 hover:text-primaryHover'>
                     View all
                   </div>
@@ -61,19 +71,20 @@ const ParliamentDashboard = ({ data }: { data: any }) => {
                     Pending complaint
                   </div>
                   <div className='text-h5 text-textPrimary'>
-                    {isLoading ? (
-                      <Skeleton />
+                    {getTicketSummaryState === 'pending' ? (
+                      <ParliamentSkeletonCard />
                     ) : (
-                      data?.data.complaint.pending_ticket_count | 0
+                      ticketSummaryData.ok &&
+                      ticketSummaryData.data.data.complaint.total_pending_count
                     )}
                   </div>
                 </div>
-                {/* <div className=' w-[64px] h-[64px] rounded-full flex items-center justify-center bg-baseBg'>
+                <div className=' w-[64px] h-[64px] rounded-full flex items-center justify-center bg-baseBg'>
                   <FaRegFlag size={24} className='text-warning' />
-                </div> */}
+                </div>
               </div>
               <div className='w-full flex items-center justify-center border-t border-lineSecondary py-4'>
-                <Link href='/parliament/complaint?status=1'>
+                <Link href='/parliament/complaint?status=PENDING'>
                   <div className='text-primary underline cursor-pointer text-sub1 hover:text-primaryHover'>
                     View all
                   </div>
@@ -101,27 +112,34 @@ const ParliamentDashboard = ({ data }: { data: any }) => {
                 <div className='flex flex-col gap-2'>
                   <div className='text-body1'>Total ticket received</div>
                   <div className='text-h5'>
-                    {isLoading ? <Skeleton /> : data?.data.all.ticket_count | 0}
+                    {getTicketSummaryState === 'pending' ? (
+                      <ParliamentSkeletonCard />
+                    ) : (
+                      ticketSummaryData.ok &&
+                      ticketSummaryData.data.data.all.total_ticket_count
+                    )}
                   </div>
                 </div>
                 <div className='flex flex-col gap-4 mt-10'>
                   <div className='w-full flex items-center justify-between'>
                     <div className='text-body1'>Aid ticket</div>
                     <div className='text-sub1'>
-                      {isLoading ? (
-                        <Skeleton />
+                      {getTicketSummaryState === 'pending' ? (
+                        <ParliamentSkeletonCard />
                       ) : (
-                        data?.data.aid.ticket_count | 0
+                        ticketSummaryData.ok &&
+                        ticketSummaryData.data.data.aid.total_ticket_count
                       )}
                     </div>
                   </div>
                   <div className='w-full flex items-center justify-between'>
                     <div className='text-body1'>Complaint ticket</div>
                     <div className='text-sub1'>
-                      {isLoading ? (
-                        <Skeleton />
+                      {getTicketSummaryState === 'pending' ? (
+                        <ParliamentSkeletonCard />
                       ) : (
-                        data?.data.complaint.ticket_count | 0
+                        ticketSummaryData.ok &&
+                        ticketSummaryData.data.data.complaint.total_ticket_count
                       )}
                     </div>
                   </div>
@@ -134,10 +152,11 @@ const ParliamentDashboard = ({ data }: { data: any }) => {
                   <div className='flex flex-col gap-2 p-4'>
                     <div className='text-body1'>Total aid ticket approved</div>
                     <div className='text-h5'>
-                      {isLoading ? (
-                        <Skeleton />
+                      {getTicketSummaryState === 'pending' ? (
+                        <ParliamentSkeletonCard />
                       ) : (
-                        data?.data.aid.completed_ticket_count | 0
+                        ticketSummaryData.ok &&
+                        ticketSummaryData.data.data.aid.total_completed_count
                       )}
                     </div>
                   </div>
@@ -146,10 +165,11 @@ const ParliamentDashboard = ({ data }: { data: any }) => {
                   <div className='flex flex-col gap-2 p-4'>
                     <div className='text-body1'>Total aid ticket rejected</div>
                     <div className='text-h5'>
-                      {isLoading ? (
-                        <Skeleton />
+                      {getTicketSummaryState === 'pending' ? (
+                        <ParliamentSkeletonCard />
                       ) : (
-                        data?.data.aid.rejected_ticket_count | 0
+                        ticketSummaryData.ok &&
+                        ticketSummaryData.data.data.aid.total_rejected_count
                       )}
                     </div>
                   </div>
@@ -161,10 +181,12 @@ const ParliamentDashboard = ({ data }: { data: any }) => {
                     Total complaint ticket resolved
                   </div>
                   <div className='text-h5'>
-                    {isLoading ? (
-                      <Skeleton />
+                    {getTicketSummaryState === 'pending' ? (
+                      <ParliamentSkeletonCard />
                     ) : (
-                      data?.data.complaint.completed_ticket_count | 0
+                      ticketSummaryData.ok &&
+                      ticketSummaryData.data.data.complaint
+                        .total_completed_count
                     )}
                   </div>
                 </div>
