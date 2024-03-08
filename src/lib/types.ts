@@ -96,6 +96,25 @@ export type TicketSummary = {
   total: number;
 };
 
+type ParliamentTicketSummaryCount = {
+  total_ticket_count: number;
+  total_pending_count: number;
+  total_completed_count: number;
+  total_awaiting_reply_count: number;
+  total_rejected_count: number;
+};
+
+export type ParliamentTicketSummary = {
+  aid: ParliamentTicketSummaryCount;
+  complaint: ParliamentTicketSummaryCount;
+  all: ParliamentTicketSummaryCount;
+  analytics: {
+    year: string;
+    month: string;
+    count: number;
+  };
+};
+
 export type ParliamentTickets = {
   id: number;
   full_name: string;
