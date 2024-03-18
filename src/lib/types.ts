@@ -62,6 +62,19 @@ export type OrganizationMember = {
   email: string;
   username: string;
   role: 'PARLIAMENT_ADMIN' | 'SUPER_ADMIN' | 'ADMIN' | 'USER';
+  isVerified?: boolean;
+};
+
+export type PaginatedParliamentMember = {
+  data: { users: OrganizationMember[] }[];
+  meta: {
+    total: number;
+    lastPage: number;
+    currentPage: number;
+    perPage: number;
+    prev: number;
+    next: number;
+  };
 };
 
 export interface DataTableProps<TData, TValue> {
