@@ -1,8 +1,9 @@
 'use client';
 
 import { AccessContext, IAccessContext } from '@/components/providers/AccessContextProvider';
-import { BsPlusLg, BsSearch } from 'react-icons/bs';
 import { useContext, useEffect, useState } from 'react';
+import AddAdminDialog from './AddAdminDialog';
+import { BsSearch } from 'react-icons/bs';
 import MemberActionButton from './MemberActionButton';
 import { OrganizationMember } from '@/lib/types';
 import ParliamentEmptyState from '../(components)/ParliamentEmptyState';
@@ -67,7 +68,7 @@ export default function Admin() {
   };
 
   //to open add admin dialog
-  const [, setIsOpenDialog] = useState(false);
+  const [isAddAdminOpen, setIsAddAdminOpen] = useState(false);
 
   const { data: membersData, state: getMembersState } = useQueryHandler({
     query: getParliamentMembers,
@@ -89,22 +90,14 @@ export default function Admin() {
                 onChange={(e) => handleSearch(e.target.value)}
               />
             </div>
-            <button
-              onClick={() => setIsOpenDialog(true)}
-              className=" px-4  w-[150px] h-[48px] bg-primary hover:bg-primaryHover text-whiteBg text-sub1 rounded-[4.8px] flex items-center justify-center"
-            >
-              <span>
-                <BsPlusLg size={20} className="text-whiteBg" />
-              </span>
-              Add admin
-            </button>
+            <AddAdminDialog open={isAddAdminOpen} setOpen={setIsAddAdminOpen} />
           </div>
           <div className="mt-8 flex flex-col overflow-x-hidden">
             <div className=" sm:-mx-6 lg:-mx-8">
               <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
                 <table className="min-w-full ">
                   <thead>
-                    <tr className="bg-baseBg">
+                    <tr className="bg-secondary/20">
                       <th
                         scope="col"
                         className="py-3.5 pl-4 pr-3 text-left text-body1  text-textSecondary sm:pl-6 md:pl-3"
@@ -191,12 +184,6 @@ export default function Admin() {
             (membersData.ok && membersData?.data.data.data.length === 0)) && <ParliamentTableBottom />}
         </div>
       </div>
-      {/* add admin dialog */}
-      {/* <AddAdminDialog
-        open={isOpenDialog}
-        setCloseDialog={() => setIsOpenDialog(false)}
-        refetch={refetch}
-      /> */}
     </div>
   );
 }
