@@ -7,14 +7,16 @@ import MemberActionButton from './MemberActionButton';
 import { OrganizationMember } from '@/lib/types';
 import ParliamentEmptyState from '../(components)/ParliamentEmptyState';
 import ParliamentSkeletonCard from '../(components)/ParliamentSkeletonCard';
+import ParliamentTableBottom from '../(components)/ParliamentTableBottom';
+import ParliamentTicketingPagination from '../(components)/ParliamentTicketingPagination';
 import { getParliamentMembers } from './actions';
 import useQueryHandler from '@/lib/hooks/useQueryHandler';
 
 export default function Admin() {
   const { userData } = useContext<IAccessContext>(AccessContext);
   //pagination state
-  //   const [currentPage, setCurrentPage] = useState(1);
-  //   const [rowsPerCurrentPage, setRowsPerCurrentPage] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [rowsPerCurrentPage, setRowsPerCurrentPage] = useState(10);
 
   //search state
   const [search, setSearch] = useState('');
@@ -168,21 +170,25 @@ export default function Admin() {
             </div>
           </div>
           {/* PAGINATION  */}
-          {/* {!isError && !isLoading && data?.data.data.length !== 0 && (
-            <TicketingPagination
-              count={data?.data.meta.total}
-              lastPage={data?.data.meta.last_page}
+          {membersData.ok && membersData?.data.data.data[0].users.length !== 0 && (
+            <ParliamentTicketingPagination
+              count={membersData?.data.data.meta.total}
+              lastPage={membersData?.data.data.meta.lastPage}
               pages={currentPage}
               rows={rowsPerCurrentPage}
               setPages={setCurrentPage}
               setRows={setRowsPerCurrentPage}
-              from={data?.data.meta.from}
-              to={data?.data.meta.to}
+              from={membersData?.data.data.meta.currentPage * rowsPerCurrentPage - rowsPerCurrentPage + 1}
+              to={
+                membersData?.data.data.meta.currentPage === membersData?.data.data.meta.lastPage
+                  ? membersData?.data.data.meta.total
+                  : membersData?.data.data.meta.currentPage * rowsPerCurrentPage
+              }
             />
           )}
-          {(isError || isLoading || data?.data.data.length === 0) && (
-            <TableBottom />
-          )} */}
+          {(getMembersState === 'error' ||
+            getMembersState === 'pending' ||
+            (membersData.ok && membersData?.data.data.data.length === 0)) && <ParliamentTableBottom />}
         </div>
       </div>
       {/* add admin dialog */}
