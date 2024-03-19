@@ -2,8 +2,8 @@
 
 import { AccessContext, IAccessContext } from '@/components/providers/AccessContextProvider';
 import { useContext, useEffect, useState } from 'react';
-import AddAdminDialog from './AddAdminDialog';
 import { BsSearch } from 'react-icons/bs';
+import InviteMembers from '@/app/dashboard/users/InviteMembers';
 import MemberActionButton from './MemberActionButton';
 import { OrganizationMember } from '@/lib/types';
 import ParliamentEmptyState from '../(components)/ParliamentEmptyState';
@@ -67,9 +67,6 @@ export default function Admin() {
     }
   };
 
-  //to open add admin dialog
-  const [isAddAdminOpen, setIsAddAdminOpen] = useState(false);
-
   const { data: membersData, state: getMembersState } = useQueryHandler({
     query: getParliamentMembers,
   });
@@ -90,7 +87,7 @@ export default function Admin() {
                 onChange={(e) => handleSearch(e.target.value)}
               />
             </div>
-            <AddAdminDialog open={isAddAdminOpen} setOpen={setIsAddAdminOpen} />
+            <InviteMembers />
           </div>
           <div className="mt-8 flex flex-col overflow-x-hidden">
             <div className=" sm:-mx-6 lg:-mx-8">
