@@ -19,7 +19,13 @@ const AddAdminFormSchema = object({
   ),
 });
 
-const AddAdminForm = ({ setOpen }: { setOpen: React.Dispatch<React.SetStateAction<boolean | undefined>> }) => {
+const AddAdminForm = ({
+  setOpen,
+  refetch,
+}: {
+  setOpen: React.Dispatch<React.SetStateAction<boolean | undefined>>;
+  refetch?: () => void;
+}) => {
   const addAdminForm = useForm<vInput<typeof AddAdminFormSchema>>({
     resolver: valibotResolver(AddAdminFormSchema),
     defaultValues: {
@@ -46,9 +52,19 @@ const AddAdminForm = ({ setOpen }: { setOpen: React.Dispatch<React.SetStateActio
         });
       });
       return;
+    } else if (!res.ok) {
+      addAdminForm.setError(`memberList.0.email`, {
+        message: res.data.message,
+      });
+      return;
     }
 
-    if (res.ok) setOpen(false);
+    if (res.ok) {
+      setOpen(false);
+      if (refetch) {
+        refetch();
+      }
+    }
   };
 
   return (

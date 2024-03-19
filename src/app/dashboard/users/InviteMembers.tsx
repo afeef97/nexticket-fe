@@ -21,7 +21,7 @@ const InviteMembersForm = dynamic(() => import('./InviteMembersForm'), {
   ssr: false,
 });
 
-const InviteMembers = () => {
+const InviteMembers = ({ refetch }: { refetch?: () => void }) => {
   const { userData } = useContext<IAccessContext>(AccessContext);
   const [open, setOpen] = useState<boolean>();
   const pathname = usePathname();
@@ -47,7 +47,11 @@ const InviteMembers = () => {
         <DialogHeader>
           <h5>{pathname.includes('parliament') ? 'Add admin' : 'Invite members'}</h5>
         </DialogHeader>
-        {pathname.includes('parliament') ? <AddAdminForm setOpen={setOpen} /> : <InviteMembersForm setOpen={setOpen} />}
+        {pathname.includes('parliament') ? (
+          <AddAdminForm setOpen={setOpen} refetch={refetch} />
+        ) : (
+          <InviteMembersForm setOpen={setOpen} />
+        )}
       </DialogContent>
     </Dialog>
   );

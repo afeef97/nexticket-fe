@@ -67,7 +67,11 @@ export default function Admin() {
     }
   };
 
-  const { data: membersData, state: getMembersState } = useQueryHandler({
+  const {
+    data: membersData,
+    state: getMembersState,
+    triggerQuery: triggerGetMembers,
+  } = useQueryHandler({
     query: getParliamentMembers,
   });
 
@@ -87,7 +91,7 @@ export default function Admin() {
                 onChange={(e) => handleSearch(e.target.value)}
               />
             </div>
-            <InviteMembers />
+            <InviteMembers refetch={triggerGetMembers} />
           </div>
           <div className="mt-8 flex flex-col overflow-x-hidden">
             <div className=" sm:-mx-6 lg:-mx-8">
@@ -131,7 +135,7 @@ export default function Admin() {
                         <tr key={index} className="cursor-pointer">
                           <td className="whitespace-nowrap py-4 pl-4 pr-3 text-body1  text-textPrimary sm:pl-6 md:pl-3">
                             {/* <Link href={`/aid?title=${item.title}&time=${item.time}`} as={`/aid/${item.id}`}> */}
-                            {item.username}
+                            {item.username || 'Username not found'}
                             {/* </Link> */}
                           </td>
                           <td className="whitespace-nowrap py-4 px-3 text-body1  text-textPrimary">{item.email}</td>
