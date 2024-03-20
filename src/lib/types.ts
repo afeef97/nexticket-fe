@@ -66,7 +66,7 @@ export type OrganizationMember = {
 };
 
 export type PaginatedParliamentMember = {
-  data: { users: OrganizationMember[] }[];
+  data: OrganizationMember[];
   meta: {
     total: number;
     lastPage: number;
