@@ -23,17 +23,28 @@ export default function Admin() {
   const [search, setSearch] = useState('');
   // Define a state variable to avoid spamming enter key
   const [searchCooldown, setSearchCooldown] = useState(false);
+  
+  const {
+    data: membersData,
+    state: getMembersState,
+    triggerQuery: triggerGetMembers,
+  } = useQueryHandler({
+    query: () => getParliamentMembers(search, currentPage, rowsPerCurrentPage),
+    deps: [currentPage, rowsPerCurrentPage],
+  });
 
   //set debounce for search filter
   useEffect(() => {
     // Set a new timeout to refetch data after 3 seconds if words are not empty
     const debounceTimeout = setTimeout(() => {
-      //   refetch();
+      setCurrentPage(1);
+      triggerGetMembers();
     }, 2000);
 
     return () => {
       clearTimeout(debounceTimeout);
     };
+    //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search]);
 
   //to avoid spamming enter button when searching
@@ -61,19 +72,11 @@ export default function Admin() {
   //search function
   const handleSearch = (words: string) => {
     if (words !== '') {
-      setSearch(`&&search=${words}`);
+      setSearch(`&search=${words}`);
     } else {
       setSearch('');
     }
   };
-
-  const {
-    data: membersData,
-    state: getMembersState,
-    triggerQuery: triggerGetMembers,
-  } = useQueryHandler({
-    query: getParliamentMembers,
-  });
 
   return (
     <div>
@@ -131,7 +134,7 @@ export default function Admin() {
                     {/* normal state */}
                     {getMembersState === 'resolved' &&
                       membersData.ok &&
-                      membersData.data.data.data[0].users.map((item: OrganizationMember, index: number) => (
+                      membersData.data.data.data.map((item: OrganizationMember, index: number) => (
                         <tr key={index} className="cursor-pointer">
                           <td className="whitespace-nowrap py-4 pl-4 pr-3 text-body1  text-textPrimary sm:pl-6 md:pl-3">
                             {/* <Link href={`/aid?title=${item.title}&time=${item.time}`} as={`/aid/${item.id}`}> */}
@@ -149,22 +152,20 @@ export default function Admin() {
                       ))}
                     {/* error state */}
                     {getMembersState === 'error' ||
-                      (getMembersState === 'resolved' &&
-                        membersData.ok &&
-                        membersData?.data.data.data[0].users.length === 0 && (
-                          <tr>
-                            <td colSpan={3}>
-                              <ParliamentEmptyState />
-                            </td>
-                          </tr>
-                        ))}
+                      (getMembersState === 'resolved' && membersData.ok && membersData?.data.data.data.length === 0 && (
+                        <tr>
+                          <td colSpan={3}>
+                            <ParliamentEmptyState />
+                          </td>
+                        </tr>
+                      ))}
                   </tbody>
                 </table>
               </div>
             </div>
           </div>
           {/* PAGINATION  */}
-          {membersData.ok && membersData?.data.data.data[0].users.length !== 0 && (
+          {membersData.ok && membersData?.data.data.data.length !== 0 && (
             <ParliamentTicketingPagination
               count={membersData?.data.data.meta.total}
               lastPage={membersData?.data.data.meta.lastPage}
