@@ -4,13 +4,16 @@ import { EmptyResponse, FetchReturn } from '@/lib/types';
 import fetchNexticket from '@/lib/customFetch';
 
 export const registerUser = async (
-  username: string,
-  email: string,
-  password: string
+  previousState: any,
+  formData: FormData
 ): Promise<FetchReturn<EmptyResponse>> => {
   return await fetchNexticket('/auth/register', {
     useToken: false,
     method: 'POST',
-    body: { username, email, password },
+    body: {
+      username: formData.get('username'),
+      email: formData.get('email'),
+      password: formData.get('password'),
+    },
   });
 };
