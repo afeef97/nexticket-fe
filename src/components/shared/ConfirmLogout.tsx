@@ -7,10 +7,10 @@ import {
   DialogFooter,
   DialogHeader,
 } from '../ui/dialog';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Button } from '../ui/button';
 import React from 'react';
 import { logoutUser } from '@/app/(auth)/actions';
-import useQueryHandler from '@/lib/hooks/useQueryHandler';
 import { useRouter } from 'next/navigation';
 
 const ConfirmLogout = ({
@@ -21,29 +21,37 @@ const ConfirmLogout = ({
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const router = useRouter();
-  const { triggerQuery: triggerLogoutUser } = useQueryHandler({
-    query: logoutUser,
-    queryOnMount: false,
+  const queryClient = useQueryClient();
+
+  const { mutateAsync: triggerLogoutUser, isPending } = useMutation({
+    mutationFn: logoutUser,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['token'] });
+      router.push('/login');
+    },
   });
 
-  const handleLogout = async () => {
-    const response = await triggerLogoutUser();
-
-    if (response.ok) {
-      router.push('/login');
-    }
-  };
   return (
-    <Dialog open={open} onOpenChange={() => setOpen((value) => !value)}>
+    <Dialog
+      open={open}
+      onOpenChange={() => setOpen((value) => !value)}
+    >
       <DialogContent>
         <DialogHeader className='text-2xl'>Confirm Logout</DialogHeader>
         <DialogDescription>Are you sure you want to logout?</DialogDescription>
 
         <DialogFooter className='flex gap-1'>
-          <Button variant={'destructive'} onClick={handleLogout}>
+          <Button
+            disabled={isPending}
+            variant={'destructive'}
+            onClick={() => triggerLogoutUser()}
+          >
             Logout
           </Button>
-          <Button variant={'outline'} onClick={() => setOpen(false)}>
+          <Button
+            variant={'outline'}
+            onClick={() => setOpen(false)}
+          >
             Cancel
           </Button>
         </DialogFooter>
