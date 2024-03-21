@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useTransition } from 'react';
+import { useCallback, useEffect, useState, useTransition } from 'react';
 import AccessExpired from '@/components/providers/AccessExpiredProvider';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
@@ -27,17 +27,17 @@ const LoginForm = () => {
   const [isPendingLogin, startTransitionLogin] = useTransition();
   const [isTokenExpired, setIsTokenExpired] = useState(false);
 
-  const getTokenOnLoad = async (): Promise<void> => {
+  const getTokenOnLoad = useCallback(async (): Promise<void> => {
     const token = await getToken();
     if (token.ok) {
       router.push('/dashboard');
     } else if (/.*expired.*/.test(token.data.message)) {
       setIsTokenExpired(true);
     }
-  };
+  }, [router]);
   useEffect(() => {
     getTokenOnLoad();
-  });
+  }, [getTokenOnLoad]);
 
   const onSubmit = (data: vInput<typeof LoginFormSchema>) => {
     startTransitionLogin(async () => {
@@ -60,35 +60,20 @@ const LoginForm = () => {
     <AccessExpired open={isTokenExpired}>
       <Form {...loginForm}>
         <form onSubmit={loginForm.handleSubmit(onSubmit)}>
-          <TextInputField
-            control={loginForm.control}
-            label='Email'
-            name='email'
-          >
-            <Input placeholder='Enter your email' />
+          <TextInputField control={loginForm.control} label="Email" name="email">
+            <Input placeholder="Enter your email" />
           </TextInputField>
-          <TextInputField
-            control={loginForm.control}
-            label='Password'
-            name='password'
-          >
-            <Input type='password' placeholder='Enter your password' />
+          <TextInputField control={loginForm.control} label="Password" name="password">
+            <Input type="password" placeholder="Enter your password" />
           </TextInputField>
 
-          <Button
-            type='submit'
-            disabled={isPendingLogin}
-            className='w-full mb-2'
-          >
+          <Button type="submit" disabled={isPendingLogin} className="w-full mb-2">
             Login
           </Button>
 
-          <p className='text-center'>
+          <p className="text-center">
             Don&apos;t have an account?{' '}
-            <Link
-              href='/register'
-              className='text-link hover:text-link/90 transition-colors'
-            >
+            <Link href="/register" className="text-link hover:text-link/90 transition-colors">
               Register
             </Link>
           </p>

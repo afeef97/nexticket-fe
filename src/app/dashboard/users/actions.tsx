@@ -14,6 +14,7 @@ export const inviteMembers = async (memberList: {
   role: string;
 }): Promise<FetchReturn<EmptyResponse>> => {
   revalidateTag('pending-members');
+  revalidateTag('parliament-members');
   return await fetchNexticket('/organization/invite-member', {
     method: 'POST',
     body: { memberList },
