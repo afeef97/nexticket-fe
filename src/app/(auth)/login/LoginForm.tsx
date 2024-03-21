@@ -8,17 +8,20 @@ import { Input } from '@/components/ui/input';
 import Link from 'next/link';
 import { LoginFormSchema } from '@/lib/schemas/loginForm';
 import TextInputField from '@/components/shared/TextInputField';
-import { getToken } from '@/app/(auth)/actions';
+import { TokenCookie } from '@/app/(auth)/actions';
 import { loginUser } from '@/app/(auth)/login/actions';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useFormState } from 'react-dom';
-import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { Input as vInput } from 'valibot';
 import { valibotResolver } from '@hookform/resolvers/valibot';
 
-const LoginForm = () => {
+const LoginForm = ({
+  tokenCookies,
+}: {
+  tokenCookies: FetchReturn<TokenCookie>;
+}) => {
   const loginForm = useForm<vInput<typeof LoginFormSchema>>({
     resolver: valibotResolver(LoginFormSchema),
     mode: 'onChange',
@@ -29,21 +32,13 @@ const LoginForm = () => {
   });
   const router = useRouter();
 
-  const { data: tokenData } = useQuery({
-    queryKey: ['token'],
-    queryFn: () => getToken(),
-  });
-  useEffect(() => {
-    if (tokenData && tokenData.ok) {
-      router.push('/dashboard');
-    }
-  }, [tokenData, router]);
-
   const [loginFormState, loginFormAction] = useFormState(
     loginUser,
     {} as FetchReturn<EmptyResponse>
   );
   useEffect(() => {
+    if (tokenCookies.ok) router.push('/dashboard');
+
     if (!loginFormState.data) return;
 
     if (!loginFormState.ok) {
@@ -57,13 +52,11 @@ const LoginForm = () => {
     }
 
     router.push('/dashboard');
-  }, [loginForm, loginFormState, router]);
+  }, [loginForm, loginFormState, router, tokenCookies]);
 
   return (
     <AccessExpired
-      open={
-        tokenData && !tokenData.ok && /.*expired.*/.test(tokenData.data.message)
-      }
+      open={!tokenCookies.ok && /.*expired.*/.test(tokenCookies.data.message)}
     >
       <Form {...loginForm}>
         <form action={loginFormAction}>
