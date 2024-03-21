@@ -25,6 +25,7 @@ export interface FetchReturnError {
 
 export type EmptyResponse = {
   data: [];
+  message?: string;
 };
 
 export type GetQuery<T> = {

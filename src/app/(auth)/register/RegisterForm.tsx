@@ -93,7 +93,7 @@ const RegisterForm = () => {
         </TextInputField>
 
         <Button
-          disabled={!registerForm.formState.isValid}
+          disabled={!registerForm.formState.isValid || registerFormState.ok}
           type='submit'
           className='w-full mb-2'
         >
