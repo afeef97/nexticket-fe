@@ -1,7 +1,6 @@
 'use client';
 
 import { EmptyResponse, FetchReturn } from '@/lib/types';
-import { useCallback, useEffect, useState } from 'react';
 import AccessExpired from '@/components/providers/AccessExpiredProvider';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
@@ -11,8 +10,10 @@ import { LoginFormSchema } from '@/lib/schemas/loginForm';
 import TextInputField from '@/components/shared/TextInputField';
 import { getToken } from '@/app/(auth)/actions';
 import { loginUser } from '@/app/(auth)/login/actions';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useFormState } from 'react-dom';
+import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { Input as vInput } from 'valibot';
 import { valibotResolver } from '@hookform/resolvers/valibot';
@@ -28,18 +29,15 @@ const LoginForm = () => {
   });
   const router = useRouter();
 
-  const [isTokenExpired, setIsTokenExpired] = useState(false);
-  const getTokenOnLoad = useCallback(async (): Promise<void> => {
-    const token = await getToken();
-    if (token.ok) {
-      router.push('/dashboard');
-    } else if (/.*expired.*/.test(token.data.message)) {
-      setIsTokenExpired(true);
-    }
-  }, [router]);
+  const { data: tokenData } = useQuery({
+    queryKey: ['token'],
+    queryFn: () => getToken(),
+  });
   useEffect(() => {
-    getTokenOnLoad();
-  }, [getTokenOnLoad]);
+    if (tokenData && tokenData.ok) {
+      router.push('/dashboard');
+    }
+  }, [tokenData, router]);
 
   const [loginFormState, loginFormAction] = useFormState(
     loginUser,
@@ -62,7 +60,11 @@ const LoginForm = () => {
   }, [loginForm, loginFormState, router]);
 
   return (
-    <AccessExpired open={isTokenExpired}>
+    <AccessExpired
+      open={
+        tokenData && !tokenData.ok && /.*expired.*/.test(tokenData.data.message)
+      }
+    >
       <Form {...loginForm}>
         <form action={loginFormAction}>
           <TextInputField

@@ -12,6 +12,7 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { refreshToken } from '@/app/(auth)/actions';
 import { usePathname } from 'next/navigation';
+import { useQueryClient } from '@tanstack/react-query';
 
 export interface IAccessExpired {
   openAccessExpired: boolean;
@@ -30,6 +31,7 @@ const AccessExpiredProvider = ({
   children: React.ReactNode;
 }) => {
   const pathname = usePathname();
+  const queryClient = useQueryClient();
 
   const [openAccessExpired, setOpenAccessExpired] =
     React.useState<boolean>(false);
@@ -40,6 +42,7 @@ const AccessExpiredProvider = ({
     if (!response.ok) {
       setRefreshTokenError(response.data.message);
     }
+    queryClient.invalidateQueries({ queryKey: ['token'] });
   };
 
   // Dialog can only appear after the component is mounted to prevent hydration error.
@@ -50,7 +53,10 @@ const AccessExpiredProvider = ({
 
   return (
     <Dialog open={openAccessExpired}>
-      <DialogContent disableClose className='!z-index-99'>
+      <DialogContent
+        disableClose
+        className='!z-index-99'
+      >
         <DialogHeader>
           <DialogTitle>Access Expired</DialogTitle>
           <DialogDescription>
@@ -70,7 +76,10 @@ const AccessExpiredProvider = ({
               pathname === '/login' ? setOpenAccessExpired(false) : null
             }
           >
-            <Link replace href={'/login'}>
+            <Link
+              replace
+              href={'/login'}
+            >
               Login
             </Link>
           </Button>
