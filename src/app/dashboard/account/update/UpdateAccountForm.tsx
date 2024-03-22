@@ -4,7 +4,7 @@ import {
   AccessContext,
   IAccessContext,
 } from '@/components/providers/AccessContextProvider';
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   RegisterMemberSchema,
   UpdateEmailSchema,
@@ -19,7 +19,7 @@ import { UpdateFields } from '@/lib/types';
 import generateUpdateField from './generateUpdateField';
 import { updateUser } from '@/app/(auth)/actions';
 import { useForm } from 'react-hook-form';
-import useQueryHandler from '@/lib/hooks/useQueryHandler';
+import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { Input as vInput } from 'valibot';
 import { valibotResolver } from '@hookform/resolvers/valibot';
@@ -27,9 +27,9 @@ import { valibotResolver } from '@hookform/resolvers/valibot';
 const UpdateAccountForm = () => {
   const { userData } = useContext<IAccessContext>(AccessContext);
   const router = useRouter();
-  const [isEditEmail, setIsEditEmail] = React.useState<boolean>(false);
-  const [isEditUsername, setIsEditUsername] = React.useState<boolean>(false);
-  const [isEditPassword, setIsEditPassword] = React.useState<boolean>(false);
+  const [isEditEmail, setIsEditEmail] = useState<boolean>(false);
+  const [isEditUsername, setIsEditUsername] = useState<boolean>(false);
+  const [isEditPassword, setIsEditPassword] = useState<boolean>(false);
 
   const registerMemberForm = useForm<vInput<typeof RegisterMemberSchema>>({
     resolver: valibotResolver(RegisterMemberSchema),
@@ -88,23 +88,15 @@ const UpdateAccountForm = () => {
     userData,
   ]);
 
-  const { triggerQuery: triggerUpdateUser } = useQueryHandler({
-    query: updateUser,
-    queryOnMount: false,
+  const { mutateAsync: triggerUpdateUser } = useMutation({
+    mutationFn: updateUser,
+    onSuccess: () => {
+      router.refresh();
+      setIsEditEmail(false);
+      setIsEditUsername(false);
+      setIsEditPassword(false);
+    },
   });
-  const onSubmit = async (data: {
-    email?: string;
-    username?: string;
-    password?: string;
-  }) => {
-    const res = await triggerUpdateUser({
-      email: data?.email,
-      username: data?.username,
-      password: data?.password,
-    });
-
-    if (res.ok) router.refresh();
-  };
 
   const updateFields: UpdateFields[] = [
     {
@@ -141,11 +133,13 @@ const UpdateAccountForm = () => {
         </div>
       )}
       {userData?.username ? (
-        generateUpdateField(updateFields, userData?.role, onSubmit)
+        generateUpdateField(updateFields, userData?.role, triggerUpdateUser)
       ) : (
         <Form {...registerMemberForm}>
           <form
-            onSubmit={registerMemberForm.handleSubmit(onSubmit)}
+            onSubmit={registerMemberForm.handleSubmit((data) =>
+              triggerUpdateUser(data)
+            )}
             className='w-full'
           >
             <TextInputField
