@@ -7,10 +7,10 @@ import {
   DialogFooter,
   DialogHeader,
 } from '../ui/dialog';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Button } from '../ui/button';
 import React from 'react';
 import { logoutUser } from '@/app/(auth)/actions';
+import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 
 const ConfirmLogout = ({
@@ -21,12 +21,10 @@ const ConfirmLogout = ({
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const router = useRouter();
-  const queryClient = useQueryClient();
 
   const { mutateAsync: triggerLogoutUser, isPending } = useMutation({
     mutationFn: logoutUser,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['token'] });
       router.push('/login');
     },
   });

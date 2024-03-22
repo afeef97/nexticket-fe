@@ -7,12 +7,11 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import React, { createContext } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { refreshToken } from '@/app/(auth)/actions';
 import { usePathname } from 'next/navigation';
-import { useQueryClient } from '@tanstack/react-query';
 
 export interface IAccessExpired {
   openAccessExpired: boolean;
@@ -31,22 +30,19 @@ const AccessExpiredProvider = ({
   children: React.ReactNode;
 }) => {
   const pathname = usePathname();
-  const queryClient = useQueryClient();
 
-  const [openAccessExpired, setOpenAccessExpired] =
-    React.useState<boolean>(false);
-  const [refreshTokenError, setRefreshTokenError] = React.useState<string>('');
+  const [openAccessExpired, setOpenAccessExpired] = useState<boolean>(false);
+  const [refreshTokenError, setRefreshTokenError] = useState<string>('');
   const handleRefreshToken = async () => {
     const response = await refreshToken();
     setOpenAccessExpired(!response.ok);
     if (!response.ok) {
       setRefreshTokenError(response.data.message);
     }
-    queryClient.invalidateQueries({ queryKey: ['token'] });
   };
 
-  // Dialog can only appear after the component is mounted to prevent hydration error.
-  React.useEffect(() => {
+  // Ugly but dialog should only appear after mounting on the client to prevent hydration error.
+  useEffect(() => {
     if (open === undefined) return;
     setOpenAccessExpired(open);
   }, [open]);
