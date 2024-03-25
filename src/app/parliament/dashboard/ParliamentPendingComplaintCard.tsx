@@ -1,8 +1,7 @@
 import { FetchReturn, GetQuery, ParliamentTicketSummary } from '@/lib/types';
-import React, { Suspense } from 'react';
 import { FaRegFlag } from 'react-icons/fa';
 import Link from 'next/link';
-import ParliamentSkeletonCard from '../(components)/ParliamentSkeletonCard';
+import React from 'react';
 
 const ParliamentPendingComplaintCard = ({
   ticketSummary,
@@ -15,11 +14,9 @@ const ParliamentPendingComplaintCard = ({
         <div className='flex flex-col gap-4'>
           <div className='text-body1 text-textPrimary'>Pending complaint</div>
           <div className='text-h5 text-textPrimary'>
-            <Suspense fallback={<ParliamentSkeletonCard />}>
-              {(ticketSummary?.ok &&
-                ticketSummary.data.data.complaint?.total_pending_count) ||
-                0}
-            </Suspense>
+            {(ticketSummary?.ok &&
+              ticketSummary.data.data.complaint?.total_pending_count) ||
+              0}
           </div>
         </div>
         <div className=' w-[64px] h-[64px] rounded-full flex items-center justify-center bg-baseBg'>

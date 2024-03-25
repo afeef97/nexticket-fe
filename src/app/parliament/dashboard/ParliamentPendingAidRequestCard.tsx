@@ -1,8 +1,7 @@
 import { FetchReturn, GetQuery, ParliamentTicketSummary } from '@/lib/types';
-import React, { Suspense } from 'react';
 import { GiCartwheel } from 'react-icons/gi';
 import Link from 'next/link';
-import ParliamentSkeletonCard from '../(components)/ParliamentSkeletonCard';
+import React from 'react';
 
 const ParliamentPendingAidRequestCard = ({
   ticketSummary,
@@ -15,11 +14,9 @@ const ParliamentPendingAidRequestCard = ({
         <div className='flex flex-col gap-4'>
           <div className='text-body1 text-textPrimary'>Pending aid request</div>
           <div className='text-h5 text-textPrimary'>
-            <Suspense fallback={<ParliamentSkeletonCard />}>
-              {(ticketSummary?.ok &&
-                ticketSummary.data.data.aid?.total_pending_count) ||
-                0}
-            </Suspense>
+            {(ticketSummary?.ok &&
+              ticketSummary.data.data.aid?.total_pending_count) ||
+              0}
           </div>
         </div>
         <div className=' w-[64px] h-[64px] rounded-full flex items-center justify-center bg-baseBg'>
