@@ -10,7 +10,7 @@ const RedirectParliament = () => {
     router.push('/parliament/dashboard');
   }, [router]);
 
-  return null;
+  return <></>;
 };
 
 export default RedirectParliament;
