@@ -1,16 +1,19 @@
 'use server';
 
-import { EmptyResponse, FetchReturn } from '@/lib/types';
+import { EmptyResponse, FetchReturn, TypedFormData } from '@/lib/types';
 import fetchNexticket from '@/lib/customFetch';
 import { revalidateTag } from 'next/cache';
 
 export const registerOrganization = async (
-  name: string,
-  email_domain: string
+  previousState: FetchReturn<EmptyResponse>,
+  formData: TypedFormData<{ name: string; email_domain: string }>
 ): Promise<FetchReturn<EmptyResponse>> => {
   const response = await fetchNexticket('/organization', {
     method: 'POST',
-    body: { name, email_domain },
+    body: {
+      name: formData.get('name'),
+      email_domain: formData.get('email_domain'),
+    },
     options: {
       cache: 'no-store',
     },

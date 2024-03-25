@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useState, useTransition } from 'react';
+import { EmptyResponse, FetchReturn } from '@/lib/types';
 import AccessExpired from '@/components/providers/AccessExpiredProvider';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
@@ -8,72 +8,90 @@ import { Input } from '@/components/ui/input';
 import Link from 'next/link';
 import { LoginFormSchema } from '@/lib/schemas/loginForm';
 import TextInputField from '@/components/shared/TextInputField';
-import { getToken } from '@/app/(auth)/actions';
+import { TokenCookie } from '@/app/(auth)/actions';
 import { loginUser } from '@/app/(auth)/login/actions';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { useFormState } from 'react-dom';
 import { useRouter } from 'next/navigation';
 import { Input as vInput } from 'valibot';
 import { valibotResolver } from '@hookform/resolvers/valibot';
 
-const LoginForm = () => {
+const LoginForm = ({
+  tokenCookies,
+}: {
+  tokenCookies: FetchReturn<TokenCookie>;
+}) => {
   const loginForm = useForm<vInput<typeof LoginFormSchema>>({
     resolver: valibotResolver(LoginFormSchema),
+    mode: 'onChange',
     defaultValues: {
       email: '',
       password: '',
     },
   });
   const router = useRouter();
-  const [isPendingLogin, startTransitionLogin] = useTransition();
-  const [isTokenExpired, setIsTokenExpired] = useState(false);
 
-  const getTokenOnLoad = useCallback(async (): Promise<void> => {
-    const token = await getToken();
-    if (token.ok) {
-      router.push('/dashboard');
-    } else if (/.*expired.*/.test(token.data.message)) {
-      setIsTokenExpired(true);
-    }
-  }, [router]);
+  const [loginFormState, loginFormAction] = useFormState(
+    loginUser,
+    {} as FetchReturn<EmptyResponse>
+  );
   useEffect(() => {
-    getTokenOnLoad();
-  }, [getTokenOnLoad]);
+    if (tokenCookies.ok) router.push('/dashboard');
 
-  const onSubmit = (data: vInput<typeof LoginFormSchema>) => {
-    startTransitionLogin(async () => {
-      const response = await loginUser(data.email, data.password);
+    if (!loginFormState.data) return;
 
-      if (!response.ok) {
-        (response.data.fields as string[]).map((field: string) =>
-          loginForm.setError(field as keyof vInput<typeof LoginFormSchema>, {
-            message: response.data.message,
-          })
-        );
-        return;
-      }
+    if (!loginFormState.ok) {
+      loginForm.clearErrors();
+      (loginFormState.data.fields as string[]).forEach((field) =>
+        loginForm.setError(field as keyof vInput<typeof LoginFormSchema>, {
+          message: loginFormState.data.message,
+        })
+      );
+      return;
+    }
 
-      setTimeout(() => router.push('/dashboard'), 2000);
-    });
-  };
+    router.push('/dashboard');
+  }, [loginForm, loginFormState, router, tokenCookies]);
 
   return (
-    <AccessExpired open={isTokenExpired}>
+    <AccessExpired
+      open={!tokenCookies.ok && /.*expired.*/.test(tokenCookies.data.message)}
+    >
       <Form {...loginForm}>
-        <form onSubmit={loginForm.handleSubmit(onSubmit)}>
-          <TextInputField control={loginForm.control} label="Email" name="email">
-            <Input placeholder="Enter your email" />
+        <form action={loginFormAction}>
+          <TextInputField
+            control={loginForm.control}
+            label='Email'
+            name='email'
+          >
+            <Input placeholder='Enter your email' />
           </TextInputField>
-          <TextInputField control={loginForm.control} label="Password" name="password">
-            <Input type="password" placeholder="Enter your password" />
+          <TextInputField
+            control={loginForm.control}
+            label='Password'
+            name='password'
+          >
+            <Input
+              type='password'
+              placeholder='Enter your password'
+            />
           </TextInputField>
 
-          <Button type="submit" disabled={isPendingLogin} className="w-full mb-2">
+          <Button
+            type='submit'
+            disabled={!loginForm.formState.isValid || loginFormState.ok}
+            className='w-full mb-2'
+          >
             Login
           </Button>
 
-          <p className="text-center">
+          <p className='text-center'>
             Don&apos;t have an account?{' '}
-            <Link href="/register" className="text-link hover:text-link/90 transition-colors">
+            <Link
+              href='/register'
+              className='text-link hover:text-link/90 transition-colors'
+            >
               Register
             </Link>
           </p>
