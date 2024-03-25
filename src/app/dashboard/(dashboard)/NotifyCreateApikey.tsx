@@ -1,21 +1,30 @@
 'use client';
 
-import React, { useState } from 'react';
+import {
+  AccessContext,
+  IAccessContext,
+} from '@/components/providers/AccessContextProvider';
+import React, { useContext, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { X } from 'lucide-react';
 
 const NotifyCreateApikey = () => {
-  const localShowNotify: string | null =
-    window.localStorage.getItem('showNotifyApikey');
+  const { userData } = useContext<IAccessContext>(AccessContext);
 
+  const localShowNotify: string | null = window.localStorage.getItem(
+    `nexticket-showNotifyApikey-${userData?.id}`
+  );
   const [showNotify, setShowNotify] = useState<boolean>(
     localShowNotify === null ? true : localShowNotify === 'true'
   );
 
   const handleDontShowAgain = () => {
     setShowNotify(false);
-    window.localStorage.setItem('showNotifyApikey', 'false');
+    window.localStorage.setItem(
+      `nexticket-showNotifyApikey-${userData?.id}`,
+      'false'
+    );
   };
 
   return (
@@ -36,18 +45,30 @@ const NotifyCreateApikey = () => {
         <p>
           You can find the settings under the &quot;Settings&quot; tab after
           clicking on your profile image in the top right corner or you can{' '}
-          <Link href='/dashboard/settings' className='text-link'>
+          <Link
+            href='/dashboard/settings'
+            className='text-link'
+          >
             click here
           </Link>
           .
         </p>
 
-        <Button
-          onClick={handleDontShowAgain}
-          className='mt-4 whitespace-pre-line shrink self-end'
-        >
-          I understand, don&apos;t show again
-        </Button>
+        <div>
+          <Button
+            variant={'outline'}
+            onClick={handleDontShowAgain}
+            className='mt-4 whitespace-pre-line shrink self-end'
+          >
+            I understand, don&apos;t show again
+          </Button>
+          <Button
+            asChild
+            className='mt-4 whitespace-pre-line shrink self-end'
+          >
+            <Link href='/dashboard/settings'>Create API Key</Link>
+          </Button>
+        </div>
       </section>
     )
   );

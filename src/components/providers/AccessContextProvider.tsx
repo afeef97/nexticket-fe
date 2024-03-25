@@ -1,7 +1,7 @@
 'use client';
 
 import { FetchReturn, GetQuery, UserData } from '@/lib/types';
-import React, { createContext, useEffect, useMemo } from 'react';
+import React, { createContext, useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { Loader2Icon } from 'lucide-react';
 import { useTheme } from 'next-themes';
@@ -26,27 +26,19 @@ const AccessContextProvider = ({
   const router = useRouter();
   const { setTheme } = useTheme();
 
-  const accessOk: boolean = useMemo(() => userAccountRes.ok, [userAccountRes]);
-  const accessMessage: string = useMemo(
-    () => userAccountRes.data.message,
-    [userAccountRes]
-  );
-  const userData: UserData | undefined = useMemo(
-    () => (userAccountRes.ok ? userAccountRes.data.data : undefined),
-    [userAccountRes]
-  );
-  const hasUserData: boolean | undefined = useMemo(
-    () => userData && Object.keys(userData).length > 0,
-    [userData]
-  );
-  const isInvalidRoute: boolean = useMemo(
-    () =>
-      (pathname.includes('parliament') &&
-        userData?.role !== 'PARLIAMENT_ADMIN') ||
-      (!pathname.includes('parliament') &&
-        userData?.role === 'PARLIAMENT_ADMIN'),
-    [userData, pathname]
-  );
+  const accessOk: boolean = userAccountRes.ok;
+  const accessMessage: string = userAccountRes.data.message;
+
+  const userData: UserData | undefined = userAccountRes.ok
+    ? userAccountRes.data.data
+    : undefined;
+  const hasUserData: boolean | undefined =
+    Object.keys(userData || {}).length > 0;
+
+  const isInvalidRoute: boolean =
+    (pathname.includes('parliament') &&
+      userData?.role !== 'PARLIAMENT_ADMIN') ||
+    (!pathname.includes('parliament') && userData?.role === 'PARLIAMENT_ADMIN');
 
   useEffect(() => {
     if (hasUserData) {
@@ -76,7 +68,10 @@ const AccessContextProvider = ({
     >
       {hasUserData && isInvalidRoute ? (
         <div className='h-screen w-screen bg-white flex flex-col justify-center items-center gap-4'>
-          <Loader2Icon className='animate-spin' size={48} />
+          <Loader2Icon
+            className='animate-spin'
+            size={48}
+          />
           <p>Loading...</p>
         </div>
       ) : (

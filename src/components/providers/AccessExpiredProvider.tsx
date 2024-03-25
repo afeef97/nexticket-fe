@@ -7,7 +7,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import React, { createContext } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { refreshToken } from '@/app/(auth)/actions';
@@ -31,9 +31,8 @@ const AccessExpiredProvider = ({
 }) => {
   const pathname = usePathname();
 
-  const [openAccessExpired, setOpenAccessExpired] =
-    React.useState<boolean>(false);
-  const [refreshTokenError, setRefreshTokenError] = React.useState<string>('');
+  const [openAccessExpired, setOpenAccessExpired] = useState<boolean>(false);
+  const [refreshTokenError, setRefreshTokenError] = useState<string>('');
   const handleRefreshToken = async () => {
     const response = await refreshToken();
     setOpenAccessExpired(!response.ok);
@@ -42,15 +41,18 @@ const AccessExpiredProvider = ({
     }
   };
 
-  // Dialog can only appear after the component is mounted to prevent hydration error.
-  React.useEffect(() => {
+  // Ugly but dialog should only appear after mounting on the client to prevent hydration error.
+  useEffect(() => {
     if (open === undefined) return;
     setOpenAccessExpired(open);
   }, [open]);
 
   return (
     <Dialog open={openAccessExpired}>
-      <DialogContent disableClose className='!z-index-99'>
+      <DialogContent
+        disableClose
+        className='!z-index-99'
+      >
         <DialogHeader>
           <DialogTitle>Access Expired</DialogTitle>
           <DialogDescription>
@@ -70,7 +72,10 @@ const AccessExpiredProvider = ({
               pathname === '/login' ? setOpenAccessExpired(false) : null
             }
           >
-            <Link replace href={'/login'}>
+            <Link
+              replace
+              href={'/login'}
+            >
               Login
             </Link>
           </Button>

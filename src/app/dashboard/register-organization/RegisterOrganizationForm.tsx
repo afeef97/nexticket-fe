@@ -1,16 +1,16 @@
 'use client';
 
+import { EmptyResponse, FetchReturn, TypedFormData } from '@/lib/types';
 import { minLength, object, regex, string, Input as vInput } from 'valibot';
 import { useContext, useEffect } from 'react';
 import { AccessContext } from '@/components/providers/AccessContextProvider';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Loader2 } from 'lucide-react';
 import TextInputField from '@/components/shared/TextInputField';
 import { registerOrganization } from './actions';
 import { useForm } from 'react-hook-form';
-import useQueryHandler from '@/lib/hooks/useQueryHandler';
+import { useFormState } from 'react-dom';
 import { useRouter } from 'next/navigation';
 import { valibotResolver } from '@hookform/resolvers/valibot';
 
@@ -41,30 +41,29 @@ const RegisterOrganizationForm = () => {
     }
   }, [userData, router]);
 
-  const {
-    state: registerOrganizationState,
-    triggerQuery: triggerRegisterOrganization,
-  } = useQueryHandler({
-    query: registerOrganization,
-    queryOnMount: false,
-  });
-  const onSubmit = async (data: vInput<typeof registerOrganizationSchema>) => {
-    const response = await triggerRegisterOrganization(
-      data.name,
-      data.email_domain
-    );
-    if (!response.ok) {
+  const [registerOrganizationState, registerOrganizationAction] = useFormState(
+    registerOrganization,
+    {} as FetchReturn<EmptyResponse>
+  );
+  useEffect(() => {
+    if (!registerOrganizationState?.data) return;
+
+    if (!registerOrganizationState.ok) {
       registerOrganizationForm.setError('name', {
-        message: response.data.message,
+        message: registerOrganizationState.data.message,
       });
-      return;
     }
-  };
+  }, [registerOrganizationForm, registerOrganizationState]);
+
   return (
     <Form {...registerOrganizationForm}>
       <form
+        action={(data) =>
+          registerOrganizationAction(
+            data as TypedFormData<{ name: string; email_domain: string }>
+          )
+        }
         className='mt-4'
-        onSubmit={registerOrganizationForm.handleSubmit(onSubmit)}
       >
         <TextInputField
           control={registerOrganizationForm.control}
@@ -85,20 +84,9 @@ const RegisterOrganizationForm = () => {
         <Button
           type='submit'
           className='w-full md:w-auto'
-          disabled={
-            registerOrganizationState === 'pending' ||
-            registerOrganizationState === 'resolved' ||
-            userData?.organization_id === undefined
-          }
+          disabled={registerOrganizationState.ok}
         >
-          {registerOrganizationState === 'pending' ? (
-            <>
-              <Loader2 className='animate-spin' size={16} />
-              <span className='ml-2'>Registering...</span>
-            </>
-          ) : (
-            'Register organization'
-          )}
+          Register organization
         </Button>
       </form>
     </Form>

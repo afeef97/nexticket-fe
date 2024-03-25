@@ -9,15 +9,23 @@ import { cn } from '@/lib/utils';
 export default function generateUpdateField(
   updateFields: UpdateFields[],
   userRole: string,
-  onSubmit: (
-    //eslint-disable-next-line
-    data: { email?: string; username?: string; password?: string },
-    //eslint-disable-next-line
-    action: unknown
-  ) => void
+  onSubmit: ({
+    /* eslint-disable no-unused-vars */
+    email,
+    username,
+    password,
+  }: /* eslint-enable no-unused-vars */
+  {
+    email: string;
+    username: string;
+    password: string;
+  }) => void
 ) {
   return updateFields.map((field) => (
-    <Form key={field.name} {...field.form}>
+    <Form
+      key={field.name}
+      {...field.form}
+    >
       <form
         onSubmit={field.form.handleSubmit(onSubmit)}
         className={cn(
@@ -59,7 +67,11 @@ export default function generateUpdateField(
           )}
           {field.isEdit ? (
             <>
-              <Button type='submit' variant={'ghost'} className='mb-2 !px-2'>
+              <Button
+                type='submit'
+                variant={'ghost'}
+                className='mb-2 !px-2'
+              >
                 <Check aria-label={`Submit updated ${field.name}`} />
               </Button>
               <Button
