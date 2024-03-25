@@ -2,12 +2,19 @@ import { FetchReturn, GetQuery, ParliamentTicketSummary } from '@/lib/types';
 import { FaRegFlag } from 'react-icons/fa';
 import Link from 'next/link';
 import React from 'react';
+import fetchNexticket from '@/lib/customFetch';
 
-const ParliamentPendingComplaintCard = ({
-  ticketSummary,
+const ParliamentPendingComplaintCard = async ({
+  searchParams,
 }: {
-  ticketSummary: FetchReturn<GetQuery<ParliamentTicketSummary>> | undefined;
+  searchParams: { period_end?: string };
 }) => {
+  const ticketSummary: FetchReturn<GetQuery<ParliamentTicketSummary>> =
+    await fetchNexticket('/parliament-ticket/summary', {
+      queries: {
+        period_end: searchParams.period_end || '',
+      },
+    });
   return (
     <div className='border border-lineSecondary w-1/2 rounded'>
       <div className='w-full flex items-center justify-between px-6 py-4'>
