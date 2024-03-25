@@ -1,6 +1,6 @@
 import { EmptyResponse, FetchReturn } from './types';
+import { queriesBuilder, tokenHandler } from './utils';
 import { handleResponseCookies } from '@/app/(auth)/actions';
-import { tokenHandler } from './utils';
 
 const fetchNexticket = async (
   url: string,
@@ -8,11 +8,13 @@ const fetchNexticket = async (
     useToken = true,
     method = 'GET',
     body,
+    queries = {},
     options = {},
   }: {
     useToken?: boolean;
     method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
     body?: unknown;
+    queries?: Record<string, string>;
     options?: RequestInit;
   }
 ): Promise<FetchReturn<any>> => {
@@ -48,6 +50,10 @@ const fetchNexticket = async (
           method === 'GET' ? '' : body
         )
       : null;
+  }
+
+  if (Object.keys(queries).length > 0) {
+    url = `${url}${queriesBuilder(queries)}`;
   }
   const response = await fetch(`${process.env.NEXTICKET_API}${url}`, {
     method,
