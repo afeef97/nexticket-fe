@@ -19,12 +19,14 @@ export function subtractWeeks(date: Date, weeks: number): Date {
   return new Date(date.setDate(date.getDate() - weeks * 7));
 }
 
-export function queriesBuilder(queries: Record<string, string>) {
-  return Object.keys(queries)
-    .map((key, index) =>
-      index === 0 ? `?${key}=${queries[key]}` : `${key}=${queries[key]}`
-    )
-    .join('&');
+export function queriesBuilder(queries: Record<string, string>): string {
+  return (
+    '?' +
+    Object.keys(queries)
+      .map((key) => (queries[key] === '' ? '' : `${key}=${queries[key]}`))
+      .filter((key) => key !== '')
+      .join('&')
+  );
 }
 
 //eslint-disable-next-line
