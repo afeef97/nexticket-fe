@@ -25,7 +25,9 @@ const ParliamentDashboard = ({
           </div>
           <div className='w-full flex items-center justify-between mt-10'>
             <h4 className='text-h6 text-foreground'>Overview</h4>
-            <ParliamentTimeFilter />
+            <Suspense fallback={<Skeleton className='w-60 h-12' />}>
+              <ParliamentTimeFilter />
+            </Suspense>
           </div>
           <Suspense fallback={<Skeleton className='w-full h-52 mt-4' />}>
             <ParliamentDashboardOverview searchParams={searchParams} />
