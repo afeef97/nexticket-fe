@@ -75,7 +75,7 @@ export function tokenHandler(
     return {
       ok: false,
       data: {
-        message: error as string,
+        message: JSON.stringify(error),
         statusCode: 400,
       },
     };
