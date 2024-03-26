@@ -1,4 +1,5 @@
 'use server';
+import 'server-only';
 
 import { FetchReturn, GetQuery, ParliamentTicketSummary } from '@/lib/types';
 import fetchNexticket from '@/lib/customFetch';

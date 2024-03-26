@@ -1,18 +1,13 @@
-import { FetchReturn, GetQuery, ParliamentTicketSummary } from '@/lib/types';
 import React from 'react';
-import fetchNexticket from '@/lib/customFetch';
+import { getTicketsSummary } from './api';
 
 const ParliamentDashboardOverview = async ({
   searchParams,
 }: {
   searchParams: { period_end?: string };
 }) => {
-  const ticketSummary: FetchReturn<GetQuery<ParliamentTicketSummary>> =
-    await fetchNexticket('/parliament-ticket/summary', {
-      queries: {
-        period_end: searchParams.period_end || '',
-      },
-    });
+  const ticketSummary = await getTicketsSummary(searchParams.period_end || '');
+
   return (
     <div className='w-full border border-lineSecondary flex text-textPrimary mt-4 '>
       <div className='w-1/3 border-r border-lineSecondary'>

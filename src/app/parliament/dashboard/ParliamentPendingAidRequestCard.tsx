@@ -1,20 +1,14 @@
-import { FetchReturn, GetQuery, ParliamentTicketSummary } from '@/lib/types';
 import { GiCartwheel } from 'react-icons/gi';
 import Link from 'next/link';
 import React from 'react';
-import fetchNexticket from '@/lib/customFetch';
+import { getTicketsSummary } from './api';
 
 const ParliamentPendingAidRequestCard = async ({
   searchParams,
 }: {
   searchParams: { period_end?: string };
 }) => {
-  const ticketSummary: FetchReturn<GetQuery<ParliamentTicketSummary>> =
-    await fetchNexticket('/parliament-ticket/summary', {
-      queries: {
-        period_end: searchParams.period_end || '',
-      },
-    });
+  const ticketSummary = await getTicketsSummary(searchParams.period_end || '');
 
   return (
     <div className='border border-lineSecondary w-1/2 rounded'>
