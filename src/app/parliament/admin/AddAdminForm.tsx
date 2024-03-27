@@ -8,6 +8,7 @@ import React from 'react';
 import TextInputField from '@/components/shared/TextInputField';
 import { inviteMembers } from '@/app/dashboard/users/actions';
 import useQueryHandler from '@/lib/hooks/useQueryHandler';
+import { useRouter } from 'next/navigation';
 import { valibotResolver } from '@hookform/resolvers/valibot';
 
 const AddAdminFormSchema = object({
@@ -21,11 +22,10 @@ const AddAdminFormSchema = object({
 
 const AddAdminForm = ({
   setOpen,
-  refetch,
 }: {
   setOpen: React.Dispatch<React.SetStateAction<boolean | undefined>>;
-  refetch?: () => void;
 }) => {
+  const router = useRouter();
   const addAdminForm = useForm<vInput<typeof AddAdminFormSchema>>({
     resolver: valibotResolver(AddAdminFormSchema),
     defaultValues: {
@@ -37,20 +37,23 @@ const AddAdminForm = ({
     name: 'memberList',
   });
 
-  const { state: addAdminState, triggerQuery: triggerAddAdmin } = useQueryHandler({
-    query: inviteMembers,
-    queryOnMount: false,
-  });
+  const { state: addAdminState, triggerQuery: triggerAddAdmin } =
+    useQueryHandler({
+      query: inviteMembers,
+      queryOnMount: false,
+    });
 
   const onSubmit = async (data: vInput<typeof AddAdminFormSchema>) => {
     const res = await triggerAddAdmin(data.memberList);
 
     if (!res.ok && res.data.existingEmails) {
-      (res.data.existingEmails as string[]).forEach((email: string, index: number) => {
-        addAdminForm.setError(`memberList.${index}.email`, {
-          message: email + ' already exists',
-        });
-      });
+      (res.data.existingEmails as string[]).forEach(
+        (email: string, index: number) => {
+          addAdminForm.setError(`memberList.${index}.email`, {
+            message: email + ' already exists',
+          });
+        }
+      );
       return;
     } else if (!res.ok) {
       addAdminForm.setError(`memberList.0.email`, {
@@ -61,9 +64,7 @@ const AddAdminForm = ({
 
     if (res.ok) {
       setOpen(false);
-      if (refetch) {
-        refetch();
-      }
+      router.refresh();
     }
   };
 
@@ -72,22 +73,25 @@ const AddAdminForm = ({
       <form onSubmit={addAdminForm.handleSubmit(onSubmit)}>
         {addAdminFieldArray.fields.map((field, index) => (
           <div key={field.id}>
-            <div className="flex items-center gap-2">
+            <div className='flex items-center gap-2'>
               <TextInputField
                 control={addAdminForm.control}
                 name={`memberList.${index}.email`}
-                label="Email"
-                className="grow"
+                label='Email'
+                className='grow'
               >
-                <Input placeholder="user@example.com" className="w-full grow" />
+                <Input
+                  placeholder='user@example.com'
+                  className='w-full grow'
+                />
               </TextInputField>
               <Button
                 onClick={(e) => {
                   e.preventDefault();
                   addAdminFieldArray.append({ email: '', role: 'USER' });
                 }}
-                variant="ghost"
-                className="mb-2 !p-2"
+                variant='ghost'
+                className='mb-2 !p-2'
               >
                 <PlusCircle />
               </Button>
@@ -97,8 +101,8 @@ const AddAdminForm = ({
                     e.preventDefault();
                     addAdminFieldArray.remove(index);
                   }}
-                  variant="ghost"
-                  className="mb-2 !p-2"
+                  variant='ghost'
+                  className='mb-2 !p-2'
                 >
                   <Trash2 />
                 </Button>
@@ -106,11 +110,17 @@ const AddAdminForm = ({
             </div>
           </div>
         ))}
-        <div className="flex flex-row-reverse gap-2">
-          <Button type="submit" disabled={addAdminState === 'pending'}>
+        <div className='flex flex-row-reverse gap-2'>
+          <Button
+            type='submit'
+            disabled={addAdminState === 'pending'}
+          >
             Invite
           </Button>
-          <Button variant="outline" onClick={() => setOpen(false)}>
+          <Button
+            variant='outline'
+            onClick={() => setOpen(false)}
+          >
             Cancel
           </Button>
         </div>
