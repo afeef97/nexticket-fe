@@ -2,7 +2,7 @@ import { FetchReturn, GetQuery, PaginatedParliamentTickets } from '@/lib/types';
 import { STATUS_OPTIONS, TIME_OPTIONS } from '@/lib/constants';
 import ParliamentFilter from '../(components)/ParliamentFilter';
 import ParliamentSearch from '../(components)/ParliamentSearch';
-import ParliamentTable from '../(components)/ParliamentTable';
+import ParliamentTicketTable from '../(components)/ParliamentTicketTable';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Suspense } from 'react';
 import { getComplaintTickets } from './api';
@@ -51,7 +51,9 @@ export default async function Complaint({
             <div className=' sm:-mx-6 lg:-mx-8'>
               <div className='inline-block min-w-full py-2 align-middle md:px-6 lg:px-8'>
                 <Suspense fallback={<Skeleton className='w-full h-full' />}>
-                  <ParliamentTable complaintTicketData={complaintTickets} />
+                  <ParliamentTicketTable
+                    complaintTicketData={complaintTickets}
+                  />
                 </Suspense>
               </div>
             </div>

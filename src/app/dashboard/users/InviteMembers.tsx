@@ -21,7 +21,7 @@ const InviteMembersForm = dynamic(() => import('./InviteMembersForm'), {
   ssr: false,
 });
 
-const InviteMembers = ({ refetch }: { refetch?: () => void }) => {
+const InviteMembers = () => {
   const { userData } = useContext<IAccessContext>(AccessContext);
   const [open, setOpen] = useState<boolean>();
   const pathname = usePathname();
@@ -35,20 +35,29 @@ const InviteMembers = ({ refetch }: { refetch?: () => void }) => {
   }
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog
+      open={open}
+      onOpenChange={setOpen}
+    >
       <DialogTrigger asChild>
         <Button>
-          <UserPlus size={20} aria-label="Invite members" className="mr-2" />
+          <UserPlus
+            size={20}
+            aria-label='Invite members'
+            className='mr-2'
+          />
           {pathname.includes('parliament') ? 'Add admin' : 'Invite members'}
         </Button>
       </DialogTrigger>
 
       <DialogContent>
         <DialogHeader>
-          <h5>{pathname.includes('parliament') ? 'Add admin' : 'Invite members'}</h5>
+          <h5>
+            {pathname.includes('parliament') ? 'Add admin' : 'Invite members'}
+          </h5>
         </DialogHeader>
         {pathname.includes('parliament') ? (
-          <AddAdminForm setOpen={setOpen} refetch={refetch} />
+          <AddAdminForm setOpen={setOpen} />
         ) : (
           <InviteMembersForm setOpen={setOpen} />
         )}
