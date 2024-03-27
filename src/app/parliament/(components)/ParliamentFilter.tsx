@@ -16,16 +16,19 @@ const ParliamentFilter = ({
   paramKey: string;
 }) => {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const pathname = usePathname();
+  const searchParams = useSearchParams();
 
   const [isUpdatingSearchParams, startUpdatingSearchParams] = useTransition();
   const onChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     startUpdatingSearchParams(() => {
       router.replace(
-        `${pathname}${queriesBuilder(searchParams, {
-          [paramKey]: e.target.value || '',
-        })}`
+        `${pathname}${queriesBuilder(
+          {
+            [paramKey]: e.target.value || '',
+          },
+          searchParams
+        )}`
       );
     });
   };
