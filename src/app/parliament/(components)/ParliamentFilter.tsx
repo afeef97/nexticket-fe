@@ -26,6 +26,7 @@ const ParliamentFilter = ({
         `${pathname}${queriesBuilder(
           {
             [paramKey]: e.target.value || '',
+            page: 1,
           },
           searchParams
         )}`

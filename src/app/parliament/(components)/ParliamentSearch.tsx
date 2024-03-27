@@ -21,7 +21,9 @@ const ParliamentSearch = () => {
   };
 
   useEffect(() => {
-    router.replace(`${pathname}${queriesBuilder({ search }, searchParams)}`);
+    router.replace(
+      `${pathname}${queriesBuilder({ search, page: 1 }, searchParams)}`
+    );
   }, [pathname, router, search, searchParams]);
 
   return (
