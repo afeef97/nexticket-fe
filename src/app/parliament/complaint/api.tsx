@@ -4,14 +4,14 @@ import { FetchReturn, GetQuery, PaginatedParliamentTickets } from '@/lib/types';
 import fetchNexticket from '@/lib/customFetch';
 
 export const getComplaintTickets = async ({
-  page,
-  perPage,
+  page = 1,
+  perPage = 10,
   status = '',
   period_end = '',
   search = '',
 }: {
-  page: number;
-  perPage: number;
+  page?: number;
+  perPage?: number;
   status?: string;
   period_end?: string;
   search?: string;
