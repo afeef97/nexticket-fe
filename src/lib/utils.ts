@@ -21,10 +21,10 @@ export function subtractWeeks(date: Date, weeks: number): Date {
 }
 
 export function queriesBuilder(
-  queries: Record<string, string>,
+  queries: Record<string | number, string | number>,
   searchParams?: ReadonlyURLSearchParams
 ): string {
-  let queriesRecord: Record<string, string> = {};
+  let queriesRecord: Record<string | number, string | number> = {};
   searchParams?.forEach((value, key) => {
     queriesRecord[key] = value;
   });
