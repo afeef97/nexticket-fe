@@ -26,7 +26,7 @@ export default async function Aid({
 
   return (
     <div>
-      <h4>Complaint</h4>
+      <h4>Aid</h4>
 
       <main className='flex  flex-col items-center justify-between py-16 '>
         <div className='w-full'>
