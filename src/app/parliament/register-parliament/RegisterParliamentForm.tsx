@@ -1,16 +1,16 @@
 'use client';
 
+import { EmptyResponse, FetchReturn, TypedFormData } from '@/lib/types';
 import { useContext, useEffect } from 'react';
 import { AccessContext } from '@/components/providers/AccessContextProvider';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Loader2 } from 'lucide-react';
 import TextInputField from '@/components/shared/TextInputField';
 import { registerOrganization } from '@/app/dashboard/register-organization/actions';
 import { registerParliamentSchema } from '@/lib/schemas/registerParliamentSchema';
 import { useForm } from 'react-hook-form';
-import useQueryHandler from '@/lib/hooks/useQueryHandler';
+import { useFormState } from 'react-dom';
 import { useRouter } from 'next/navigation';
 import { Input as vInput } from 'valibot';
 import { valibotResolver } from '@hookform/resolvers/valibot';
@@ -22,7 +22,7 @@ const RegisterParliamentForm = () => {
     resolver: valibotResolver(registerParliamentSchema),
     defaultValues: {
       name: '',
-      emailDomain: '@parlimensatu.com',
+      email_domain: '@parlimensatu.com',
     },
   });
 
@@ -34,30 +34,33 @@ const RegisterParliamentForm = () => {
     }
   }, [userData, router]);
 
-  const {
-    state: registerParliamentState,
-    triggerQuery: triggerRegisterOrganization,
-  } = useQueryHandler({
-    query: registerOrganization,
-    queryOnMount: false,
-  });
-  const onSubmit = async (data: vInput<typeof registerParliamentSchema>) => {
-    const response = await triggerRegisterOrganization(
-      data.name,
-      data.emailDomain
-    );
-    if (!response.ok) {
+  const [registerParliamentState, registerParliamentAction] = useFormState(
+    registerOrganization,
+    {} as FetchReturn<EmptyResponse>
+  );
+  useEffect(() => {
+    if (!registerParliamentState.data) return;
+
+    if (!registerParliamentState.ok) {
+      registerOrganizationForm.clearErrors();
       registerOrganizationForm.setError('name', {
-        message: response.data.message,
+        message: registerParliamentState.data.message,
       });
       return;
     }
-  };
+
+    router.push('/dashboard');
+  }, [registerOrganizationForm, registerParliamentState, router]);
+
   return (
     <Form {...registerOrganizationForm}>
       <form
+        action={(data) =>
+          registerParliamentAction(
+            data as TypedFormData<vInput<typeof registerParliamentSchema>>
+          )
+        }
         className='mt-4'
-        onSubmit={registerOrganizationForm.handleSubmit(onSubmit)}
       >
         <TextInputField
           control={registerOrganizationForm.control}
@@ -70,20 +73,9 @@ const RegisterParliamentForm = () => {
         <Button
           type='submit'
           className='w-full md:w-auto'
-          disabled={
-            registerParliamentState === 'pending' ||
-            registerParliamentState === 'resolved' ||
-            userData?.organization_id === undefined
-          }
+          disabled={userData?.organization_id === undefined}
         >
-          {registerParliamentState === 'pending' ? (
-            <>
-              <Loader2 className='animate-spin' size={16} />
-              <span className='ml-2'>Registering...</span>
-            </>
-          ) : (
-            'Register parliament'
-          )}
+          Register Parliament
         </Button>
       </form>
     </Form>

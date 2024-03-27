@@ -1,6 +1,6 @@
 import AvatarMenu from '@/components/shared/AvatarMenu';
 import CheckUser from '../dashboard/(dashboard)/CheckUser';
-import ParliamentSideBar from './(root)/ParliamentSideBar';
+import ParliamentSideBar from './(components)/ParliamentSideBar';
 import Providers from '@/components/providers/Providers';
 
 const ParliamentLayout = ({ children }: { children: React.ReactNode }) => {

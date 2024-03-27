@@ -14,7 +14,7 @@ const fetchNexticket = async (
     useToken?: boolean;
     method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
     body?: unknown;
-    queries?: Record<string, string>;
+    queries?: Record<string | number, string | number>;
     options?: RequestInit;
   }
 ): Promise<FetchReturn<any>> => {
