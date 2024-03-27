@@ -9,7 +9,7 @@ import ParliamentSkeletonCard from '../(components)/ParliamentSkeletonCard';
 import ParliamentTableBottom from '../(components)/ParliamentTableBottom';
 import ParliamentTicketingPagination from '../(components)/ParliamentTicketingPagination';
 import { ParliamentTickets } from '@/lib/types';
-import { getAidTickets } from './actions';
+import { getAidTickets } from './api';
 import useQueryHandler from '@/lib/hooks/useQueryHandler';
 
 export default function Aid() {
