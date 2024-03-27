@@ -4,20 +4,28 @@ import { FetchReturn, GetQuery, PaginatedParliamentTickets } from '@/lib/types';
 import fetchNexticket from '@/lib/customFetch';
 
 export const getAidTickets = async ({
-  page,
-  perPage,
-  filter,
+  page = 1,
+  perPage = 10,
+  status = '',
+  period_end = '',
   search = '',
 }: {
-  page: number;
-  perPage: number;
-  filter: string;
-  search: string;
+  page?: number;
+  perPage?: number;
+  status?: string;
+  period_end?: string;
+  search?: string;
 }): Promise<FetchReturn<GetQuery<PaginatedParliamentTickets>>> => {
-  return await fetchNexticket(
-    `/parliament-ticket?type=AID&page=${page}&per-page=${perPage}${filter}${search}`,
-    {}
-  );
+  return await fetchNexticket(`/parliament-ticket`, {
+    queries: {
+      type: 'AID',
+      page,
+      'per-page': perPage,
+      status,
+      period_end,
+      search,
+    },
+  });
 };
 
 export const getAidTicket = async ({

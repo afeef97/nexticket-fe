@@ -4,7 +4,7 @@ import ParliamentCommentPage from '../../(components)/ParliamentCommentPage';
 import ParliamentEmptyState from '../../(components)/ParliamentEmptyState';
 import ParliamentSkeletonCard from '../../(components)/ParliamentSkeletonCard';
 import ParliamentTicketDetails from '../../(components)/ParliamentTicketDetails';
-import { getAidTicket } from '../actions';
+import { getAidTicket } from '../api';
 import useQueryHandler from '@/lib/hooks/useQueryHandler';
 import { useState } from 'react';
 
