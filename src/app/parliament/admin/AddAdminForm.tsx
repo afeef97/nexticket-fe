@@ -1,13 +1,21 @@
+import { EmptyResponse, FetchReturn } from '@/lib/types';
 import { PlusCircle, Trash2 } from 'lucide-react';
-import { array, email, minLength, object, string, Input as vInput } from 'valibot';
+import React, { useEffect } from 'react';
+import {
+  array,
+  email,
+  minLength,
+  object,
+  string,
+  Input as vInput,
+} from 'valibot';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import React from 'react';
 import TextInputField from '@/components/shared/TextInputField';
 import { inviteMembers } from '@/app/dashboard/users/actions';
-import useQueryHandler from '@/lib/hooks/useQueryHandler';
+import { useFormState } from 'react-dom';
 import { useRouter } from 'next/navigation';
 import { valibotResolver } from '@hookform/resolvers/valibot';
 
@@ -28,6 +36,7 @@ const AddAdminForm = ({
   const router = useRouter();
   const addAdminForm = useForm<vInput<typeof AddAdminFormSchema>>({
     resolver: valibotResolver(AddAdminFormSchema),
+    mode: 'onChange',
     defaultValues: {
       memberList: [{ email: '', role: 'PARLIAMENT_ADMIN' }],
     },
@@ -37,17 +46,15 @@ const AddAdminForm = ({
     name: 'memberList',
   });
 
-  const { state: addAdminState, triggerQuery: triggerAddAdmin } =
-    useQueryHandler({
-      query: inviteMembers,
-      queryOnMount: false,
-    });
+  const [addAdminFormState, addAdminFormAction] = useFormState(
+    inviteMembers,
+    {} as FetchReturn<EmptyResponse>
+  );
+  useEffect(() => {
+    if (!addAdminFormState.data) return;
 
-  const onSubmit = async (data: vInput<typeof AddAdminFormSchema>) => {
-    const res = await triggerAddAdmin(data.memberList);
-
-    if (!res.ok && res.data.existingEmails) {
-      (res.data.existingEmails as string[]).forEach(
+    if (!addAdminFormState.ok && addAdminFormState.data.existingEmails) {
+      (addAdminFormState.data.existingEmails as string[]).forEach(
         (email: string, index: number) => {
           addAdminForm.setError(`memberList.${index}.email`, {
             message: email + ' already exists',
@@ -55,22 +62,22 @@ const AddAdminForm = ({
         }
       );
       return;
-    } else if (!res.ok) {
+    } else if (!addAdminFormState.ok) {
       addAdminForm.setError(`memberList.0.email`, {
-        message: res.data.message,
+        message: addAdminFormState.data.message,
       });
       return;
     }
 
-    if (res.ok) {
+    if (addAdminFormState.ok) {
       setOpen(false);
       router.refresh();
     }
-  };
+  }, [addAdminForm, addAdminFormState, router, setOpen]);
 
   return (
     <Form {...addAdminForm}>
-      <form onSubmit={addAdminForm.handleSubmit(onSubmit)}>
+      <form action={addAdminFormAction}>
         {addAdminFieldArray.fields.map((field, index) => (
           <div key={field.id}>
             <div className='flex items-center gap-2'>
@@ -113,7 +120,7 @@ const AddAdminForm = ({
         <div className='flex flex-row-reverse gap-2'>
           <Button
             type='submit'
-            disabled={addAdminState === 'pending'}
+            disabled={!addAdminForm.formState.isValid}
           >
             Invite
           </Button>

@@ -9,12 +9,19 @@ import {
 import fetchNexticket from '@/lib/customFetch';
 import { revalidateTag } from 'next/cache';
 
-export const inviteMembers = async (memberList: {
-  email: string;
-  role: string;
-}): Promise<FetchReturn<EmptyResponse>> => {
+export const inviteMembers = async (
+  previousState: unknown,
+  formData: FormData
+): Promise<FetchReturn<EmptyResponse>> => {
   revalidateTag('pending-members');
   revalidateTag('parliament-members');
+
+  const memberList: Record<string, FormDataEntryValue>[] = [];
+  formData.forEach((value) => {
+    memberList.push({ email: value, role: 'PARLIAMENT_ADMIN' });
+  });
+
+  console.log(memberList);
   return await fetchNexticket('/organization/invite-member', {
     method: 'POST',
     body: { memberList },
