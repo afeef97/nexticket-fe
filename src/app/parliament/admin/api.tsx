@@ -8,7 +8,12 @@ export const getParliamentMembers = async (
   page: number = 1,
   perPage: number = 10
 ): Promise<FetchReturn<GetQuery<PaginatedParliamentMember>>> => {
-  return await fetchNexticket(`/organization/all-members?page=${page}&per-page=${perPage}${search}`, {
+  return await fetchNexticket(`/organization/all-members`, {
+    queries: {
+      page,
+      'per-page': perPage,
+      search,
+    },
     options: { next: { tags: ['parliament-members'] } },
   });
 };
