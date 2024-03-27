@@ -13,7 +13,7 @@ import ParliamentTableBottom from './ParliamentTableBottom';
 import ParliamentTicketingPagination from './ParliamentTicketingPagination';
 import { queriesBuilder } from '@/lib/utils';
 
-const ParliamentTable = ({
+const ParliamentTicketTable = ({
   complaintTicketData,
 }: {
   complaintTicketData: FetchReturn<GetQuery<PaginatedParliamentTickets>>;
@@ -171,4 +171,4 @@ const ParliamentTable = ({
   );
 };
 
-export default ParliamentTable;
+export default ParliamentTicketTable;
