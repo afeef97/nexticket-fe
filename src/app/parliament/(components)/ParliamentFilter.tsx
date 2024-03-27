@@ -1,21 +1,35 @@
 'use client';
 
 import React, { useTransition } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { Loader2Icon } from 'lucide-react';
 import { queriesBuilder } from '@/lib/utils';
 
-const ParliamentTimeFilter = () => {
+const ParliamentFilter = ({
+  options,
+  paramKey,
+}: {
+  options: {
+    label: string;
+    value: string;
+  }[];
+  paramKey: string;
+}) => {
   const router = useRouter();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
 
   const [isUpdatingSearchParams, startUpdatingSearchParams] = useTransition();
   const onChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     startUpdatingSearchParams(() => {
       router.replace(
-        `/parliament/dashboard${queriesBuilder({
-          period_end: e.target.value || '',
-        })}`
+        `${pathname}${queriesBuilder(
+          {
+            [paramKey]: e.target.value || '',
+            page: 1,
+          },
+          searchParams
+        )}`
       );
     });
   };
@@ -26,15 +40,19 @@ const ParliamentTimeFilter = () => {
       <select
         onChange={onChange}
         className='border text-body1 border-linePrimary w-[240px] h-[48px] px-2 py-0.5 rounded focus:outline-none focus:border-secondary'
-        value={searchParams.get('period_end') || ''}
+        value={searchParams.get(paramKey) || ''}
       >
-        <option value=''>All time</option>
-        <option value={'today'}>Today</option>
-        <option value={'past_week'}>Past week</option>
-        <option value={'past_month'}>Past month</option>
+        {options.map((option) => (
+          <option
+            key={option.value}
+            value={option.value}
+          >
+            {option.label}
+          </option>
+        ))}
       </select>
     </div>
   );
 };
 
-export default ParliamentTimeFilter;
+export default ParliamentFilter;

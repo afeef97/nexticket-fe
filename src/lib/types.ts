@@ -118,6 +118,11 @@ export type GetQuery<T> = {
 
 export type QueryState = 'idle' | 'pending' | 'resolved' | 'error';
 
+export type LabelValue<T> = {
+  label: string;
+  value: T;
+};
+
 export type UserData = {
   id: number;
   email: string;

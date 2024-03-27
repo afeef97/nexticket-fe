@@ -1,23 +1,32 @@
 'use server';
+import 'server-only';
 
 import { FetchReturn, GetQuery, PaginatedParliamentTickets } from '@/lib/types';
 import fetchNexticket from '@/lib/customFetch';
 
 export const getComplaintTickets = async ({
-  page,
-  perPage,
-  filter,
+  page = 1,
+  perPage = 10,
+  status = '',
+  period_end = '',
   search = '',
 }: {
-  page: number;
-  perPage: number;
-  filter: string;
-  search: string;
+  page?: number;
+  perPage?: number;
+  status?: string;
+  period_end?: string;
+  search?: string;
 }): Promise<FetchReturn<GetQuery<PaginatedParliamentTickets>>> => {
-  return await fetchNexticket(
-    `/parliament-ticket?type=COMPLAINT&page=${page}&per-page=${perPage}${filter}${search}`,
-    {}
-  );
+  return await fetchNexticket(`/parliament-ticket`, {
+    queries: {
+      type: 'COMPLAINT',
+      page,
+      'per-page': perPage,
+      status,
+      period_end,
+      search,
+    },
+  });
 };
 
 export const getComplaintTicket = async ({
