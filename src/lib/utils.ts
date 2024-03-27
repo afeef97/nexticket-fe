@@ -1,6 +1,7 @@
 import { type ClassValue, clsx } from 'clsx';
 import { EmptyResponse, FetchReturn } from './types';
 import { MatcherFunction } from '@testing-library/react';
+import { ReadonlyURLSearchParams } from 'next/navigation';
 import { twMerge } from 'tailwind-merge';
 
 export function cn(...inputs: ClassValue[]) {
@@ -19,14 +20,21 @@ export function subtractWeeks(date: Date, weeks: number): Date {
   return new Date(date.setDate(date.getDate() - weeks * 7));
 }
 
-export function queriesBuilder(queries: Record<string, string>): string {
-  return (
-    '?' +
-    Object.keys(queries)
-      .map((key) => (queries[key] === '' ? '' : `${key}=${queries[key]}`))
-      .filter((key) => key !== '')
-      .join('&')
-  );
+export function queriesBuilder(
+  queries: Record<string, string>,
+  searchParams?: ReadonlyURLSearchParams
+): string {
+  let queriesRecord: Record<string, string> = {};
+  searchParams?.forEach((value, key) => {
+    queriesRecord[key] = value;
+  });
+
+  const queryArray = Object.entries({ ...queriesRecord, ...queries });
+  const query = queryArray
+    .filter(([, value]) => value)
+    .map(([key, value]) => `${key}=${value}`)
+    .join('&');
+  return query ? `?${query}` : '';
 }
 
 //eslint-disable-next-line
