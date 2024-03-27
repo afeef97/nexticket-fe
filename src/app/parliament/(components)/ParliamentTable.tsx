@@ -129,37 +129,46 @@ const ParliamentTable = ({
             </tr>
           )}
         </tbody>
+        <tfoot>
+          {complaintTicketData.ok &&
+            complaintTicketData?.data.data.data.length !== 0 && (
+              <tr>
+                <td colSpan={4}>
+                  <ParliamentTicketingPagination
+                    count={complaintTicketData?.data.data.meta.total}
+                    lastPage={complaintTicketData?.data.data.meta.lastPage}
+                    pages={currentPage}
+                    rows={rowsPerCurrentPage}
+                    setPages={setCurrentPage}
+                    setRows={setRowsPerCurrentPage}
+                    from={
+                      complaintTicketData?.data.data.meta.currentPage *
+                        rowsPerCurrentPage -
+                      rowsPerCurrentPage +
+                      1
+                    }
+                    to={
+                      complaintTicketData?.data.data.meta.currentPage ===
+                      complaintTicketData?.data.data.meta.lastPage
+                        ? complaintTicketData?.data.data.meta.total
+                        : complaintTicketData?.data.data.meta.currentPage *
+                          rowsPerCurrentPage
+                    }
+                  />
+                </td>
+              </tr>
+            )}
+          {!complaintTicketData.ok ||
+            (complaintTicketData.ok &&
+              complaintTicketData.data.data.data.length === 0 && (
+                <tr>
+                  <td colSpan={4}>
+                    <ParliamentTableBottom />
+                  </td>
+                </tr>
+              ))}
+        </tfoot>
       </table>
-      {/* PAGINATION */}
-      {complaintTicketData.ok &&
-        complaintTicketData?.data.data.data.length !== 0 && (
-          <ParliamentTicketingPagination
-            count={complaintTicketData?.data.data.meta.total}
-            lastPage={complaintTicketData?.data.data.meta.lastPage}
-            pages={currentPage}
-            rows={rowsPerCurrentPage}
-            setPages={setCurrentPage}
-            setRows={setRowsPerCurrentPage}
-            from={
-              complaintTicketData?.data.data.meta.currentPage *
-                rowsPerCurrentPage -
-              rowsPerCurrentPage +
-              1
-            }
-            to={
-              complaintTicketData?.data.data.meta.currentPage ===
-              complaintTicketData?.data.data.meta.lastPage
-                ? complaintTicketData?.data.data.meta.total
-                : complaintTicketData?.data.data.meta.currentPage *
-                  rowsPerCurrentPage
-            }
-          />
-        )}
-      {!complaintTicketData.ok ||
-        (complaintTicketData.ok &&
-          complaintTicketData.data.data.data.length === 0 && (
-            <ParliamentTableBottom />
-          ))}
     </>
   );
 };
