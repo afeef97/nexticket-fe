@@ -4,13 +4,7 @@ import ParliamentFilter from '../(components)/ParliamentFilter';
 import ParliamentPendingAidRequestCard from './ParliamentPendingAidRequestCard';
 import ParliamentPendingComplaintCard from './ParliamentPendingComplaintCard';
 import { Skeleton } from '@/components/ui/skeleton';
-
-const timeOptions = [
-  { label: 'All time', value: '' },
-  { label: 'Today', value: 'today' },
-  { label: 'Past week', value: 'past_week' },
-  { label: 'Past month', value: 'past_month' },
-];
+import { TIME_OPTIONS } from '@/lib/constants';
 
 const ParliamentDashboard = ({
   searchParams,
@@ -35,7 +29,7 @@ const ParliamentDashboard = ({
             <Suspense fallback={<Skeleton className='w-60 h-12' />}>
               <ParliamentFilter
                 paramKey='period_end'
-                options={timeOptions}
+                options={TIME_OPTIONS}
               />
             </Suspense>
           </div>
