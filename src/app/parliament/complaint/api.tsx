@@ -47,5 +47,7 @@ export const getComplaintTicketComment = async ({
 }: {
   ticketId: string;
 }): Promise<FetchReturn<GetQuery<any>>> => {
-  return await fetchNexticket(`/parliament-ticket/comment/${ticketId}`, {});
+  return await fetchNexticket(`/parliament-ticket/comment/${ticketId}`, {
+    options: { next: { tags: ['complaint-comments'] } },
+  });
 };
