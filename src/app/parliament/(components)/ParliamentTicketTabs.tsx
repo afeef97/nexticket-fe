@@ -19,7 +19,7 @@ const ParliamentTicketTabs = ({
           onClick={() => setShowPage('comment')}
           className={`p-4 cursor-pointer ${
             showPage === 'comment'
-              ? 'text-link border-b-2 border-primary'
+              ? 'text-primary border-b-2 border-primary'
               : 'text-foreground'
           }`}
         >
@@ -29,7 +29,7 @@ const ParliamentTicketTabs = ({
           onClick={() => setShowPage('history')}
           className={`p-4 cursor-pointer ${
             showPage === 'history'
-              ? 'text-link border-b-2 border-primary'
+              ? 'text-primary border-b-2 border-primary'
               : 'text-foreground'
           }`}
         >

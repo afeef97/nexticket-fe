@@ -20,9 +20,9 @@ export default async function ComplaintPage({
   return (
     <div>
       <h4>Complaint</h4>
-      <main className='flex  flex-col items-center justify-between mt-[35px] '>
-        <div className='w-full '>
-          <div className='grid grid-cols-4 gap-4  '>
+      <div className='flex flex-col items-center justify-between mt-9'>
+        <div className='w-full'>
+          <div className='grid grid-cols-4 gap-4'>
             <div className='col-span-3'>
               <div>
                 <Link
@@ -64,7 +64,7 @@ export default async function ComplaintPage({
             </div>
           </div>
         </div>
-      </main>
+      </div>
     </div>
   );
 }
