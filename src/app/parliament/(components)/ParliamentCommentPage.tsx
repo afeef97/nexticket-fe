@@ -4,13 +4,12 @@ import ParliamentLoadingButtonState from './ParliamentLoadingButtonState';
 import { useState } from 'react';
 
 export default function ParliamentCommentPage({
-  data,
+  commentData,
   type,
 }: {
-  data: any;
+  commentData: any;
   type: string;
-  ticketId: string;
-  refetch: () => void;
+  ticketId: number;
 }) {
   //   const [show, setShow] = useState(false);
   const [comments, setComment] = useState('');
@@ -94,8 +93,11 @@ export default function ParliamentCommentPage({
           </div>
         )}
         <div className='mt-8 flex flex-col gap-8'>
-          {data?.map((item: any, index: number) => (
-            <div key={index} className='flex gap-4 items-start'>
+          {commentData?.data?.data?.map((item: any, index: number) => (
+            <div
+              key={index}
+              className='flex gap-4 items-start'
+            >
               <div>
                 <div className='w-[48px] h-[48px] rounded-full flex items-center justify-center border border-lineSecondary text-textPrimary text-sub1 uppercase'>
                   {item.user_name.charAt(0)}
