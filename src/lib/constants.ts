@@ -14,6 +14,13 @@ export const STATUS_OPTIONS: LabelValue<string>[] = [
   { label: 'Rejected', value: 'REJECTED' },
 ];
 
+export const TICKET_STATUS_OPTIONS: LabelValue<string>[] = [
+  { label: 'Completed', value: 'COMPLETED' },
+  { label: 'Pending', value: 'PENDING' },
+  { label: 'Awaiting Reply', value: 'AWAITING_REPLY' },
+  { label: 'Rejected', value: 'REJECTED' },
+];
+
 export const BACKEND_URL = process.env.NEXTICKET_API;
 
 export const FRONTEND_URL = process.env.NEXTICKET_FRONTEND;
