@@ -4,9 +4,9 @@ import { FetchReturn, GetQuery, ParliamentTickets } from '@/lib/types';
 import React, { useState } from 'react';
 
 const ParliamentTicketContent = ({
-  complaintData,
+  ticketData,
 }: {
-  complaintData: FetchReturn<GetQuery<ParliamentTickets>>;
+  ticketData: FetchReturn<GetQuery<ParliamentTickets>>;
 }) => {
   const [showFullText, setShowFullText] = useState(false);
   const MAX_WORD = 30;
@@ -25,9 +25,9 @@ const ParliamentTicketContent = ({
   };
   return (
     <>
-      {renderText(complaintData.ok ? complaintData.data.data.content : '')}
-      {complaintData.ok &&
-        complaintData.data.data.content.split(' ').length > MAX_WORD && (
+      {renderText(ticketData.ok ? ticketData.data.data.content : '')}
+      {ticketData.ok &&
+        ticketData.data.data.content.split(' ').length > MAX_WORD && (
           <>
             {!showFullText && (
               <span>

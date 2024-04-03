@@ -19,7 +19,6 @@ export default function ParliamentTicketDetails({
   ticketData,
 }: {
   ticketData: FetchReturn<GetQuery<ParliamentTickets>>;
-  type: string;
 }) {
   const [status, setStatus] = useState<string>(
     ticketData.ok ? ticketData.data.data.ticket_status : 'PENDING'
