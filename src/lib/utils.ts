@@ -1,5 +1,4 @@
 import { type ClassValue, clsx } from 'clsx';
-import { EmptyResponse, FetchReturn } from './types';
 import { MatcherFunction } from '@testing-library/react';
 import { NextResponse } from 'next/server';
 import { ReadonlyURLSearchParams } from 'next/navigation';
@@ -51,45 +50,6 @@ export const withMarkup =
       ).every((child) => !hasText(child as Partial<HTMLElement>));
       return hasText(node) && childrenDontHaveText;
     });
-
-export function tokenHandler(
-  options: RequestInit
-): FetchReturn<EmptyResponse> | undefined {
-  try {
-    const { cookies } = require('next/headers');
-    const cookieStore = cookies();
-
-    const accessExpires: string = cookieStore.get(
-      'access_token_expires'
-    )?.value;
-    if (
-      accessExpires &&
-      new Date(Date.now()).valueOf() > new Date(accessExpires).valueOf()
-    ) {
-      return {
-        ok: false,
-        data: {
-          message: 'Your access token has expired, please refresh your token',
-          statusCode: 401,
-        },
-      };
-    }
-
-    const token = cookieStore.get('access_token')?.value;
-    options.headers = {
-      ...options.headers,
-      Authorization: `Bearer ${token}`,
-    };
-  } catch (error) {
-    return {
-      ok: false,
-      data: {
-        message: JSON.stringify(error),
-        statusCode: 400,
-      },
-    };
-  }
-}
 
 export function handleSetTokenCookies(
   response: NextResponse,
