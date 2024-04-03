@@ -8,11 +8,6 @@ export default async function refreshIfExpires(request: NextRequest) {
   const accessTokenExpires = request.cookies.get('access_token_expires');
 
   if (accessTokenExpires) {
-    console.log(
-      new Date(Date.now()),
-      new Date(accessTokenExpires?.value),
-      new Date(Date.now()) > new Date(accessTokenExpires?.value)
-    );
     if (new Date(Date.now()) > new Date(accessTokenExpires?.value)) {
       const refreshResponse = await fetch(BACKEND_URL + '/auth/refresh', {
         headers: {
@@ -23,11 +18,14 @@ export default async function refreshIfExpires(request: NextRequest) {
         },
       });
       if (!refreshResponse.ok) {
+        response.cookies.delete('access_token');
+        response.cookies.delete('refresh_token');
         return NextResponse.redirect(FRONTEND_URL + '/login');
       }
 
       const setCookies = refreshResponse.headers.getSetCookie();
       handleSetTokenCookies(response, setCookies);
+
       return response;
     }
   }

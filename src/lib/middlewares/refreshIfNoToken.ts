@@ -11,7 +11,10 @@ export default async function refreshIfNoToken(request: NextRequest) {
     },
   });
   if (!refreshResponse.ok) {
-    return NextResponse.redirect(FRONTEND_URL + '/login');
+    const redirectResponse = NextResponse.redirect(FRONTEND_URL + '/login');
+    redirectResponse.cookies.delete('access_token');
+    redirectResponse.cookies.delete('refresh_token');
+    return redirectResponse;
   }
 
   const setCookies = refreshResponse.headers.getSetCookie();
