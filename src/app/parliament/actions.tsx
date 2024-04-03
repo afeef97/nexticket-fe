@@ -14,3 +14,15 @@ export const commentOnParliamentTicket = async (
     body: { comments },
   });
 };
+
+export const updateParliamentTicketStatus = async (
+  status: string,
+  ticketId: string
+) => {
+  revalidateTag('complaint-tickets');
+  console.log(status);
+  return await fetchNexticket(`/parliament-ticket/${ticketId}`, {
+    method: 'PUT',
+    body: { status },
+  });
+};
