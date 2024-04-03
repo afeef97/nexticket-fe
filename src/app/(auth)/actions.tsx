@@ -32,46 +32,6 @@ export const handleResponseCookies = (setCookie: string[]): void => {
   }
 };
 
-export type TokenCookie = {
-  access_token: string;
-  refresh_token: string;
-};
-export const getToken = async (): Promise<FetchReturn<TokenCookie>> => {
-  const { cookies } = require('next/headers');
-  const cookieStore = cookies();
-
-  const access_token = cookieStore.get('access_token')?.value;
-  const refresh_token = cookieStore.get('refresh_token')?.value;
-
-  if (refresh_token) {
-    if (access_token) {
-      return {
-        ok: true,
-        data: {
-          access_token,
-          refresh_token,
-        },
-      };
-    } else {
-      return {
-        ok: false,
-        data: {
-          message: 'Token expired, please refresh your token',
-          statusCode: 401,
-        },
-      };
-    }
-  } else {
-    return {
-      ok: false,
-      data: {
-        message: 'Unauthorized, please login again',
-        statusCode: 401,
-      },
-    };
-  }
-};
-
 export const refreshToken = async (): Promise<FetchReturn<EmptyResponse>> => {
   const { cookies } = require('next/headers');
   const cookieStore = cookies();

@@ -1,15 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { AppRouterContextProviderMock } from '@/components/test/RouterContextProviderMock';
 import LoginForm from './LoginForm';
-import { getToken } from '../actions';
-
-jest.mock('../actions', () => ({
-  getToken: jest.fn(),
-}));
-(getToken as jest.Mock).mockResolvedValue({
-  ok: false,
-  data: {},
-});
 
 describe('LoginForm', () => {
   it('should render with correct fields', () => {
