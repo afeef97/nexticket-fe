@@ -22,7 +22,7 @@ export default async function AidPage({ params }: { params: { id: string } }) {
             <div className='col-span-3'>
               <div>
                 <Link
-                  href={'/parliament/complaint'}
+                  href={'/parliament/aid'}
                   className='text-link underline cursor-pointer'
                 >
                   Aid
