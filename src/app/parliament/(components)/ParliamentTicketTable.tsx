@@ -14,9 +14,9 @@ import ParliamentTicketingPagination from './ParliamentTicketingPagination';
 import { queriesBuilder } from '@/lib/utils';
 
 const ParliamentTicketTable = ({
-  complaintTicketData,
+  ticketData,
 }: {
-  complaintTicketData: FetchReturn<GetQuery<PaginatedParliamentTickets>>;
+  ticketData: FetchReturn<GetQuery<PaginatedParliamentTickets>>;
 }) => {
   const router = useRouter();
   const pathname = usePathname();
@@ -42,7 +42,7 @@ const ParliamentTicketTable = ({
   }, [currentPage, pathname, rowsPerCurrentPage, router, searchParams]);
 
   const handleRowClick = (ticketID: string) => {
-    router.push(`/parliament/complaint/${ticketID}`);
+    router.push(`${pathname}/${ticketID}`);
   };
   return (
     <table className='min-w-full '>
@@ -76,8 +76,8 @@ const ParliamentTicketTable = ({
       </thead>
       <tbody className='divide-y divide-lineSecondary'>
         {/* normal state */}
-        {complaintTicketData.ok &&
-          complaintTicketData.data.data.data.map(
+        {ticketData.ok &&
+          ticketData.data.data.data.map(
             (item: ParliamentTickets, index: number) => (
               <tr
                 onClick={() => handleRowClick(`${item.id}`)}
@@ -118,9 +118,8 @@ const ParliamentTicketTable = ({
             )
           )}
         {/* error state */}
-        {((complaintTicketData.ok &&
-          complaintTicketData.data.data.data.length === 0) ||
-          !complaintTicketData.ok) && (
+        {((ticketData.ok && ticketData.data.data.data.length === 0) ||
+          !ticketData.ok) && (
           <tr>
             <td colSpan={4}>
               <ParliamentEmptyState />
@@ -129,43 +128,40 @@ const ParliamentTicketTable = ({
         )}
       </tbody>
       <tfoot>
-        {complaintTicketData.ok &&
-          complaintTicketData?.data.data.data.length !== 0 && (
+        {ticketData.ok && ticketData?.data.data.data.length !== 0 && (
+          <tr>
+            <td colSpan={4}>
+              <ParliamentTicketingPagination
+                count={ticketData?.data.data.meta.total}
+                lastPage={ticketData?.data.data.meta.lastPage}
+                pages={currentPage}
+                rows={rowsPerCurrentPage}
+                setPages={setCurrentPage}
+                setRows={setRowsPerCurrentPage}
+                from={
+                  ticketData?.data.data.meta.currentPage * rowsPerCurrentPage -
+                  rowsPerCurrentPage +
+                  1
+                }
+                to={
+                  ticketData?.data.data.meta.currentPage ===
+                  ticketData?.data.data.meta.lastPage
+                    ? ticketData?.data.data.meta.total
+                    : ticketData?.data.data.meta.currentPage *
+                      rowsPerCurrentPage
+                }
+              />
+            </td>
+          </tr>
+        )}
+        {!ticketData.ok ||
+          (ticketData.ok && ticketData.data.data.data.length === 0 && (
             <tr>
               <td colSpan={4}>
-                <ParliamentTicketingPagination
-                  count={complaintTicketData?.data.data.meta.total}
-                  lastPage={complaintTicketData?.data.data.meta.lastPage}
-                  pages={currentPage}
-                  rows={rowsPerCurrentPage}
-                  setPages={setCurrentPage}
-                  setRows={setRowsPerCurrentPage}
-                  from={
-                    complaintTicketData?.data.data.meta.currentPage *
-                      rowsPerCurrentPage -
-                    rowsPerCurrentPage +
-                    1
-                  }
-                  to={
-                    complaintTicketData?.data.data.meta.currentPage ===
-                    complaintTicketData?.data.data.meta.lastPage
-                      ? complaintTicketData?.data.data.meta.total
-                      : complaintTicketData?.data.data.meta.currentPage *
-                        rowsPerCurrentPage
-                  }
-                />
+                <ParliamentTableBottom />
               </td>
             </tr>
-          )}
-        {!complaintTicketData.ok ||
-          (complaintTicketData.ok &&
-            complaintTicketData.data.data.data.length === 0 && (
-              <tr>
-                <td colSpan={4}>
-                  <ParliamentTableBottom />
-                </td>
-              </tr>
-            ))}
+          ))}
       </tfoot>
     </table>
   );

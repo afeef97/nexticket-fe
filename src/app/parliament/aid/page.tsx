@@ -18,7 +18,7 @@ export default async function Aid({
     'per-page'?: number;
   };
 }) {
-  const complaintTickets: FetchReturn<GetQuery<PaginatedParliamentTickets>> =
+  const aidTickets: FetchReturn<GetQuery<PaginatedParliamentTickets>> =
     await getAidTickets({
       perPage: searchParams['per-page'],
       ...searchParams,
@@ -51,9 +51,7 @@ export default async function Aid({
             <div className=' sm:-mx-6 lg:-mx-8'>
               <div className='inline-block min-w-full py-2 align-middle md:px-6 lg:px-8'>
                 <Suspense fallback={<Skeleton className='w-full h-full' />}>
-                  <ParliamentTicketTable
-                    complaintTicketData={complaintTickets}
-                  />
+                  <ParliamentTicketTable ticketData={aidTickets} />
                 </Suspense>
               </div>
             </div>

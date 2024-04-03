@@ -51,9 +51,7 @@ export default async function Complaint({
             <div className=' sm:-mx-6 lg:-mx-8'>
               <div className='inline-block min-w-full py-2 align-middle md:px-6 lg:px-8'>
                 <Suspense fallback={<Skeleton className='w-full h-full' />}>
-                  <ParliamentTicketTable
-                    complaintTicketData={complaintTickets}
-                  />
+                  <ParliamentTicketTable ticketData={complaintTickets} />
                 </Suspense>
               </div>
             </div>
