@@ -1,6 +1,7 @@
 import { type ClassValue, clsx } from 'clsx';
 import { EmptyResponse, FetchReturn } from './types';
 import { MatcherFunction } from '@testing-library/react';
+import { NextResponse } from 'next/server';
 import { ReadonlyURLSearchParams } from 'next/navigation';
 import { twMerge } from 'tailwind-merge';
 
@@ -88,4 +89,28 @@ export function tokenHandler(
       },
     };
   }
+}
+
+export function handleSetTokenCookies(
+  response: NextResponse,
+  setCookies: string[]
+): void {
+  const tokenRegex = /, (?=\w+=)/;
+  setCookies[0].split(tokenRegex).forEach((cookie: string) => {
+    const cookieValue = cookie.split(';');
+
+    const [tokenLabel, token] = cookieValue[0].split('=');
+    const [, path] = cookieValue[1].split('=');
+    const [, expires] = cookieValue[2].split('=');
+
+    response.headers.append(
+      'Set-Cookie',
+      `${tokenLabel}=${token}; Path=${path}; Expires=${expires}; HttpOnly`
+    );
+
+    response.headers.append(
+      'Set-Cookie',
+      `${tokenLabel}_expires=${expires}; Path=${path}; Expires=${expires}; HttpOnly`
+    );
+  });
 }
