@@ -13,3 +13,7 @@ export const STATUS_OPTIONS: LabelValue<string>[] = [
   { label: 'Pending', value: 'PENDING' },
   { label: 'Rejected', value: 'REJECTED' },
 ];
+
+export const BACKEND_URL = process.env.NEXTICKET_API;
+
+export const FRONTEND_URL = process.env.NEXTICKET_FRONTEND;

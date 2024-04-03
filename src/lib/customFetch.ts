@@ -1,6 +1,5 @@
-import { EmptyResponse, FetchReturn } from './types';
-import { queriesBuilder, tokenHandler } from './utils';
-import { handleResponseCookies } from '@/app/(auth)/actions';
+import { FetchReturn } from './types';
+import { queriesBuilder } from './utils';
 
 const fetchNexticket = async (
   url: string,
@@ -18,65 +17,32 @@ const fetchNexticket = async (
     options?: RequestInit;
   }
 ): Promise<FetchReturn<any>> => {
+  const headers: Headers = options.headers
+    ? new Headers(options.headers)
+    : new Headers();
+
+  headers.set('Content-Type', 'application/json');
   if (useToken) {
-    const tokenState: FetchReturn<EmptyResponse> | undefined =
-      tokenHandler(options);
-
-    if (tokenState && !tokenState.ok) {
-      return tokenState;
-    }
-  }
-
-  options.headers = {
-    ...options.headers,
-    'Content-Type': 'application/json',
-  };
-  if (process.env.NODE_ENV === 'development') {
-    process.env.DEBUG === 'verbose'
-      ? console.trace(
-          '\n********************************** START\n',
-          new Date(Date.now()).toLocaleTimeString(),
-          method,
-          url,
-          method === 'GET' ? '' : body,
-          options
-        )
-      : process.env.DEBUG === 'log'
-      ? console.log(
-          '\n********************************** START\n',
-          new Date(Date.now()).toLocaleTimeString(),
-          method,
-          url,
-          method === 'GET' ? '' : body
-        )
-      : null;
-  }
-
-  if (Object.keys(queries).length > 0) {
-    url = `${url}${queriesBuilder(queries)}`;
-  }
-  const response = await fetch(`${process.env.NEXTICKET_API}${url}`, {
-    method,
-    headers: options.headers,
-    body: JSON.stringify(body),
-    ...options,
-  });
-
-  const setCookie = response.headers.getSetCookie();
-  if (setCookie) {
-    handleResponseCookies(setCookie);
-  }
-
-  const data = await response.json();
-  if (process.env.NODE_ENV === 'development') {
-    console.log(
-      new Date(Date.now()).toLocaleTimeString(),
-      method,
-      url,
-      data,
-      '\n********************************** END\n'
+    const { cookies } = require('next/headers');
+    const cookiesStore = cookies();
+    headers.set(
+      'Authorization',
+      `Bearer ${cookiesStore.get('access_token')?.value}`
     );
   }
+
+  const queryString = queriesBuilder(queries);
+  const response = await fetch(
+    `${process.env.NEXTICKET_API}${url}${queryString}`,
+    {
+      method,
+      headers,
+      body: body ? JSON.stringify(body) : undefined,
+      ...options,
+    }
+  );
+
+  const data = await response.json();
 
   return response.ok ? { ok: true, data } : { ok: false, data };
 };
