@@ -71,7 +71,7 @@ export default function ParliamentCommentPage({
                     {item.user_name}
                   </span>
                   <span className='text-sm text-muted-foreground'>
-                    {new Date(item.created_at).toLocaleString()}
+                    {new Date(item.created_at).toLocaleString('en-MY')}
                   </span>
                 </div>
                 <div className='text-body1'>{item.comments}</div>
