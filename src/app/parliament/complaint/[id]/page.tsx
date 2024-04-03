@@ -40,7 +40,7 @@ export default async function ComplaintPage({
               </h5>
               <div className='mt-4'>
                 {complaintData.ok && (
-                  <ParliamentTicketContent complaintData={complaintData} />
+                  <ParliamentTicketContent ticketData={complaintData} />
                 )}
                 {!complaintData.ok && <ParliamentEmptyState />}
               </div>
@@ -56,10 +56,7 @@ export default async function ComplaintPage({
             </div>
             <div className='col-span-1 border-l border-lineSecondary h-full pl-4'>
               <Suspense fallback={<Skeleton className='h-full w-full' />}>
-                <ParliamentTicketDetails
-                  ticketData={complaintData}
-                  type='complaint'
-                />
+                <ParliamentTicketDetails ticketData={complaintData} />
               </Suspense>
             </div>
           </div>

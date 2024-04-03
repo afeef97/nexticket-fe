@@ -45,7 +45,9 @@ export default async function Aid({
                 />
               </Suspense>
             </div>
-            <ParliamentSearch />
+            <Suspense>
+              <ParliamentSearch />
+            </Suspense>
           </div>
           <div className='mt-8 flex flex-col overflow-x-hidden'>
             <div className=' sm:-mx-6 lg:-mx-8'>
