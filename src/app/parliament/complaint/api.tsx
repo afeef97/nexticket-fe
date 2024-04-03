@@ -1,7 +1,12 @@
 'use server';
 import 'server-only';
 
-import { FetchReturn, GetQuery, PaginatedParliamentTickets } from '@/lib/types';
+import {
+  FetchReturn,
+  GetQuery,
+  PaginatedParliamentTickets,
+  ParliamentTickets,
+} from '@/lib/types';
 import fetchNexticket from '@/lib/customFetch';
 
 export const getComplaintTickets = async ({
@@ -33,38 +38,16 @@ export const getComplaintTicket = async ({
   ticketId,
 }: {
   ticketId: string;
+}): Promise<FetchReturn<GetQuery<ParliamentTickets>>> => {
+  return await fetchNexticket(`/parliament-ticket/${ticketId}`, {});
+};
+
+export const getComplaintTicketComment = async ({
+  ticketId,
+}: {
+  ticketId: string;
 }): Promise<FetchReturn<GetQuery<any>>> => {
-  const ticketResponse = await fetchNexticket(
-    `/parliament-ticket/${ticketId}`,
-    {}
-  );
-  const commentsResponse = await fetchNexticket(
-    `/parliament-ticket/comment/${ticketId}`,
-    {}
-  );
-
-  const response = {
-    ticket: ticketResponse.data,
-    comments: commentsResponse.data,
-  };
-  const errorMessage = `Error fetching: ${ticketResponse.ok && 'ticket'} ${
-    commentsResponse.ok && 'comments'
-  }`;
-
-  return ticketResponse.ok && commentsResponse.ok
-    ? {
-        ok: true,
-        data: {
-          data: response,
-          message: 'Ticket and comments fetched successfully',
-        },
-      }
-    : {
-        ok: false,
-        data: {
-          data: response,
-          message: errorMessage,
-          statusCode: 500,
-        },
-      };
+  return await fetchNexticket(`/parliament-ticket/comment/${ticketId}`, {
+    options: { next: { tags: ['complaint-comments'] } },
+  });
 };
