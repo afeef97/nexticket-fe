@@ -11,8 +11,8 @@ export async function middleware(request: NextRequest) {
     request.nextUrl.pathname.startsWith('/dashboard') ||
     request.nextUrl.pathname.startsWith('/parliament');
 
-  if (!hasAccessToken && isProtectedRoute) {
-    return await refreshIfNoToken(request);
+  if (!hasAccessToken && (isProtectedRoute || isLogin)) {
+    return await refreshIfNoToken(request, isLogin);
   }
 
   if (hasAccessToken && hasRefeshToken && isProtectedRoute) {
