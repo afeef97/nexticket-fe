@@ -1,4 +1,5 @@
 import { FetchReturn } from './types';
+import { handleResponseCookies } from '@/app/(auth)/actions';
 import { queriesBuilder } from './utils';
 
 const fetchNexticket = async (
@@ -41,6 +42,11 @@ const fetchNexticket = async (
       ...options,
     }
   );
+
+  const setCookies = response.headers.getSetCookie();
+  if (setCookies) {
+    handleResponseCookies(setCookies);
+  }
 
   const data = await response.json();
 
