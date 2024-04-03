@@ -2,8 +2,13 @@ import { BACKEND_URL, FRONTEND_URL } from '../constants';
 import { type NextRequest, NextResponse } from 'next/server';
 import { handleSetTokenCookies } from '../utils';
 
-export default async function refreshIfNoToken(request: NextRequest) {
-  const response = NextResponse.next();
+export default async function refreshIfNoToken(
+  request: NextRequest,
+  isLogin: boolean
+) {
+  const response = isLogin
+    ? NextResponse.redirect(FRONTEND_URL + '/dashboard')
+    : NextResponse.next();
   const refreshResponse = await fetch(BACKEND_URL + '/auth/refresh', {
     headers: {
       Authorization: `Bearer ${request.cookies.get('refresh_token')?.value}`,

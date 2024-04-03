@@ -35,6 +35,13 @@ const LoginForm = () => {
 
     if (!loginFormState.ok) {
       loginForm.clearErrors();
+      if (!loginFormState.data?.fields) {
+        loginForm.setError('email', { message: loginFormState.data.message });
+        loginForm.setError('password', {
+          message: loginFormState.data.message,
+        });
+        return;
+      }
       (loginFormState.data.fields as string[]).forEach((field) =>
         loginForm.setError(field as keyof vInput<typeof LoginFormSchema>, {
           message: loginFormState.data.message,
