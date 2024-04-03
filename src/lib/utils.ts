@@ -1,6 +1,6 @@
 import { type ClassValue, clsx } from 'clsx';
-import { EmptyResponse, FetchReturn } from './types';
 import { MatcherFunction } from '@testing-library/react';
+import { NextResponse } from 'next/server';
 import { ReadonlyURLSearchParams } from 'next/navigation';
 import { twMerge } from 'tailwind-merge';
 
@@ -51,41 +51,26 @@ export const withMarkup =
       return hasText(node) && childrenDontHaveText;
     });
 
-export function tokenHandler(
-  options: RequestInit
-): FetchReturn<EmptyResponse> | undefined {
-  try {
-    const { cookies } = require('next/headers');
-    const cookieStore = cookies();
+export function handleSetTokenCookies(
+  response: NextResponse,
+  setCookies: string[]
+): void {
+  const tokenRegex = /, (?=\w+=)/;
+  setCookies[0].split(tokenRegex).forEach((cookie: string) => {
+    const cookieValue = cookie.split(';');
 
-    const accessExpires: string = cookieStore.get(
-      'access_token_expires'
-    )?.value;
-    if (
-      accessExpires &&
-      new Date(Date.now()).valueOf() > new Date(accessExpires).valueOf()
-    ) {
-      return {
-        ok: false,
-        data: {
-          message: 'Your access token has expired, please refresh your token',
-          statusCode: 401,
-        },
-      };
-    }
+    const [tokenLabel, token] = cookieValue[0].split('=');
+    const [, path] = cookieValue[1].split('=');
+    const [, expires] = cookieValue[2].split('=');
 
-    const token = cookieStore.get('access_token')?.value;
-    options.headers = {
-      ...options.headers,
-      Authorization: `Bearer ${token}`,
-    };
-  } catch (error) {
-    return {
-      ok: false,
-      data: {
-        message: JSON.stringify(error),
-        statusCode: 400,
-      },
-    };
-  }
+    response.headers.append(
+      'Set-Cookie',
+      `${tokenLabel}=${token}; Path=${path}; Expires=${expires}; HttpOnly`
+    );
+
+    response.headers.append(
+      'Set-Cookie',
+      `${tokenLabel}_expires=${expires}; Path=${path}; Expires=${expires}; HttpOnly`
+    );
+  });
 }
