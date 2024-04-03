@@ -91,6 +91,9 @@ export const refreshToken = async (): Promise<FetchReturn<EmptyResponse>> => {
         headers: {
           Authorization: `Bearer ${cookieStore.get('refresh_token')?.value}`,
         },
+        next: {
+          revalidate: 2,
+        },
       },
     }
   );
