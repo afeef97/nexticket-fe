@@ -32,47 +32,6 @@ export const handleResponseCookies = (setCookie: string[]): void => {
   }
 };
 
-export const refreshToken = async (): Promise<FetchReturn<EmptyResponse>> => {
-  const { cookies } = require('next/headers');
-  const cookieStore = cookies();
-
-  if (!cookieStore.has('refresh_token')) {
-    return {
-      ok: false,
-      data: { message: 'Unauthorized, please login again', statusCode: 401 },
-    };
-  }
-
-  const response: FetchReturn<EmptyResponse> = await fetchNexticket(
-    '/auth/refresh',
-    {
-      useToken: false,
-      options: {
-        headers: {
-          Authorization: `Bearer ${cookieStore.get('refresh_token')?.value}`,
-        },
-        next: {
-          revalidate: 2,
-        },
-      },
-    }
-  );
-
-  if (
-    !response.ok &&
-    (response.data.statusCode === 401 || response.data.statusCode === 403)
-  ) {
-    cookieStore.delete('access_token');
-    cookieStore.delete('refresh_token');
-    return {
-      ok: false,
-      data: { message: 'Unauthorized, please login again', statusCode: 401 },
-    };
-  }
-  revalidateTag('user-account');
-  return response;
-};
-
 export const updateUser = async ({
   email,
   username,
