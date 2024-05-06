@@ -2,6 +2,10 @@
   "name": "nexticket-fe",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "npm": "^10.4.0",
+    "yarn": "please-use-npm"
+  },
   "scripts": {
     "dev": "next dev -p 5173",
     "build": "next build",
