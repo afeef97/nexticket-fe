@@ -1,5 +1,6 @@
 'use client';
 
+import { AID_STATUS_OPTIONS, COMPLAINT_STATUS_OPTIONS } from '@/lib/constants';
 import { FetchReturn, GetQuery, ParliamentTickets } from '@/lib/types';
 import {
   Select,
@@ -9,7 +10,6 @@ import {
   SelectTrigger,
 } from '@/components/ui/select';
 import ParliamentEmptyState from './ParliamentEmptyState';
-import { TICKET_STATUS_OPTIONS } from '@/lib/constants';
 import { cn } from '@/lib/utils';
 import { updateParliamentTicketStatus } from '../actions';
 import { useMutation } from '@tanstack/react-query';
@@ -25,6 +25,9 @@ export default function ParliamentTicketDetails({
   );
 
   const ticketId = ticketData.ok ? ticketData.data.data.id : 0;
+  const ticketType = ticketData.ok ? ticketData.data.data.ticket_type : null;
+  const options =
+    ticketType === 'COMPLAINT' ? COMPLAINT_STATUS_OPTIONS : AID_STATUS_OPTIONS;
   const { mutate: updateStatus } = useMutation({
     mutationFn: () => updateParliamentTicketStatus(status, ticketId.toString()),
   });
@@ -53,7 +56,7 @@ export default function ParliamentTicketDetails({
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                {TICKET_STATUS_OPTIONS.map((option) => (
+                {options.map((option) => (
                   <SelectItem
                     key={option.value}
                     value={option.value}
