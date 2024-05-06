@@ -21,6 +21,8 @@ export async function middleware(request: NextRequest) {
 
   if (hasAccessToken && isLogin) {
     return NextResponse.redirect(FRONTEND_URL + '/dashboard');
+  } else if (!hasAccessToken && !hasRefeshToken && isProtectedRoute) {
+    return NextResponse.redirect(FRONTEND_URL + '/login');
   }
 
   return NextResponse.next();
