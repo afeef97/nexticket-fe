@@ -36,21 +36,25 @@ const ParliamentFilter = ({
 
   return (
     <div className='flex items-center gap-2'>
-      {isUpdatingSearchParams && <Loader2Icon className='animate-spin' />}
-      <select
-        onChange={onChange}
-        className='border text-body1 border-linePrimary w-[240px] h-[48px] px-2 py-0.5 rounded focus:outline-none focus:border-secondary'
-        value={searchParams.get(paramKey) || ''}
-      >
-        {options.map((option) => (
-          <option
-            key={option.value}
-            value={option.value}
-          >
-            {option.label}
-          </option>
-        ))}
-      </select>
+      <div className='border relative border-border w-[240px] h-[48px] px-2 rounded flex justify-between items-center bg-white'>
+        <select
+          onChange={onChange}
+          className='w-full h-full focus:outline-none py-0.5 bg-white'
+          value={searchParams.get(paramKey) || ''}
+        >
+          {options.map((option) => (
+            <option
+              key={option.value}
+              value={option.value}
+            >
+              {option.label}
+            </option>
+          ))}
+        </select>
+        {isUpdatingSearchParams && (
+          <Loader2Icon className='animate-spin absolute flex-grow right-6' />
+        )}
+      </div>
     </div>
   );
 };

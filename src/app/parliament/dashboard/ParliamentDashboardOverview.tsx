@@ -25,7 +25,7 @@ const ParliamentDashboardOverview = async ({
               <div className='text-body1'>Aid ticket</div>
               <div className='text-sub1'>
                 {(ticketSummary?.ok &&
-                  ticketSummary.data.data.all?.total_ticket_count) ||
+                  ticketSummary.data.data.aid?.total_ticket_count) ||
                   0}
               </div>
             </div>
@@ -33,7 +33,7 @@ const ParliamentDashboardOverview = async ({
               <div className='text-body1'>Complaint ticket</div>
               <div className='text-sub1'>
                 {(ticketSummary?.ok &&
-                  ticketSummary.data.data.all?.total_ticket_count) ||
+                  ticketSummary.data.data.complaint?.total_ticket_count) ||
                   0}
               </div>
             </div>
@@ -47,7 +47,7 @@ const ParliamentDashboardOverview = async ({
               <div className='text-body1'>Total aid ticket approved</div>
               <div className='text-h5'>
                 {(ticketSummary?.ok &&
-                  ticketSummary.data.data.all?.total_ticket_count) ||
+                  ticketSummary.data.data.aid?.total_completed_count) ||
                   0}
               </div>
             </div>
@@ -57,7 +57,7 @@ const ParliamentDashboardOverview = async ({
               <div className='text-body1'>Total aid ticket rejected</div>
               <div className='text-h5'>
                 {(ticketSummary?.ok &&
-                  ticketSummary.data.data.all?.total_ticket_count) ||
+                  ticketSummary.data.data.aid?.total_rejected_count) ||
                   0}
               </div>
             </div>
@@ -68,7 +68,7 @@ const ParliamentDashboardOverview = async ({
             <div className='text-body1'>Total complaint ticket resolved</div>
             <div className='text-h5'>
               {(ticketSummary?.ok &&
-                ticketSummary.data.data.all?.total_ticket_count) ||
+                ticketSummary.data.data.complaint?.total_completed_count) ||
                 0}
             </div>
           </div>

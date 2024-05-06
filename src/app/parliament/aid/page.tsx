@@ -1,5 +1,5 @@
+import { AID_FILTER_OPTIONS, TIME_OPTIONS } from '@/lib/constants';
 import { FetchReturn, GetQuery, PaginatedParliamentTickets } from '@/lib/types';
-import { STATUS_OPTIONS, TIME_OPTIONS } from '@/lib/constants';
 import ParliamentFilter from '../(components)/ParliamentFilter';
 import ParliamentSearch from '../(components)/ParliamentSearch';
 import ParliamentTicketTable from '../(components)/ParliamentTicketTable';
@@ -35,7 +35,7 @@ export default async function Aid({
               <Suspense fallback={<Skeleton className='w-full h-[6.5rem]' />}>
                 <ParliamentFilter
                   paramKey='status'
-                  options={STATUS_OPTIONS}
+                  options={AID_FILTER_OPTIONS}
                 />
               </Suspense>
               <Suspense fallback={<Skeleton className='w-full h-[6.5rem]' />}>

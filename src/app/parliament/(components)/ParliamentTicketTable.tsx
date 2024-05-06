@@ -108,11 +108,7 @@ const ParliamentTicketTable = ({
                       <div className='w-[10px] h-[10px] rounded-full bg-negative'></div>
                     )}
                   </span>
-                  <span>
-                    {item.ticket_status === 'AWAITING_REPLY'
-                      ? 'Awaiting reply'
-                      : item.ticket_status}
-                  </span>
+                  <span>{item.ticket_status.split('_').join(' ')}</span>
                 </td>
               </tr>
             )
