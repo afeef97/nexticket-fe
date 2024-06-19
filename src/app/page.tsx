@@ -1,7 +1,13 @@
+import Footer from '@/components/shared/Footer';
+import Hero from '@/app/(root)/Hero';
+
 export default function Home() {
   return (
-    <main>
-      <div>Hello</div>
-    </main>
+    <>
+      <main>
+        <Hero />
+      </main>
+      <Footer />
+    </>
   );
 }
